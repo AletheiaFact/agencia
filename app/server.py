@@ -3,13 +3,12 @@ import re
 import json
 import operator
 import functools
-import os
-os.environ["SERPER_API_KEY"] = "serper_api_key"
-
+import dotenv
 from langchain.agents import Tool
 from langchain_community.utilities import GoogleSerperAPIWrapper
 from fastapi import FastAPI
 from langserve import add_routes
+dotenv.load_dotenv() 
 
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -30,7 +29,6 @@ from typing_extensions import TypedDict
 llm = ChatOpenAI(
     model="gpt-3.5-turbo",
     temperature=0,
-    openai_api_key="open_api_key"
 )
 
 ## Define tools

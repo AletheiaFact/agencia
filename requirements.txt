@@ -1,0 +1,8 @@
+langchain
+langchain_community
+fastapi
+langserve
+langchain_openai
+langchain_core
+typing
+typing_extensions
