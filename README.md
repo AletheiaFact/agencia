@@ -2,10 +2,25 @@
 
 ## Installation
 
-Install the LangChain CLI if you haven't yet
+Download the Miniconda installer and run it:
 
 ```bash
-pip install -U langchain-cli
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+```
+
+Follow the prompts to complete the installation
+
+* Press Enter to accept the license agreement
+* Choose the installation location (e.g., /home/aletheia/miniconda3)
+* Type 'yes' to initialize Miniconda
+* Close and reopen your terminal to activate the changes
+
+Create a environment named `agencia` and install the python requirements.
+
+```bash
+conda create --name agencia python=3.11
+pip install -r requirements.txt
 ```
 
 ## Adding packages
