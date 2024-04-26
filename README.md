@@ -20,6 +20,7 @@ Create a environment named `agencia` and install the python requirements.
 
 ```bash
 conda create --name agencia python=3.11
+conda activate agencia
 pip install -r requirements.txt
 ```
 
