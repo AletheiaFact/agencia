@@ -1,0 +1,86 @@
+create_claim_subject:
+  description: >
+    Analyze the claim: "{claim}" provided and construct a subject line in Portuguese. This subject should
+    concentrate on the main keywords and phrases most likely to retrieve accurate and relevant information.
+
+    Steps to Follow:
+    1. Employ the querido_diario_advanced_search_context_tool to gain insights into effective search strategies. This tool will help you understand how to craft a subject line that utilizes advanced search contexts to enhance the precision of the search results.
+    2. Incorporate appropriate search operators to refine search results efficiently. Make strategic use of these operators to focus the search and improve the likelihood of retrieving the most pertinent information.
+  expected_output: >
+    A query_subject in Portuguese, concisely incorporating strategic
+    search operators to maximize the relevancy and accuracy of information retrieval.
+
+employ_qd_glossario:
+  description: >
+    Analyze the subject created and utilize the querido_diario_glossario_tool to substitute any terms in your subject line that are not present in the glossary. This ensures that all terms used are aligned with standardized glossary entries, enhancing the relevance of the search.
+  expected_output: >
+    A query_subject, concisely incorporating strategic keywords from the glossary to maximize the relevancy and accuracy of information retrieval.
+
+research_gazettes:
+  description: >
+    Utilize the query_subject created by the 'Subject creator' to gather data from gazettes using
+    the querido_diario_fetch tool.
+    
+    Format your query using the following JSON structure, ensuring to fill in the relevant details:
+    
+    {{
+    "city": "<Enter the {context[city]} name>",
+    "subject": <Enter the `query_subject` created by the previous agent>,
+    "published_since": "<Enter the {context[published_since]} in YYYY-MM-DD format>",
+    "published_until": "<Enter the {context[published_until]} in YYYY-MM-DD format>",
+    }}
+
+    Reattempt with a modified subject if initial searches return insufficient results."
+  expected_output: Provide the txt_url source.
+
+collect_gazette_relevant_data:
+  description: >
+    Utilize the txt_url source provided by the 'Data researcher' to gather relevant data from the gazette using
+    the gazette_search tool.
+    
+    Format your query using the following JSON structure, ensuring to fill in the relevant details:
+    
+    {{
+    "claim": {claim}
+    "url": "<Enter the txt_url source>",
+    "subject": "<Use the query_subject created by the previous task>",
+    }}
+  expected_output: Compiles a comprehensive response containing all relevant gazette data
+
+create_fact_checking_report:
+  description: >
+    Upon receiving data from the Data analyst, creates a fact-checking report.
+    The report should be presented in a structured JSON format. Below is the format you are to follow:
+
+    {{
+    "classification": "Your analysis-based categorization",
+    "summary": "A concise overview reflecting your classification",
+    "questions": ["Key inquiries addressed during your verification"],
+    "report": "A detailed narrative of your findings and evidence",
+    "verification": "A detailed description of the methods and tools used for verification"
+    }}
+
+    classification: Assign one of the following labels based on your analysis:
+
+    - Not Fact: The information lacks evidence or a factual basis.
+    - Trustworthy: The information is reliable, backed by evidence or reputable sources.
+    - Trustworthy, but: Generally reliable, albeit with minor inaccuracies.
+    - Arguable: Subject to debate or different interpretations.
+    - Misleading: Distorts the facts, causing potential misunderstandings.
+    - False: Demonstrably incorrect or untrue.
+    - Unsustainable: Lacks long-term viability or feasibility.
+    - Exaggerated: Contains elements of truth but is overstated or embellished.
+    - Unverifiable: Cannot be substantiated through reliable sources.
+
+    - summary: Provide a succinct summary that directly supports your classification,
+    offering insight into your analytical reasoning.
+
+    - questions: Enumerate essential questions that were crucial in guiding your
+    analysis and verification process, this MUST contain at least one question.
+
+    - report: Document a comprehensive account detailing the investigative process, key findings,
+    and evidence that supports your conclusion.
+
+    - verification: Explain the specific methodologies and tools you employed to verify the
+    information, highlighting your systematic approach to substantiating the claim.
+  expected_output: A comprehensive fact-checking report structured in a JSON format
