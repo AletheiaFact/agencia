@@ -1,6 +1,6 @@
 create_claim_subject:
   description: >
-    Analyze the claim: "{claim}" provided and construct a subject line in Portuguese. This subject should
+    Analyze the claim: {claim} provided and construct a subject line in Portuguese. This subject should
     concentrate on the main keywords and phrases most likely to retrieve accurate and relevant information.
 
     Steps to Follow:
@@ -24,7 +24,7 @@ research_gazettes:
     Format your query using the following JSON structure, ensuring to fill in the relevant details:
     
     {{
-    "city": "<Enter the {context[city]} name>",
+    "city": {context[city]}",
     "subject": <Enter the `query_subject` created by the previous agent>,
     "published_since": "<Enter the {context[published_since]} in YYYY-MM-DD format>",
     "published_until": "<Enter the {context[published_until]} in YYYY-MM-DD format>",

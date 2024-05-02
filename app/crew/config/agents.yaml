@@ -15,7 +15,7 @@ gazette_data_retrieval:
   goal: >
     Use the search subject created by the 'Subject creator' to fetch comprehensive and accurate data
     from gazettes, ensuring the information meets user-defined parameters and research needs.
-  backstory: An expert in navigating and extracting data from extensive digital gazette archives.
+  backstory: An expert data researcher in navigating and extracting data from extensive digital gazette archives.
   allow_delegation: false
   verbose: true
 

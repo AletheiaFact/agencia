@@ -1,16 +1,43 @@
 import requests
+from typing import Iterator
+
+from langchain_core.document_loaders import BaseLoader
+from langchain_core.documents import Document
 from langchain.tools import tool
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
-from querido_diario_crew.tools.document_loader_tool import DocumentLoader
 from langchain_community.document_loaders import WebBaseLoader
+from crewai_tools.tools import FileReadTool
 
 #TODO: Get cities from IBGE
 cities = {
     "São José dos Campos": "3549904",
     "São José dos Mambos": "0000000"
 }
+
+querido_diario_advanced_search_context_tool = FileReadTool(
+	file_path='app/querido_diario_search_context.txt',
+	description="A tool designed to efficiently read and interpret search operators context to construct the subject"
+)
+
+class DocumentLoader(BaseLoader):
+    """Document loader that reads a file line by line."""
+
+    def __init__(self, file_path: str) -> None:
+        """Initialize the loader with a file path"""
+        self.file_path = file_path
+
+    def lazy_load(self) -> Iterator[Document]:
+        """A lazy loader that reads a file line by line."""
+        with open(self.file_path, encoding="utf-8") as f:
+            line_number = 0
+            for line in f:
+                yield Document(
+                    page_content=line,
+                    metadata={"line_number": line_number, "source": self.file_path},
+                )
+                line_number += 1
 
 class QueridoDiarioTools():
     @tool("Fetch Querido Diario API")

@@ -1,22 +1,20 @@
-from crewai import Agent, Crew, Process, Task
-from crewai.project import CrewBase, agent, crew, task
+from crewai import Crew, Process
+from crewai.project import CrewBase, crew
+from crewai import Task
+from crewai.project import task
+from crewai import Agent
+from crewai.project import agent
 from langchain_openai import ChatOpenAI
-from tools.querido_diario_tool import QueridoDiarioTools
-from crewai_tools.tools import FileReadTool
+from .tools import QueridoDiarioTools, querido_diario_advanced_search_context_tool
 
 llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
-
-querido_diario_advanced_search_context_tool = FileReadTool(
-	file_path='querido_diario_search_context.txt',
-	description="A tool designed to efficiently read and interpret search operators context to construct the subject"
-)
 
 @CrewBase
 class QueridoDiarioCrew():
 	"""Querido diario crew"""
 	agents_config = 'config/agents.yaml'
 	tasks_config = 'config/tasks.yaml'
-
+	
 	def __init__(self) -> None:
 		self.llm = llm
 
@@ -50,19 +48,19 @@ class QueridoDiarioCrew():
 			config = self.agents_config['fact_checker'],
 			llm = self.llm,
 		)
-
+	
 	@task
 	def create_claim_subject(self) -> Task:
 		return Task(
 			config = self.tasks_config['create_claim_subject'],
-			agent = self.subject_creator(),
+			agent = self.subject_creator()
 		)
-
+	
 	@task
 	def research_gazettes(self) -> Task:
 		return Task(
 			config = self.tasks_config['research_gazettes'],
-			agent = self.gazette_data_retrieval()
+   			agent = self.gazette_data_retrieval()
 		)
 	
 	@task
@@ -76,9 +74,9 @@ class QueridoDiarioCrew():
 	def create_fact_checking_report(self) -> Task:
 		return Task(
 			config = self.tasks_config['create_fact_checking_report'],
-			agent = self.fact_checker()
+   			agent = self.fact_checker()
 		)
-
+  
 	@crew
 	def crew(self) -> Crew:
 		"""Creates the Querido diario crew"""
@@ -88,3 +86,12 @@ class QueridoDiarioCrew():
 			process = Process.sequential,
 			verbose = 2
 		)
+  
+	def kickoff(self, state) -> Crew:
+		crew = self.crew()
+		result = crew.kickoff(state)
+  
+		return {
+			**state,
+			"messages": result
+		}
