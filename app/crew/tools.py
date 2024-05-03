@@ -51,7 +51,7 @@ class QueridoDiarioTools():
         return gazettes[0]
   
     @tool("Search in municipal gazette")
-    def gazette_search_context(claim: str, url: str, subject: str):
+    def gazette_search_context(claim: str, url: str):
         """Search data from municipal gazettes to get relevant documents"""
         embedding = OpenAIEmbeddings()
         loader = WebBaseLoader(url)
@@ -65,8 +65,8 @@ class QueridoDiarioTools():
 
         documents = text_splitter.split_documents(docs)
 
-        retriever = FAISS.from_documents(documents, embedding).as_retriever()
-        return retriever.invoke(input=claim + subject)
+        retriever = FAISS.from_documents(documents, embedding).as_retriever(search_kwargs={'k': 6})
+        return retriever.invoke(claim)
 
     @tool("Search Context in Querido Diario Glossario")
     def querido_diario_glossario_tool(claim):

@@ -1,37 +1,32 @@
 create_claim_subject:
   description: >
-    Analyze the claim: {claim} provided and construct a subject line in Portuguese. This subject should
+    Analyze the claim: {claim} provided and construct a subject line in {language}. This subject should
     concentrate on the main keywords and phrases most likely to retrieve accurate and relevant information.
 
     Steps to Follow:
     1. Employ the querido_diario_advanced_search_context_tool to gain insights into effective search strategies. This tool will help you understand how to craft a subject line that utilizes advanced search contexts to enhance the precision of the search results.
     2. Incorporate appropriate search operators to refine search results efficiently. Make strategic use of these operators to focus the search and improve the likelihood of retrieving the most pertinent information.
   expected_output: >
-    A query_subject in Portuguese, concisely incorporating strategic
+    A query_subject in {language}, concisely incorporating strategic
     search operators to maximize the relevancy and accuracy of information retrieval.
+    The subject should reflect a comprehensive understanding of the claim and include elements to enhance search precision.
 
-employ_qd_glossario:
-  description: >
-    Analyze the subject created and utilize the querido_diario_glossario_tool to substitute any terms in your subject line that are not present in the glossary. This ensures that all terms used are aligned with standardized glossary entries, enhancing the relevance of the search.
-  expected_output: >
-    A query_subject, concisely incorporating strategic keywords from the glossary to maximize the relevancy and accuracy of information retrieval.
 
 research_gazettes:
   description: >
-    Utilize the query_subject created by the 'Subject creator' to gather data from gazettes using
-    the querido_diario_fetch tool.
+    Utilize the query_subject created by the 'Subject creator' to gather data from gazettes using the querido_diario_fetch tool.
     
     Format your query using the following JSON structure, ensuring to fill in the relevant details:
     
     {{
-    "city": {context[city]}",
-    "subject": <Enter the `query_subject` created by the previous agent>,
+    "city": "{context[city]}",
+    "subject": "<Enter the `query_subject` created by the previous agent>",
     "published_since": "<Enter the {context[published_since]} in YYYY-MM-DD format>",
     "published_until": "<Enter the {context[published_until]} in YYYY-MM-DD format>",
     }}
 
-    Reattempt with a modified subject if initial searches return insufficient results."
-  expected_output: Provide the txt_url source.
+    Note: The subject should not be changed once set. Ensure the initial subject is comprehensive and precisely targets the needed information. Reevaluation of the effectiveness of the subject can be done post-task for future improvements.
+  expected_output: Provide the txt_url source. The results should be directly relevant to the subject line provided, reflecting the effectiveness of the initial query construction.
 
 collect_gazette_relevant_data:
   description: >
@@ -43,9 +38,28 @@ collect_gazette_relevant_data:
     {{
     "claim": {claim}
     "url": "<Enter the txt_url source>",
-    "subject": "<Use the query_subject created by the previous task>",
     }}
-  expected_output: Compiles a comprehensive response containing all relevant gazette data
+  expected_output: Compiles a comprehensive response containing all relevant gazette document data
+
+cross_check_collected_data_and_claim:
+  description: >
+    Your task is to perform a deep and thorough analysis to derive an informed conclusion by comparing the
+    collected gazette data with the specific claim provided: {claim}.
+    
+    Use critical thinking and analytical skills to assess the accuracy and relevance of the data in relation to the claim.
+
+    classification: Assign one of the following labels based on your analysis:
+
+    - Not Fact: The information lacks evidence or a factual basis.
+    - Trustworthy: The information is reliable, backed by evidence or reputable sources.
+    - Trustworthy, but: Generally reliable, albeit with minor inaccuracies.
+    - Arguable: Subject to debate or different interpretations.
+    - Misleading: Distorts the facts, causing potential misunderstandings.
+    - False: Demonstrably incorrect or untrue.
+    - Unsustainable: Lacks long-term viability or feasibility.
+    - Exaggerated: Contains elements of truth but is overstated or embellished.
+    - Unverifiable: Cannot be substantiated through reliable sources.
+  expected_output: Compiles a comprehensive report containing all relevant data between the claim and the gazette
 
 create_fact_checking_report:
   description: >

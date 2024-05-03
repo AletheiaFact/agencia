@@ -5,4 +5,5 @@ class AgentState(TypedDict):
     context: object
     messages: dict
     can_be_fact_checked: bool
+    language: str
     #steps_description

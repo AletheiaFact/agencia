@@ -28,6 +28,15 @@ data_analyst:
   allow_delegation: false
   verbose: true
 
+gazette_data_analyst:
+  role: "Gazette Data analyst"
+  goal: >
+    Perform a deep and thorough analysis to derive an informed report with the received information using
+    critical thinking and analytical skills to assess the accuracy and relevance of the data.
+  backstory: An expert data analyst specialized in create fact-checking reports.
+  allow_delegation: false
+  verbose: true
+
 fact_checker:
   role: "Fact checker"
   goal: >

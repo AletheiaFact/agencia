@@ -41,7 +41,14 @@ class QueridoDiarioCrew():
 			llm = self.llm,
 			tools = [QueridoDiarioTools.gazette_search_context],
 		)
-	
+
+	@agent
+	def gazette_data_analyst(self) -> Agent:
+		return Agent(
+			config = self.agents_config['gazette_data_analyst'],
+			llm = self.llm,
+		)
+
 	@agent
 	def fact_checker(self) -> Agent:
 		return Agent(
@@ -68,6 +75,13 @@ class QueridoDiarioCrew():
 		return Task(
 			config = self.tasks_config['collect_gazette_relevant_data'],
 			agent = self.data_analyst()
+		)
+  
+	@task
+	def cross_check_information(self) -> Task:
+		return Task(
+			config = self.tasks_config['cross_check_collected_data_and_claim'],
+   			agent = self.gazette_data_analyst()
 		)
 	
 	@task
