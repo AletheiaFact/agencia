@@ -10,6 +10,8 @@ class WorkFlow():
 		workflow = StateGraph(AgentState)
     
 		workflow.add_node("check_claim", nodes.check_claim_node)
+		workflow.add_node("search_online", nodes.search_online)
+		workflow.add_node("list_questions", nodes.list_questions)
 		workflow.add_node("start_fact_checking", QueridoDiarioCrew().kickoff)
 		workflow.set_entry_point("check_claim")
   
@@ -17,10 +19,12 @@ class WorkFlow():
       		"check_claim",
 			nodes.router,
 			{
-       			"continue": "start_fact_checking",
-				"end": END
+       			"continue": "list_questions",
+				"end": "search_online"
           	}
 		)
+		workflow.add_edge("search_online", END)
+		workflow.add_edge("list_questions", "start_fact_checking")
 		workflow.add_edge("start_fact_checking", END)
 
 		self.app = workflow.compile()

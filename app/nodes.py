@@ -1,14 +1,15 @@
-from crew.agents import CheckVerifiabilityAgent
+from crew.agents import CheckVerifiabilityAgent, ResearcherAgent, ListQuestionsAgent
 
 class Nodes():
 	def __init__(self) -> None:
-		self.agent = CheckVerifiabilityAgent.agent()
+		self.checkVerifiabilityAgent = CheckVerifiabilityAgent.agent()
+		self.listQuestionsAgent = ListQuestionsAgent.agent()
+		self.researcherAgent = ResearcherAgent.agent()
 
 	def check_claim_node(self, state):
 		can_be_fact_checked = False
 		claim = state["claim"]
-		print("self.agent", self.agent)
-		result = self.agent.invoke({"claim": claim })
+		result = self.checkVerifiabilityAgent.invoke({"claim": claim, "language": state["claim"]})
 
 		if "YES" in result:
 			can_be_fact_checked = True  
@@ -17,6 +18,25 @@ class Nodes():
 			**state,
 			"messages": result,
 			"can_be_fact_checked": can_be_fact_checked
+		}
+  
+	def list_questions(self, state):
+		claim = state["claim"]
+		result = self.listQuestionsAgent.invoke({"claim": claim })
+
+		return {
+			**state,
+			"questions": result,
+		}
+  
+	def search_online(self, state):
+		claim = state["claim"]
+		context = state["context"]
+		result = self.researcherAgent.invoke({"claim": claim, "sources": context["sources"] })
+  
+		return {
+			**state,
+			"messages": [*state["messages"], result],
 		}
   
 	def router(self, state):

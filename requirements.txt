@@ -7,3 +7,4 @@ langchain_core
 typing
 typing_extensions
 crewai
+google-search-results

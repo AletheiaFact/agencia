@@ -30,16 +30,17 @@ research_gazettes:
 
 collect_gazette_relevant_data:
   description: >
-    Utilize the txt_url source provided by the 'Data researcher' to gather relevant data from the gazette using
-    the gazette_search tool.
-    
-    Format your query using the following JSON structure, ensuring to fill in the relevant details:
+    Use the `txt_url` source provided by the 'Data researcher' to collect all relevant documents from the gazette using the `gazette_search` tool.    
+    Structure your query in the following JSON format, filling in all required fields:
     
     {{
     "claim": {claim}
     "url": "<Enter the txt_url source>",
+    "questions": {questions},
     }}
-  expected_output: Compiles a comprehensive response containing all relevant gazette document data
+  expected_output: >
+    Gather and compile a detailed response that comprehensively addresses all pertinent gazette document data related to the {questions}.
+    Ensure that each response is thorough, providing extensive and accurate information to cover all relevant aspects
 
 cross_check_collected_data_and_claim:
   description: >
@@ -59,7 +60,9 @@ cross_check_collected_data_and_claim:
     - Unsustainable: Lacks long-term viability or feasibility.
     - Exaggerated: Contains elements of truth but is overstated or embellished.
     - Unverifiable: Cannot be substantiated through reliable sources.
-  expected_output: Compiles a comprehensive report containing all relevant data between the claim and the gazette
+  expected_output: >
+    Compiles a comprehensive report detailing the investigative process, key finding, and evidence that supports your conclusion
+    containing all relevant data between the claim and the gazette
 
 create_fact_checking_report:
   description: >
@@ -67,34 +70,23 @@ create_fact_checking_report:
     The report should be presented in a structured JSON format. Below is the format you are to follow:
 
     {{
-    "classification": "Your analysis-based categorization",
+    "classification": "Classification from the previous user, this must be in English",
     "summary": "A concise overview reflecting your classification",
-    "questions": ["Key inquiries addressed during your verification"],
+    "questions": {questions},
     "report": "A detailed narrative of your findings and evidence",
-    "verification": "A detailed description of the methods and tools used for verification"
+    "verification": "A detailed description of the methods and tools used for verification",
     }}
 
     classification: Assign one of the following labels based on your analysis:
-
-    - Not Fact: The information lacks evidence or a factual basis.
-    - Trustworthy: The information is reliable, backed by evidence or reputable sources.
-    - Trustworthy, but: Generally reliable, albeit with minor inaccuracies.
-    - Arguable: Subject to debate or different interpretations.
-    - Misleading: Distorts the facts, causing potential misunderstandings.
-    - False: Demonstrably incorrect or untrue.
-    - Unsustainable: Lacks long-term viability or feasibility.
-    - Exaggerated: Contains elements of truth but is overstated or embellished.
-    - Unverifiable: Cannot be substantiated through reliable sources.
-
+    - ["Not Fact", "Trustworthy", "Trustworthy, but", "Arguable", "Misleading", "False", "Unsustainable", "Exaggerated", "Unverifiable"]
+  
     - summary: Provide a succinct summary that directly supports your classification,
     offering insight into your analytical reasoning.
-
-    - questions: Enumerate essential questions that were crucial in guiding your
-    analysis and verification process, this MUST contain at least one question.
 
     - report: Document a comprehensive account detailing the investigative process, key findings,
     and evidence that supports your conclusion.
 
     - verification: Explain the specific methodologies and tools you employed to verify the
     information, highlighting your systematic approach to substantiating the claim.
-  expected_output: A comprehensive fact-checking report structured in a JSON format
+  expected_output: >
+    A comprehensive fact-checking report in {language} and structured in a JSON format
