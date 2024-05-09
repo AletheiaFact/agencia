@@ -1,9 +1,9 @@
-from typing import TypedDict
+from typing import TypedDict, List
 
 class AgentState(TypedDict):
     claim: str
     context: object
     messages: dict = []
-    questions: dict = []
+    questions: List[str] = []
     can_be_fact_checked: bool = None
     language: str = "Portuguese"

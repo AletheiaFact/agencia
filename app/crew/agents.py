@@ -5,58 +5,63 @@ from langchain_community.utilities import SerpAPIWrapper
 from langchain.agents import create_tool_calling_agent
 from langchain.agents import AgentExecutor
 from langchain.agents import Tool
+from langchain_community.llms import Ollama
 
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
-search = SerpAPIWrapper()
+phi3_llm = Ollama(model="phi3")
+chat_gpt_llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+search = SerpAPIWrapper(
+    params={
+    	"engine": "bing",
+    	"gl": "us",
+    	"hl": "en",
+	},
+    serpapi_api_key="601e156ed7c08c1f117518eedb7f79319faa24d547538e2e16fe6254d4950918"
+)
 output_parser = StrOutputParser()
 
-class CheckVerifiabilityAgent():
-	def agent():
-		prompt = ChatPromptTemplate.from_messages([
+class Agents():
+    def checkVerifiabilityAgent():
+        prompt = ChatPromptTemplate.from_messages([
 			(
 				"system",
 				"""
-				You are an expert journalist with a specific role: to evaluate if the {claim} stated in {language} pertains to topics that our sources can fact-check. You are not required to verify the claim itself, just to assess its relevance to the topics provided.
-				
-				Topics eligible for relevance assessment include:
-					- Claims related to Brazilian municipalities and Brazilian states
+				You are an expert journalist tasked with determining if the {claim} falls under topics that can be fact-checked using our sources.
+    			Your role is not to verify the claim itself, but to assess its relevance to the following eligible topics:
+				- Claims related to Brazilian municipalities and Brazilian states.
 	
-				Your response should be either 'YES' or 'NO'.
-				If your answer is 'NO', please provide a detailed explanation that you dont have the correct data sources to complete the fact and why the claim does not fit the criteria for fact-checkability.
+ 
+				Your response should be a clear 'YES' or 'NO':
+				- If 'YES', simply respond 'YES'.
+    			- If 'NO', respond "NO" and provide a detailed explanation indicating the lack of relevant data sources or how the claim does not align with the criteria for fact-checkability.
 				"""
 			),
 		])
 
-		return prompt | llm | output_parser
+        return prompt | phi3_llm | output_parser
 
-class ListQuestionsAgent():
-	def agent():
-		output_parser = StrOutputParser()
-		
-		prompt = ChatPromptTemplate.from_messages([
+    def listQuestionsAgent():
+        prompt = ChatPromptTemplate.from_messages([
 			(
 				"system",
 				"""
-				You are an expert journalist working alongside fellow agents.
-				
-    			Your responsibility is to identify and list critical questions that will be instrumental in guiding your team through the verification process
-       			for this claim: {claim}. Your response must include a minimum of one question and no more than five questions.
-          		Please provide your questions in an array
+				You are an expert journalist working alongside fellow agents. Your task is to identify and list crucial questions that will guide
+    			your team through verifying this claim: {claim}. Each question should directly address relevant stakeholders or sources to ensure clarity and specificity.
+
+				Your response must include a minimum of one question and no more than five questions.
+    			Provide your questions in an array format and translate them only to {language}.
 				"""
 			),
 		])
 
-		return prompt | llm | output_parser
+        return prompt | chat_gpt_llm | output_parser
 
-#TODO: Ensure this agent is searching properly
-class ResearcherAgent():
-	def agent(): 
-		repl_tool = Tool(
-			name="python_repl",
-			description="A Python shell. Use this to execute python commands. Input should be a valid python command. If you want to see the output of a value, you should print it out with `print(...)`.",
+    def researcherAgent():
+        search_tool = Tool(
+			name="search_tool",
 			func=search.run,
+			description="useful for when you need to ask with search",
 		)
-		prompt = ChatPromptTemplate.from_messages([
+        prompt = ChatPromptTemplate.from_messages([
 			(
 				"system",
 				"""
@@ -73,8 +78,53 @@ class ResearcherAgent():
 				"""
 			),
 		])
-		
-		tools = [repl_tool]
-		agent = create_tool_calling_agent(llm, tools, prompt)
-		agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=False)
-		return agent_executor
+        tools = [search_tool]
+        agent = create_tool_calling_agent(chat_gpt_llm, tools, prompt)
+        return AgentExecutor(agent=agent, tools=tools, verbose=False)
+    
+    def factCheckerAgent():
+        prompt = ChatPromptTemplate.from_messages([
+			(
+				"system",
+				"""
+				You are a journalist specialized in fact-checking creates a fact-checking report relying the context gathered from the web: {messages}.
+    			Use critical thinking and analytical skills to assess the accuracy and relevance of the data in relation to the following claim: {claim}.
+				
+    			The report should be presented in a structured JSON format. Below is the format you are to follow:
+        
+				{{
+				"classification": "Classification from the previous user, this must be in English",
+				"summary": "A concise overview reflecting your classification",
+				"questions": {questions},
+				"report": "A detailed narrative of your findings and evidence",
+				"verification": "A detailed description of the methods and tools used for verification",
+				}}
+
+				classification: Assign one of the following labels based on your analysis:
+
+				- Not Fact: The information lacks evidence or a factual basis.
+				- Trustworthy: The information is reliable, backed by evidence or reputable sources.
+				- Trustworthy, but: Generally reliable, albeit with minor inaccuracies.
+				- Arguable: Subject to debate or different interpretations.
+				- Misleading: Distorts the facts, causing potential misunderstandings.
+				- False: Demonstrably incorrect or untrue.
+				- Unsustainable: Lacks long-term viability or feasibility.
+				- Exaggerated: Contains elements of truth but is overstated or embellished.
+				- Unverifiable: Cannot be substantiated through reliable sources.
+
+				- summary: Provide a succinct summary that directly supports your classification,
+				offering insight into your analytical reasoning.
+
+				- questions: Enumerate essential questions that were crucial in guiding your
+				analysis and verification process, this MUST contain at least one question.
+
+				- report: Document a comprehensive account detailing the investigative process, key findings,
+				and evidence that supports your conclusion.
+
+				- verification: Explain the specific methodologies and tools you employed to verify the
+				information, highlighting your systematic approach to substantiating the claim.
+				"""
+			),
+		])
+        
+        return prompt | chat_gpt_llm | output_parser
