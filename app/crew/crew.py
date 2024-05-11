@@ -103,6 +103,16 @@ class QueridoDiarioCrew():
   
 	def kickoff(self, state) -> Crew:
 		crew = self.crew()
+		context = state["context"]
+		state = {
+			**state,
+   			"context": {
+				"city": context.get("city", None),
+				"published_since": context.get("published_since", None),
+				"published_until": context.get("published_until", None),
+				"sources": context.get("sources", []),
+			}
+		}
 		result = crew.kickoff(state)
   
 		return {
