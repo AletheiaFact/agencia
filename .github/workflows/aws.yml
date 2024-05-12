@@ -1,0 +1,118 @@
+name: Deploy to AWS EKS
+
+on:
+  push:
+    branches:
+      - master
+      - stage
+      - create_querido_diario_agents
+  # For future
+  # release:
+  #   types: [created]
+
+env:
+  API_URL: ${{ secrets.API_URL }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: us-east-1
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+  GITHUB_SHA: ${{ github.sha }}
+  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+  IMAGE: agencia-production
+  ENVIRONMENT: development
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
+
+
+jobs:
+  setup-build-publish:
+    name: Build & Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Check Environment
+        if: endsWith(github.ref, '/master')
+        run: |
+          sed -i '11{s/testagencia./agencia./}' deployment/app.yml
+          echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # Build the Docker image
+      - name: Build
+        run: |
+          docker build --build-arg ENVIRONMENT=$ENVIRONMENT \
+            -t "$ECR_REGISTRY"/"$IMAGE":"$GITHUB_SHA" .
+          docker tag "$ECR_REGISTRY"/"$IMAGE":"$GITHUB_SHA" "$ECR_REGISTRY"/"$IMAGE":latest
+
+      # Push the Docker image to Google Container Registry
+      - name: Publish
+        run: |
+          docker push $ECR_REGISTRY/$IMAGE:$GITHUB_SHA
+          if [[ "$ENVIRONMENT" == "production" ]]; then docker push "$ECR_REGISTRY"/"$IMAGE":latest; fi
+
+  deploy:
+    name: Deploy
+    needs: setup-build-publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Check Environment
+        if: endsWith(github.ref, '/master')
+        run: |
+          sed -i '11{s/testagencia\./agencia./}' deployment/app.yml
+          echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          echo "AWS_ACCESS_KEY_ID=${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+
+      - name: Set environment
+        run: |
+          sed -i 's%ENVIRONMENT%${{ env.ENVIRONMENT }}%g' deployment/app.yml
+
+      - name: Set deployment
+        run: |
+          sed -i "s/TAG/$GITHUB_SHA/" deployment/app.yml
+
+      - name: Applying Kubernetes Deployment
+        uses: giovannirossini/aws-eks@v1.0.1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'us-east-1'
+          cluster-name: 'production'
+          command: kubectl apply -f ./deployment/
+
+      - name: Validation
+        uses: giovannirossini/aws-eks@v1.0.1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'us-east-1'
+          cluster-name: 'production'
+          command: kubectl rollout status deployments/aletheia -n ${{ env.ENVIRONMENT }} --timeout=360s
+        if: success()
+
+      - name: Rollback
+        uses: giovannirossini/aws-eks@v1.0.1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'us-east-1'
+          cluster-name: 'production'
+          command: kubectl rollout undo deployments/aletheia -n ${{ env.ENVIRONMENT }}
+        if: failure()
