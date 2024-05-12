@@ -92,7 +92,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: 'us-east-1'
           cluster-name: 'production'
-          command: kubectl version && kubectl apply -f ./deployment/
+          command: kubectl apply -f ./deployment/
 
       - name: Validation
         uses: giovannirossini/aws-eks@v1.0.1
