@@ -15,7 +15,15 @@ add_routes(
     agents_app
 )
 
+# Health Check endpoint for k8s livenes probe
+@app.get("/health", tags=["Health Check"])
+async def health_check():
+    # Here you might add logic to verify service health, like DB connection etc.
+    return {"status": "ok"}
+
+
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="localhost", port=8000)
+    # TODO host needs to be set through a env variable
+    uvicorn.run(app, host="0.0.0.0", port=8080)
