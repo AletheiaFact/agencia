@@ -53,9 +53,9 @@ class QueridoDiarioTools():
         
         if city and city in cities:
             query_params["territory_ids"] = cities[city]
-        if published_since:
+        if published_since and published_since.lower() != "none":
             query_params["published_since"] = published_since
-        if published_until:
+        if published_until and published_until.lower() != "none":
             query_params["published_until"] = published_until
         
         query_string = urlencode(query_params)

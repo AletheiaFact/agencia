@@ -70,7 +70,7 @@ create_fact_checking_report:
     The report should be presented in a structured JSON format. Below is the format you are to follow:
 
     {{
-    "classification": "Classification from the previous user, this must be in English",
+    "classification": "Classification from the previous user, this MUST be in English",
     "summary": "A concise overview reflecting your classification",
     "questions": {questions},
     "report": "A detailed narrative of your findings and evidence",
@@ -88,5 +88,7 @@ create_fact_checking_report:
 
     - verification: Explain the specific methodologies and tools you employed to verify the
     information, highlighting your systematic approach to substantiating the claim.
+
+    compile your response in {language}, however the classification field must remain in English
   expected_output: >
     A comprehensive fact-checking report in {language} and structured in a JSON format
