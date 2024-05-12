@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-aletheia-agencia
+  name: ingress-agencia
   namespace: ENVIRONMENT
   annotations:
     kubernetes.io/ingress.class: traefik
@@ -15,22 +15,22 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: aletheia-agencia
+              name: agencia
               port:
-                name: aletheia-agencia
+                name: agencia
 ---
 ### SERVICE  FRONTEND ###
 apiVersion: v1
 kind: Service
 metadata:
-  name: aletheia-agencia
+  name: agencia
   namespace: ENVIRONMENT
 spec:
   type: NodePort
   selector:
-    app: aletheia-agencia
+    app: agencia
   ports:
-    - name: aletheia-agencia
+    - name: agencia
       targetPort: 8080
       port: 80
 ---
@@ -38,20 +38,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: aletheia-agencia
+  name: agencia
   namespace: ENVIRONMENT
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: aletheia-agencia
+      app: agencia
   template:
     metadata:
       labels:
-        app: aletheia-agencia
+        app: agencia
     spec:
       containers:
-        - name: aletheia-agencia
+        - name: agencia
           image: 134187360702.dkr.ecr.us-east-1.amazonaws.com/agencia-production:TAG
           imagePullPolicy: Always
           readinessProbe:
