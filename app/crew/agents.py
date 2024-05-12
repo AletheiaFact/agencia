@@ -6,7 +6,9 @@ from langchain.agents import create_tool_calling_agent
 from langchain.agents import AgentExecutor
 from langchain.agents import Tool
 from langchain_community.llms import Ollama
+from dotenv import load_dotenv
 
+load_dotenv()
 phi3_llm = Ollama(model="phi3")
 chat_gpt_llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 search = SerpAPIWrapper(
@@ -37,7 +39,7 @@ class Agents():
 			),
 		])
 
-        return prompt | phi3_llm | output_parser
+        return prompt | chat_gpt_llm | output_parser
 
     def listQuestionsAgent():
         prompt = ChatPromptTemplate.from_messages([
