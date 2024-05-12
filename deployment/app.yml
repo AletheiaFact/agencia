@@ -68,8 +68,6 @@ spec:
             timeoutSeconds: 10
             failureThreshold: 10
           env:
-            - name: ENV_NAME_STUB
-              value: ENVIRONMENT
             - name: OPENAI_API_KEY
               value: OPENAI_API_KEY_STUB
             - name: SERPAPI_API_KEY

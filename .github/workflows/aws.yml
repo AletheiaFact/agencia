@@ -34,7 +34,6 @@ jobs:
       - name: Check Environment
         if: endsWith(github.ref, '/master')
         run: |
-          sed -i '11{s/testagencia./agencia./}' deployment/app.yml
           echo "ENVIRONMENT=production" >> $GITHUB_ENV
           echo "AWS_ACCESS_KEY_ID=${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
@@ -78,15 +77,13 @@ jobs:
           echo "AWS_ACCESS_KEY_ID=${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
 
-      - name: Set environment
+      - name: Set deployment
         run: |
+          sed -i "s/TAG/$GITHUB_SHA/" deployment/app.yml
           sed -i 's%ENVIRONMENT%${{ env.ENVIRONMENT }}%g' deployment/app.yml
           sed -i "s%OPENAI_API_KEY_STUB%${{ env.OPENAI_API_KEY }}%g" deployment/app.yml
           sed -i "s%SERPAPI_API_KEY_STUB%${{ env.SERPAPI_API_KEY }}%g" deployment/app.yml
 
-      - name: Set deployment
-        run: |
-          sed -i "s/TAG/$GITHUB_SHA/" deployment/app.yml
 
       - name: Applying Kubernetes Deployment
         uses: giovannirossini/aws-eks@v1.0.1
@@ -95,7 +92,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: 'us-east-1'
           cluster-name: 'production'
-          command: kubectl apply -f ./deployment/
+          command: kubectl version && kubectl apply -f ./deployment/
 
       - name: Validation
         uses: giovannirossini/aws-eks@v1.0.1
