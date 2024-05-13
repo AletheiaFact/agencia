@@ -86,30 +86,33 @@ jobs:
 
 
       - name: Applying Kubernetes Deployment
-        uses: giovannirossini/aws-eks@v1.0.1
+        uses: giovannirossini/aws-eks@v2.0.0
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: 'us-east-1'
           cluster-name: 'production'
+          kubectl-version:'1.23'
           command: kubectl apply -f ./deployment/
 
       - name: Validation
-        uses: giovannirossini/aws-eks@v1.0.1
+        uses: giovannirossini/aws-eks@v2.0.0
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: 'us-east-1'
           cluster-name: 'production'
+          kubectl-version:'1.23'
           command: kubectl rollout status deployments/aletheia-agencia -n ${{ env.ENVIRONMENT }} --timeout=360s
         if: success()
 
       - name: Rollback
-        uses: giovannirossini/aws-eks@v1.0.1
+        uses: giovannirossini/aws-eks@v2.0.0
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: 'us-east-1'
           cluster-name: 'production'
+          kubectl-version:'1.23'
           command: kubectl rollout undo deployments/aletheia-agencia -n ${{ env.ENVIRONMENT }}
         if: failure()
