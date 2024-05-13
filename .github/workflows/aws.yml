@@ -22,7 +22,6 @@ env:
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
 
-
 jobs:
   setup-build-publish:
     name: Build & Publish
@@ -84,15 +83,14 @@ jobs:
           sed -i "s%OPENAI_API_KEY_STUB%${{ env.OPENAI_API_KEY }}%g" deployment/app.yml
           sed -i "s%SERPAPI_API_KEY_STUB%${{ env.SERPAPI_API_KEY }}%g" deployment/app.yml
 
-
       - name: Applying Kubernetes Deployment
         uses: giovannirossini/aws-eks@v2.0.0
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: 'us-east-1'
-          cluster-name: 'production'
-          kubectl-version:'1.23'
+          aws-region: "us-east-1"
+          cluster-name: "production"
+          kubectl-version: "1.23"
           command: kubectl apply -f ./deployment/
 
       - name: Validation
@@ -100,9 +98,9 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: 'us-east-1'
-          cluster-name: 'production'
-          kubectl-version:'1.23'
+          aws-region: "us-east-1"
+          cluster-name: "production"
+          kubectl-version: "1.23"
           command: kubectl rollout status deployments/aletheia-agencia -n ${{ env.ENVIRONMENT }} --timeout=360s
         if: success()
 
@@ -111,8 +109,8 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: 'us-east-1'
-          cluster-name: 'production'
-          kubectl-version:'1.23'
+          aws-region: "us-east-1"
+          cluster-name: "production"
+          kubectl-version: "1.23"
           command: kubectl rollout undo deployments/aletheia-agencia -n ${{ env.ENVIRONMENT }}
         if: failure()
