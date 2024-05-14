@@ -6,7 +6,7 @@ langchain_openai==0.0.5
 langchain_core==0.1.52
 typing==3.7.4.3
 typing_extensions==4.11.0
-crewai==0.30.0
+crewai==0.30.8
 google_search_results==2.4.2
 langgraph==0.0.48
 python_dotenv==1.0.1
