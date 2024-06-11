@@ -7,7 +7,10 @@ from crewai.project import agent
 from langchain_openai import ChatOpenAI
 from .tools import QueridoDiarioTools, querido_diario_advanced_search_context_tool
 
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+llm = ChatOpenAI(
+    temperature=0,
+    # model="gpt-3.5-turbo",
+)
 
 @CrewBase
 class QueridoDiarioCrew():
