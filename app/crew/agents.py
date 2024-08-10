@@ -13,34 +13,15 @@ phi3_llm = Ollama(model="phi3")
 chat_gpt_llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 search = SerpAPIWrapper(
     params={
-    	"engine": "bing",
-    	"gl": "us",
-    	"hl": "en",
+    	"engine": "google",
+    	"gl": "br",
+    	"hl": "pt",
 	},
     serpapi_api_key="601e156ed7c08c1f117518eedb7f79319faa24d547538e2e16fe6254d4950918"
 )
 output_parser = StrOutputParser()
 
 class Agents():
-    def checkVerifiabilityAgent():
-        prompt = ChatPromptTemplate.from_messages([
-			(
-				"system",
-				"""
-				You are an expert journalist tasked with determining if the {claim} falls under topics that can be fact-checked using our sources.
-    			Your role is not to verify the claim itself, but to assess its relevance to the following eligible topics:
-				- Claims related to Brazilian municipalities and Brazilian states.
-	
- 
-				Your response should be a clear 'YES' or 'NO':
-				- If 'YES', simply respond 'YES'.
-    			- If 'NO', respond "NO" and provide a detailed explanation indicating the lack of relevant data sources or how the claim does not align with the criteria for fact-checkability.
-				"""
-			),
-		])
-
-        return prompt | chat_gpt_llm | output_parser
-
     def listQuestionsAgent():
         prompt = ChatPromptTemplate.from_messages([
 			(
@@ -71,11 +52,13 @@ class Agents():
     
 				Claim: {claim}
 				Sources: {sources}
+    			Context: {context}
     
-				If the user provided sources, analyze the source and then call the tool utilizing the sources as parameter
-    			If the user did not provide any sources, create your query using the claim.
+				In case sources is provided utilize the context to gather relevant data.
+				In case there is not any sources, create your query using the claim.
 				
 				Compiles a comprehensive response containing all relevant data from the tool
+    			Provide your response in {language}.
 				{agent_scratchpad}
 				"""
 			),
@@ -125,6 +108,8 @@ class Agents():
 
 				- verification: Explain the specific methodologies and tools you employed to verify the
 				information, highlighting your systematic approach to substantiating the claim.
+    
+    			compile your response in {language}, however the classification field must remain in English
 				"""
 			),
 		])
