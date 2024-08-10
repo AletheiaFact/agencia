@@ -1,4 +1,6 @@
 import requests
+import os
+import json
 from typing import Iterator
 
 from langchain_core.document_loaders import BaseLoader
@@ -11,11 +13,9 @@ from langchain_community.document_loaders import WebBaseLoader
 from crewai_tools.tools import FileReadTool
 from urllib.parse import urlencode
 
-#TODO: Get cities from IBGE
-cities = {
-    "São José dos Campos": "3549904",
-    "São José dos Mambos": "0000000"
-}
+json_file_path = os.path.join(os.path.dirname(__file__), '..', 'ibge_cities_code.json')
+with open(json_file_path, 'r', encoding='utf-8') as f:
+    cities = json.load(f)
 
 querido_diario_advanced_search_context_tool = FileReadTool(
 	file_path='app/querido_diario_search_context.txt',
