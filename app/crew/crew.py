@@ -1,9 +1,7 @@
 from crewai import Crew, Process
-from crewai.project import CrewBase, crew
+from crewai.project import CrewBase, crew, task, agent
 from crewai import Task
-from crewai.project import task
 from crewai import Agent
-from crewai.project import agent
 from langchain_openai import ChatOpenAI
 from .tools import QueridoDiarioTools, querido_diario_advanced_search_context_tool
 from fastapi import HTTPException
@@ -93,7 +91,8 @@ class QueridoDiarioCrew():
 	def create_fact_checking_report(self) -> Task:
 		return Task(
 			config = self.tasks_config['create_fact_checking_report'],
-   			agent = self.fact_checker()
+   			agent = self.fact_checker(),
+			output_file="./logs/create_fact_checking_report_logs.txt"
 		)
 
 	def task_call_back_error_handle(self, state):
@@ -112,7 +111,9 @@ class QueridoDiarioCrew():
 			tasks = self.tasks,
 			process = Process.sequential,
 			verbose = 2,
-			task_callback=self.task_call_back_error_handle
+			task_callback=self.task_call_back_error_handle,
+			output_log_file="./logs/agencia_logs.txt",
+			memory=True
 		)
   
 	def kickoff(self, state) -> Crew:

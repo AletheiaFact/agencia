@@ -1,7 +1,9 @@
 from graph import WorkFlow
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Depends
 from langserve import add_routes
 from fastapi.responses import JSONResponse
+from middleware.auth_middleware import AuthMiddleware, verify_token
+from fastapi.security import OAuth2PasswordBearer
 
 agents_app = WorkFlow().app
 
@@ -28,6 +30,9 @@ async def health_check():
     # Here you might add logic to verify service health, like DB connection etc.
     return {"status": "ok"}
 
+app.add_middleware(AuthMiddleware)
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 if __name__ == "__main__":
     import uvicorn
