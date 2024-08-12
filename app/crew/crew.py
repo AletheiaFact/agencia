@@ -6,10 +6,12 @@ from crewai import Agent
 from crewai.project import agent
 from langchain_openai import ChatOpenAI
 from .tools import QueridoDiarioTools, querido_diario_advanced_search_context_tool
+from fastapi import HTTPException
+from crew.errors import NoGazettesFoundError, CityNotFoundError
 
 llm = ChatOpenAI(
     temperature=0,
-    # model="gpt-3.5-turbo",
+    model="gpt-3.5-turbo",
 )
 
 @CrewBase
@@ -93,7 +95,15 @@ class QueridoDiarioCrew():
 			config = self.tasks_config['create_fact_checking_report'],
    			agent = self.fact_checker()
 		)
-  
+
+	def task_call_back_error_handle(self, state):
+		if "not found" in state.exported_output.lower():
+			raise CityNotFoundError()
+		if "invalid" and "url" in state.exported_output.lower() or "http error" in state.exported_output.lower():
+			raise HTTPException(status_code=400, detail="Invalid request: The AI Agent task parameters are incorrect.")
+		if "no public gazettes" in state.exported_output.lower():
+			raise NoGazettesFoundError()
+	
 	@crew
 	def crew(self) -> Crew:
 		"""Creates the Querido diario crew"""
@@ -101,7 +111,8 @@ class QueridoDiarioCrew():
 			agents =  self.agents,
 			tasks = self.tasks,
 			process = Process.sequential,
-			verbose = 2
+			verbose = 2,
+			task_callback=self.task_call_back_error_handle
 		)
   
 	def kickoff(self, state) -> Crew:

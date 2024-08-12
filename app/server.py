@@ -1,6 +1,7 @@
 from graph import WorkFlow
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from langserve import add_routes
+from fastapi.responses import JSONResponse
 
 agents_app = WorkFlow().app
 
@@ -9,6 +10,12 @@ app = FastAPI(
     version="1.0.0",
     description="aletheia API automatedFactChecking server using LangChain and CrewAI",
 )
+
+@app.post("/invoke")
+async def stream(request: Request):
+    req = await request.json()
+    result = agents_app.invoke(req["input"])
+    return JSONResponse(content={"message": result })
 
 add_routes(
     app,
