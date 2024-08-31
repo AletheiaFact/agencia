@@ -17,14 +17,15 @@ from crewai_tools.tools import FileReadTool
 from urllib.parse import urlencode
 from crew.errors import NoGazettesFoundError, CityNotFoundError
 
-json_file_path = os.path.join(os.path.dirname(__file__), '..', 'ibge_cities_code.json')
-with open(json_file_path, 'r', encoding='utf-8') as f:
+json_file_path = os.path.join(os.path.dirname(__file__), "..", "ibge_cities_code.json")
+with open(json_file_path, "r", encoding="utf-8") as f:
     cities = json.load(f)
 
 querido_diario_advanced_search_context_tool = FileReadTool(
-	file_path='app/querido_diario_search_context.txt',
-	description="A tool designed to efficiently read and interpret search operators context to construct the subject"
+    file_path="app/querido_diario_search_context.txt",
+    description="A tool designed to efficiently read and interpret search operators context to construct the subject",
 )
+
 
 class DocumentLoader(BaseLoader):
     """Document loader that reads a file line by line."""
@@ -44,18 +45,21 @@ class DocumentLoader(BaseLoader):
                 )
                 line_number += 1
 
-class QueridoDiarioTools():
+
+class QueridoDiarioTools:
     @tool("Fetch Querido Diario API")
-    def querido_diario_fetch(subject: str, city: str = None, published_since: str = None, published_until: str = None):
+    def querido_diario_fetch(
+        subject: str,
+        city: str = None,
+        published_since: str = None,
+        published_until: str = None,
+    ):
         """Fetchs data from querido diario API to search about municipal gazettes"""
         try:
             api_url = "https://queridodiario.ok.org.br/api/gazettes"
 
-            query_params = {
-                "querystring": subject,
-                "sort_by": "relevance"
-            }
-            
+            query_params = {"querystring": subject, "sort_by": "relevance"}
+
             if city and city in cities:
                 query_params["territory_ids"] = cities[city]
             else:
@@ -65,7 +69,7 @@ class QueridoDiarioTools():
                 query_params["published_since"] = published_since
             if published_until and published_until.lower() != "none":
                 query_params["published_until"] = published_until
-            
+
             query_string = urlencode(query_params)
             response = requests.get(f"{api_url}?{query_string}")
             gazettes = response.json().get("gazettes", [])
@@ -73,9 +77,9 @@ class QueridoDiarioTools():
             if not gazettes:
                 raise NoGazettesFoundError()
 
-            #TODO: Return and handle the 5 most relevant public gazettes
+            # TODO: Return and handle the 5 most relevant public gazettes
             return gazettes[0]
-        
+
         except NoGazettesFoundError as e:
             print("e ", e)
             logging.error(f"Error in gazette_data_retrieval no gazettes found: {e}")
@@ -86,7 +90,7 @@ class QueridoDiarioTools():
         except Exception as e:
             logging.error(f"Unexpected error: {e}")
             return {"error": "An unexpected error occurred."}
-  
+
     @tool("Search in municipal gazette")
     def gazette_search_context(claim: str, url: str, questions: dict):
         """Search data from municipal gazettes to get relevant documents"""
@@ -102,10 +106,14 @@ class QueridoDiarioTools():
             )
 
             documents = text_splitter.split_documents(docs)
-            retriever = FAISS.from_documents(documents, embedding).as_retriever(search_type="similarity", search_kwargs={'k': 10})
+            retriever = FAISS.from_documents(documents, embedding).as_retriever(
+                search_type="similarity", search_kwargs={"k": 10}
+            )
             return retriever.invoke(claim)
         except MissingSchema:
-            logging.error(f"Error invalid URL: The URL '{url}' is missing a scheme (e.g., 'http://' or 'https://'). Please provide a valid URL.")
+            logging.error(
+                f"Error invalid URL: The URL '{url}' is missing a scheme (e.g., 'http://' or 'https://'). Please provide a valid URL."
+            )
             return {"error": "Invalid URL provided."}
         except requests.exceptions.HTTPError as err:
             logging.error(f"HTTP error occurred: {err}")
@@ -114,12 +122,12 @@ class QueridoDiarioTools():
             logging.error(f"Unexpected error: {e}")
             return {"error": "An unexpected error occurred."}
 
-    #TODO: Implement querido diario glossario tool
+    # TODO: Implement querido diario glossario tool
     @tool("Search Context in Querido Diario Glossario")
     def querido_diario_glossario_tool(claim):
         """Use to find glossario context information"""
         embedding = OpenAIEmbeddings()
-        loader = DocumentLoader('./querido_diario_glossario_context.txt')
+        loader = DocumentLoader("./querido_diario_glossario_context.txt")
         docs = loader.load()
 
         text_splitter = RecursiveCharacterTextSplitter(
