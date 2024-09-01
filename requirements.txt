@@ -13,3 +13,4 @@ python_dotenv==1.0.1
 crewai_tools==0.2.5
 sse_starlette
 faiss-cpu
+jose
