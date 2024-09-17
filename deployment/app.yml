@@ -11,13 +11,13 @@ spec:
     - host: testagencia.aletheiafact.org
       http:
         paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: agencia
-              port:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
                 name: agencia
+                port:
+                  name: agencia
 ---
 ### SERVICE  FRONTEND ###
 apiVersion: v1
@@ -41,7 +41,7 @@ metadata:
   name: agencia
   namespace: ENVIRONMENT
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: agencia
