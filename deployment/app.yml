@@ -1,0 +1,81 @@
+### INGRESS FRONTEND ###
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-agencia
+  namespace: ENVIRONMENT
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - host: testagencia.aletheiafact.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: agencia
+                port:
+                  name: agencia
+---
+### SERVICE  FRONTEND ###
+apiVersion: v1
+kind: Service
+metadata:
+  name: agencia
+  namespace: ENVIRONMENT
+spec:
+  type: NodePort
+  selector:
+    app: agencia
+  ports:
+    - name: agencia
+      targetPort: 8080
+      port: 80
+---
+### DEPLOYMENT FRONTEND ###
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agencia
+  namespace: ENVIRONMENT
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agencia
+  template:
+    metadata:
+      labels:
+        app: agencia
+    spec:
+      containers:
+        - name: agencia
+          image: 134187360702.dkr.ecr.us-east-1.amazonaws.com/agencia-production:TAG
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 50
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 50
+            timeoutSeconds: 10
+            failureThreshold: 10
+          env:
+            - name: OPENAI_API_KEY
+              value: OPENAI_API_KEY_STUB
+            - name: SERPAPI_API_KEY
+              value: SERPAPI_API_KEY_VALUE
+          resources:
+            limits:
+              cpu: 400m
+              memory: 1024Mi
+            requests:
+              cpu: 300m
+              memory: 512Mi
