@@ -3,12 +3,7 @@ name: Deploy to AWS EKS
 on:
   push:
     branches:
-      - master
-      - stage
-      - create_querido_diario_agents
-  # For future
-  # release:
-  #   types: [created]
+      - main
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
@@ -30,12 +25,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Check Environment
-        if: endsWith(github.ref, '/master')
-        run: |
-          echo "ENVIRONMENT=production" >> $GITHUB_ENV
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+      # - name: Check Environment
+      #   if: endsWith(github.ref, '/main')
+      #   run: |
+      #     echo "ENVIRONMENT=production" >> $GITHUB_ENV
+      #     echo "AWS_ACCESS_KEY_ID=${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+      #     echo "AWS_SECRET_ACCESS_KEY=${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -68,13 +63,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Check Environment
-        if: endsWith(github.ref, '/master')
-        run: |
-          sed -i '11{s/testagencia\./agencia./}' deployment/app.yml
-          echo "ENVIRONMENT=production" >> $GITHUB_ENV
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
+      # - name: Check Environment
+      #   if: endsWith(github.ref, '/main')
+      #   run: |
+      #     sed -i '11{s/testagencia\./agencia./}' deployment/app.yml
+      #     echo "ENVIRONMENT=production" >> $GITHUB_ENV
+      #     echo "AWS_ACCESS_KEY_ID=${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
+      #     echo "AWS_SECRET_ACCESS_KEY=${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
 
       - name: Set deployment
         run: |
