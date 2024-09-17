@@ -101,7 +101,7 @@ jobs:
           aws-region: "us-east-1"
           cluster-name: "production"
           kubectl-version: "1.23"
-          command: kubectl rollout status deployments/aletheia-agencia -n ${{ env.ENVIRONMENT }} --timeout=360s
+          command: kubectl rollout status deployments/agencia -n ${{ env.ENVIRONMENT }} --timeout=360s
         if: success()
 
       - name: Rollback
@@ -112,5 +112,5 @@ jobs:
           aws-region: "us-east-1"
           cluster-name: "production"
           kubectl-version: "1.23"
-          command: kubectl rollout undo deployments/aletheia-agencia -n ${{ env.ENVIRONMENT }}
+          command: kubectl rollout undo deployments/agencia -n ${{ env.ENVIRONMENT }}
         if: failure()
