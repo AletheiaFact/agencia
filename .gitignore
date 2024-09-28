@@ -2,3 +2,5 @@ __pycache__
 node_modules
 .env
 scripts/**/*.csv
+
+app/crew/logs/create_fact_checking_report_logs.txt
