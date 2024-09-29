@@ -1,0 +1,1 @@
+This file won't be used, but we need it to maintain the path of the log
