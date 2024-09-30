@@ -7,8 +7,11 @@ from langchain.agents import AgentExecutor
 from langchain.agents import Tool
 from langchain_community.llms import Ollama
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
+SERPAPI_API_KEY = os.getenv("SERPAPI_API_KEY")
+
 phi3_llm = Ollama(model="phi3")
 chat_gpt_llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 search = SerpAPIWrapper(
@@ -17,7 +20,7 @@ search = SerpAPIWrapper(
     	"gl": "br",
     	"hl": "pt",
 	},
-    serpapi_api_key="601e156ed7c08c1f117518eedb7f79319faa24d547538e2e16fe6254d4950918"
+    serpapi_api_key=SERPAPI_API_KEY
 )
 output_parser = StrOutputParser()
 
