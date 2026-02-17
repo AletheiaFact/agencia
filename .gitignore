@@ -1,6 +1,7 @@
 __pycache__
+*.pyc
 node_modules
 .env
+.venv/
+.pytest_cache/
 scripts/**/*.csv
-
-app/crew/logs/create_fact_checking_report_logs.txt

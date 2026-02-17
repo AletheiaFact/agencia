@@ -1,14 +1,16 @@
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 WORKDIR /code
 
-COPY . .
+# Install dependencies first for better layer caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Create the logs folder at the root to avoid app crashing
-RUN mkdir -p /code/logs
+# Copy application code
+COPY app/ app/
 
-RUN pip install -r requirements.txt
+WORKDIR /code/app
 
 EXPOSE 8080
 
-ENTRYPOINT ["python", "/code/app/server.py"]
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8080"]
