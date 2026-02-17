@@ -8,8 +8,6 @@ from langchain_community.document_loaders import WebBaseLoader
 from state import AgentState
 from tools.web_search import get_search_tool
 
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
-
 _prompt = ChatPromptTemplate.from_messages([
     (
         "system",
@@ -41,6 +39,7 @@ def search_online(state: AgentState) -> dict:
         load_document = loader.load()
         doc_context = load_document[0].page_content
 
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
     search_tool = get_search_tool()
     tools = [search_tool]
     agent = create_tool_calling_agent(llm, tools, _prompt)

@@ -1,43 +1,35 @@
-from graph import WorkFlow
-from fastapi import FastAPI, Request, Depends
-from langserve import add_routes
+"""Agencia API server."""
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+from graph import build_workflow
+from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-
-# from middleware.auth_middleware import AuthMiddleware, verify_token
-from fastapi.security import OAuth2PasswordBearer
-
-agents_app = WorkFlow().app
 
 app = FastAPI(
     title="Aletheia Server",
-    version="1.0.0",
-    description="aletheia API automatedFactChecking server using LangChain and CrewAI",
+    version="2.0.0",
+    description="Aletheia API automated fact-checking server using LangGraph",
 )
+
+workflow = build_workflow()
 
 
 @app.post("/invoke")
-async def stream(request: Request):
+async def invoke(request: Request):
     req = await request.json()
-    result = agents_app.invoke(req["input"])
+    result = workflow.invoke(req["input"])
     return JSONResponse(content={"message": result})
 
 
-add_routes(app, agents_app)
-
-
-# Health Check endpoint for k8s livenes probe
 @app.get("/health", tags=["Health Check"])
 async def health_check():
-    # Here you might add logic to verify service health, like DB connection etc.
     return {"status": "ok"}
 
-
-# app.add_middleware(AuthMiddleware)
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 if __name__ == "__main__":
     import uvicorn
 
-    # TODO host needs to be set through a env variable
     uvicorn.run(app, host="0.0.0.0", port=8080)

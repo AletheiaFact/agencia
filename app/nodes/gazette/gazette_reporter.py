@@ -6,8 +6,6 @@ from langchain_core.output_parsers import StrOutputParser
 
 from state import AgentState
 
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
-
 _prompt = ChatPromptTemplate.from_messages([
     (
         "system",
@@ -43,11 +41,10 @@ compile your response in {language}, however the classification field must remai
     ),
 ])
 
-_chain = _prompt | llm | StrOutputParser()
-
-
 def create_gazette_report(state: AgentState) -> dict:
-    result = _chain.invoke({
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    chain = _prompt | llm | StrOutputParser()
+    result = chain.invoke({
         "claim": state["claim"],
         "questions": state.get("questions", []),
         "cross_check_result": state.get("cross_check_result", ""),

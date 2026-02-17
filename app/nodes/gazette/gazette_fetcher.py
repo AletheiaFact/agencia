@@ -11,8 +11,6 @@ from tools.querido_diario import querido_diario_fetch
 
 logger = logging.getLogger(__name__)
 
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
-
 _prompt = ChatPromptTemplate.from_messages([
     (
         "system",
@@ -40,6 +38,7 @@ Provide the txt_url source from the results.
 
 def fetch_gazettes(state: AgentState) -> dict:
     context = state.get("context", {})
+    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
     tools = [querido_diario_fetch]
     agent = create_tool_calling_agent(llm, tools, _prompt)
     executor = AgentExecutor(agent=agent, tools=tools, verbose=False)
