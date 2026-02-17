@@ -24,7 +24,7 @@ Provide your questions in an array format and translate them only to {language}.
 
 def list_questions(state: AgentState) -> dict:
     logger.info("[list_questions] Starting — claim='%s' language=%s", state["claim"][:80], state["language"])
-    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
+    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
     chain = _prompt | llm | StrOutputParser()
     result = chain.invoke({
         "claim": state["claim"],

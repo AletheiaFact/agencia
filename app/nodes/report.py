@@ -56,7 +56,7 @@ compile your response in {language}, however the classification field must remai
 
 def create_report(state: AgentState) -> dict:
     logger.info("[create_report] Starting — claim='%s'", state["claim"][:80])
-    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
+    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
     chain = _prompt | llm | StrOutputParser()
     result = chain.invoke({
         "claim": state["claim"],

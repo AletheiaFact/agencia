@@ -48,7 +48,7 @@ def search_online(state: AgentState) -> dict:
         doc_context = load_document[0].page_content
         logger.info("[search_online] Loaded source content (length=%d chars)", len(doc_context))
 
-    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
+    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
     search_tool = get_search_tool()
     tools = [search_tool]
     agent = create_tool_calling_agent(llm, tools, _prompt)
