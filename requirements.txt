@@ -25,3 +25,6 @@ python-dotenv>=1.0.1,<2.0.0
 # Type system (using Python 3.11+ native typing)
 typing_extensions>=4.11.0,<5.0.0
 pydantic>=2.0.0,<3.0.0
+
+# Testing
+pytest>=8.0.0,<9.0.0

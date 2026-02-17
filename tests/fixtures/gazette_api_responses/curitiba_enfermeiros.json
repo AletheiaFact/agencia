@@ -1,0 +1,85 @@
+{
+    "total_gazettes": 129,
+    "gazettes": [
+        {
+            "territory_id": "4106902",
+            "date": "2024-12-20",
+            "scraped_at": "2024-12-21T03:55:39.409085",
+            "url": "https://data.queridodiario.ok.org.br/4106902/2024-12-20/7c77b2e465f3590adea55896501636ec4d8ba20e.pdf",
+            "territory_name": "Curitiba",
+            "state_code": "PR",
+            "excerpts": [
+                "LUCIANA KUSMAN ENFERMEIRO 1 \n\nPMC 3068 137986 KATIUSCIA LIMA MELO ENFERMEIRO 2 \n\nPMC 5124 53775 FRANCIMARI VALERIO MICKOSZ ENFERMEIRO 3 \n\nPMC 891 65546 FERNANDA DE ASSIS ENFERMEIRO 4 \n\nPMC 573 162290 FERNANDA FUSUMA ENFERMEIRO 5 \n\nPMC 2178 88359 NEUCIMARY AMARAL ENFERMEIRO 6 \n\nPMC 2415 50906 CLAUDIA BOWKALOWSKI ENFERMEIRO 7 \n\nPMC 4090 65498 JULIANA MARCON HENCKE ENFERMEIRO 8 \n\nPMC 5238 65499 CARLA REGINA BATISTA ENFERMEIRO 9 \n\nPMC 190 167540 SUELEN DO CARMO DOS ANJOS SCARABOTTO ENFERMEIRO 10 \n\nPMC 323",
+                "NAVARRO CHAGAS ENFERMEIRO 11 \n\nPMC 451 87990 LUCINEIA CRISTINA DE SOUSA BENCKE ENFERMEIRO 12 \n\nPMC 2051 33444 SONIA REGINA DE BRITO RUSTICK ENFERMEIRO 13 \n\nPMC 2436 52508 SILVANA RIBEIRO PIENTA ENFERMEIRO 14 \n\nPMC 2055 33508 DEISI TORTELLI ENFERMEIRO 15 \n\nPMC 5900 33489 ELINETE MENDES DA COSTA ENFERMEIRO 16 \n\nPMC 4439 50921 GISLENE LUCIA CAVALHEIRO DA SILVA ENFERMEIRO 17 \n\nPMC 281 50908 MARIA TERUMI MARUYAMA KAMI ENFERMEIRO 18 \n\nPMC 1433 33449 EDINEIA APARECIDA MALICHESKI ENFERMEIRO 19 \n\nPMC 599 33568",
+                "33568 EVERSON RIBEIRO DE LIMA ENFERMEIRO 20 \n\nPMC 5547 73714 PEDRO SATIRIO PEDROSO ENFERMEIRO 21 \n\nPMC 4305 77468 SONIA MARIA COELHO ENFERMEIRO 22 \n\nPMC 6547 77438 LOURDES MITIKO BANCHO FREITAS ENFERMEIRO 23 \n\nPMC 143 88340 RONALD GIELOW ENFERMEIRO 24 \n\nPMC 4135 55113 SIMEY ARIANE DE OLIVEIRA ENFERMEIRO 25 \n\nDI\u00c1RIO OFICIAL ELETR\u00d4NICO\n\nATOS DO MUNIC\u00cdPIO DE CURITIBA\n\nSUPLEMENTO N\u00ba 1\n\nN\u00ba 243 - SUPLEMENTO N\u00ba 1 - ANO XIII\n\nCURITIBA, SEXTA-FEIRA, 20 DE DEZEMBRO DE 2024\n\nP\u00e1gina 78\n\n\n\nENTIDADE \nN\u00ba \n\nINSCRI\u00c7\u00c3O"
+            ],
+            "edition": "243",
+            "is_extra_edition": false,
+            "txt_url": "https://data.queridodiario.ok.org.br/4106902/2024-12-20/7c77b2e465f3590adea55896501636ec4d8ba20e.txt"
+        },
+        {
+            "territory_id": "4106902",
+            "date": "2024-04-18",
+            "scraped_at": "2024-04-19T08:56:12.011125",
+            "url": "https://data.queridodiario.ok.org.br/4106902/2024-04-18/f236e7a372015829a44b72044627b5880131ec3f.pdf",
+            "territory_name": "Curitiba",
+            "state_code": "PR",
+            "excerpts": [
+                "PRESTES VIEIRA, cargo de T\u00e9cnico de Enfermagem em\nSa\u00fade P\u00fablica, \u00e1rea de atua\u00e7\u00e3o T\u00e9cnico de Enfermagem, padr\u00e3o 5004, refer\u00eancia \u201cI\u201d, matr\u00edcula n\u00ba 188.094;\nProt. n\u00ba 01-096672/2024, a partir de 29 de mar\u00e7o de 2024, FRANCISCA DE MORAES PINTO, cargo de Enfermeiro, padr\u00e3o\n4130, refer\u00eancia \u201cI\u201d, matr\u00edcula n\u00ba 113.079;\nProt. n\u00ba 01-097175/2024, a partir de 15 de abril de 2024, VALERIA CARDOSO VIEIRA, cargo de T\u00e9cnico de Enfermagem em\nSa\u00fade P\u00fablica, \u00e1rea de atua\u00e7\u00e3o T\u00e9cnico de Enfermagem, padr\u00e3o 5004, refer\u00eancia",
+                "NOME CLASSIFICA\u00c7\u00c3O\n\nENFERMEIRO(A) CARLA FRANCIANE SANTOS DE ALMEIDA 198\n\nENFERMEIRO(A) SOLANGE APARECIDA DE MENEZES IRIARTE (CONVOCADO ANTERIORMENTE) 199\n\nENFERMEIRO(A) SOLANGE SANTANA LIMA ABREU 200\n\nENFERMEIRO(A) LUCILIA NEVES FERREIRA 201\n\nENFERMEIRO(A) CHRISTINE COELHO DE ANDRADE 202\n\nENFERMEIRO(A) JOELMA VAZ CAETANO 203\n\nENFERMEIRO(A) RAQUEL LUCIA DA PORCINCULA 204\n\nENFERMEIRO(A) TAMIRIS ALVES DE OLIVEIRA PINHA 205\n\nENFERMEIRO(A) TATIANE PINHEIRO MARTINS ARAUJO 206\n\nENFERMEIRO(A) SOLANGE ALVES",
+                "207\n\nENFERMEIRO(A) MERICE POSSAMAI BUENO 208\n\nENFERMEIRO(A) MARIA DE NAZARE BRASIL DA SILVA (CONVOCADO ANTERIORMENTE) 209\n\nENFERMEIRO(A) VANESSA DE SOUZA E SILVA 210\n\nENFERMEIRO(A) ROSENILDA DA ROCHA NASCIMENTO PEREIRA (CONVOCADO ANTERIORMENTE) 211\n\nENFERMEIRO(A) MARCIL\u00c2NDIA DE MOURA IBIAPINA SOARES 212\n\nENFERMEIRO(A) MAGDA ROBERTA KRAMER 213\n\nENFERMEIRO(A) GABRIELLE RODRIGUES MATSUMOTO 214\n\nENFERMEIRO(A) DIEYSSI GON\u00c7ALVES PEREIRA ROCHA 215\n\nENFERMEIRO(A) AMANDA DE SOUZA LIMA 216\n\nENFERMEIRO(A) SAMARA"
+            ],
+            "edition": "73",
+            "is_extra_edition": false,
+            "txt_url": "https://data.queridodiario.ok.org.br/4106902/2024-04-18/f236e7a372015829a44b72044627b5880131ec3f.txt"
+        },
+        {
+            "territory_id": "4106902",
+            "date": "2024-04-25",
+            "scraped_at": "2024-04-26T01:48:43.928841",
+            "url": "https://data.queridodiario.ok.org.br/4106902/2024-04-25/42b68b6512a4203e5daf91605b322f320f316839.pdf",
+            "territory_name": "Curitiba",
+            "state_code": "PR",
+            "excerpts": [
+                "N\u00edvel Superior ou pelo\nEducador Social. Nas institui\u00e7\u00f5es com termo de coopera\u00e7\u00e3o t\u00e9cnica e demais munic\u00edpios, o profissional respons\u00e1vel pela\navalia\u00e7\u00e3o social \u00e9 o Assistente Social. Para avalia\u00e7\u00e3o de sa\u00fade os profissionais habilitados s\u00e3o: M\u00e9dico, Enfermeiro,\nTerapeuta Ocupacional, Psic\u00f3logo, Fonoaudi\u00f3logo ou Fisioterapeuta. Para a avalia\u00e7\u00e3o psicopedag\u00f3gica o profissional\nhabilitado \u00e9 o Pedagogo especializado.\n\u00a7 1\u00ba Todos os profissionais listados neste artigo dever\u00e3o estar devidamente habilitados nos",
+                "Lima, matr\u00edcula 177.383, CPF 069.867.639-48, cargo cirurgi\u00e3o dentista;\nII - Representante do Controle Interno:\nTereza Kindra, matr\u00edcula 88.770, CPF 519.796.679-34, cargo enfermeiro;\nIII - Representante do Centro de Controle, Avalia\u00e7\u00e3o e Auditoria:\nElly Maria Navarro Chagas, matr\u00edcula 65.698, CPF 914.870.999-91, cargo enfermeiro;\nIV - Representante da Superintend\u00eancia Executiva:\nEdgar Lopes Junior, matr\u00edcula 84.073, CPF 613.634.139-53, cargo agente administrativo;\n\u00a72\u00ba - Caber\u00e1 a cada representante",
+                "DA COSTA FARIAS 316\nASSISTENTE ADMINISTRATIVO MARIANA MARCON CORR\u00caA 317\nASSISTENTE ADMINISTRATIVO NAYRA DIUBATE DA SILVA 318\n\nCARGO NOME CLASSIFICA\u00c7\u00c3O\nENFERMEIRO(A) MARCELINO AMANCIO COSTA PPI-27\nENFERMEIRO(A) BRUNO DO NASCIMENTO TAVARES PPI-28\nENFERMEIRO(A) ANA KAROLINE NUNES FAGUNDES PPI-29\nENFERMEIRO(A) RAFAELA CRISTINA MORGADO PPI-30\nENFERMEIRO(A) CLEYTON BORGES VIEIRA PPI-31\n\nDI\u00c1RIO OFICIAL ELETR\u00d4NICO\n\nATOS DO MUNIC\u00cdPIO DE CURITIBA\n\nN\u00ba 78 - ANO XIII\n\nCURITIBA, QUINTA-FEIRA, 25 DE ABRIL DE 2024"
+            ],
+            "edition": "78",
+            "is_extra_edition": false,
+            "txt_url": "https://data.queridodiario.ok.org.br/4106902/2024-04-25/42b68b6512a4203e5daf91605b322f320f316839.txt"
+        },
+        {
+            "territory_id": "4106902",
+            "date": "2024-06-07",
+            "scraped_at": "2024-06-09T02:34:27.167535",
+            "url": "https://data.queridodiario.ok.org.br/4106902/2024-06-07/7e6d2c1c9d8e5dd1ae86fd8b2a6541f1758edb26.pdf",
+            "territory_name": "Curitiba",
+            "state_code": "PR",
+            "excerpts": [
+                "dos Santos 50.325 Enfermeiro \n\n56. Aline Bortolini 52.510 Enfermeiro \n\n57. Andr\u00e9a Azevedo Ceschin Moreira 52.314 Enfermeiro \n\n58. Andr\u00e9a Cuthma Bileski 53.899 Enfermeiro \n\n59. Beatriz Cristina Costa Born 143.029 Enfermeiro \n\n60. Carla Cristiane Nadalin Witt 33.523 Enfermeiro \n\n61. Cheldria Daiane Neves 187.585 Enfermeiro \n\n62. Claudia Oliveira  65.482 Enfermeiro \n\n63. Claudine Fortkamp de Ara\u00fajo Gon\u00e7alves 145.587 Enfermeiro \n\n64. Cristina Hissami Muranobu Yano 83.869 Enfermeiro \n\n65. Daniela Ogera",
+                "Ogera Pudeulko 155.137 Enfermeiro \n\n66. Deisi Tortelli 33.508 Enfermeiro \n\n67. Ediane Conte 143.268 Enfermeiro \n\n68. Edin\u00e9a Rodrigues de Freitas 50.847 Enfermeiro \n\n69.  Eloise Cristina Magajevski Sanches 113.207 Enfermeiro \n\n70. Fl\u00e1via de Abreu Dias Martins 162.301 Enfermeiro \n\n71. Floraci Kinuyo Hara Hamasaki 78.319 Enfermeiro \n\n72. Gisele Jarek T\u00falio 133.275 Enfermeiro \n\n73. Heloisa Golemba Ferreira 65.491 Enfermeiro \n\n74. Izabel Taraska Carvalho 65.414 Enfermeiro \n\n75. John Fitzgerald Kenedy Novak",
+                "Novak 79.004 Enfermeiro \n\n76. Juliana Marcon Hencke 65.498 Enfermeiro \n\n77. Jussiane Tomaselli 50.980 Enfermeiro \n\n78. Karina do Rocio Dalagrana 162.287 Enfermeiro \n\n79. Laila Pamplona Adam Jarbas 162.302 Enfermeiro \n\n80. Let\u00edcia Charvet Machado 138.007 Enfermeiro \n\n81. Let\u00edcia Teles de Abreu Masnei 164.433 Enfermeiro \n\n82. Liza Regina Bueno Rosso 143.037 Enfermeiro \n\nDI\u00c1RIO OFICIAL ELETR\u00d4NICO\n\nATOS DO MUNIC\u00cdPIO DE CURITIBA\n\nN\u00ba 106 - ANO XIII\n\nCURITIBA, SEXTA-FEIRA, 7 DE JUNHO DE 2024\n\nP\u00e1gina 41\n\n"
+            ],
+            "edition": "106",
+            "is_extra_edition": false,
+            "txt_url": "https://data.queridodiario.ok.org.br/4106902/2024-06-07/7e6d2c1c9d8e5dd1ae86fd8b2a6541f1758edb26.txt"
+        },
+        {
+            "territory_id": "4106902",
+            "date": "2024-04-04",
+            "scraped_at": "2024-04-05T00:21:16.963084",
+            "url": "https://data.queridodiario.ok.org.br/4106902/2024-04-04/b8fb80a2c873e53787ed515dcd0fbd9080a53dff.pdf",
+            "territory_name": "Curitiba",
+            "state_code": "PR",
+            "excerpts": [
+                "CLASSIFICA\u00c7\u00c3O\n\nENFERMEIRO(A) ELISABETE CRISTINA PASSIG DA SILVA 140\n\nENFERMEIRO(A) MARIA LUIZA TAVARES YGLESSIAS DE OLIVEIRA 141\n\nENFERMEIRO(A) MICHELE SCHMITZ 142\n\nENFERMEIRO(A) MARIA BERNARDINA DA SILVA 143\n\nENFERMEIRO(A) CASSIA REGINA DAUDT DA COSTA 144\n\nENFERMEIRO(A) ALBONI COELHO DA MOTTA 145\n\nENFERMEIRO(A) ISRAEL CORREIA CINTRA 146\n\nENFERMEIRO(A) EDNA RODRIGUES GUIMAR\u00c3ES 147\n\nENFERMEIRO(A) REGINALDO MIRANDA DE OLIVEIRA 148\n\nENFERMEIRO(A) PATRICIA TONIOLO JORGE 149\n\nENFERMEIRO(A) D\u00c9RIGA ALVES",
+                "DE PAULA 150\n\nENFERMEIRO(A) FRANCISCA DE MORAES PINTO 151\n\nENFERMEIRO(A) DENISE SCHOVARTEZ 152\n\nENFERMEIRO(A) CELINE DA SILVA KRUTSCH 153\n\nENFERMEIRO(A) ALINE BRITO FONTES 154\n\nENFERMEIRO(A) LU\u00cdS ALEXANDRE DOS SANTOS OL\u00cdMPIO 155\n\nENFERMEIRO(A) JOS\u00c9 LUIZ DE ANDRADE COSTA 156\n\nENFERMEIRO(A) JOSIANE FAUSTINO DE MACENA 157\n\nENFERMEIRO(A) JOSIANE LIOTTI NICOLAU 158\n\nENFERMEIRO(A) ARIANA DA ROSA SANTOS FAGUNDES (CONVOCADO ANTERIORMENTE) 159\n\nENFERMEIRO(A) POLIANA DE FREITAS 160\n\nENFERMEIRO(A) LETICIA MARIA",
+                "YOSHII DE FREITAS 161\n\nENFERMEIRO(A) EVELYN MORGANA FARIAS DE CARVALHO 162\n\nENFERMEIRO(A) ISABEL CRISTINA DA SILVA 163\n\nENFERMEIRO(A) NICOLE BUMILLER FERREIRA 164\n\nENFERMEIRO(A) ELAINE CRISTINA FRANZ\u00c3O 165\n\nENFERMEIRO(A) MARIA ELISE LAMPRECHT DE OLIVEIRA 166\n\nENFERMEIRO(A) PAULO JOSE PANICIO FILHO 167\n\nENFERMEIRO(A) HELENY LIMA VINHOLTH 168\n\nENFERMEIRO(A) EDUARDA BRITO DOS SANTOS 169\n\nENFERMEIRO(A) KETHERYN GAZEL GOMES 170\n\nENFERMEIRO(A) GABRIELA PROVIN DE SOUZA 171\n\nENFERMEIRO(A) VALDIRENE ERNANDES"
+            ],
+            "edition": "63",
+            "is_extra_edition": false,
+            "txt_url": "https://data.queridodiario.ok.org.br/4106902/2024-04-04/b8fb80a2c873e53787ed515dcd0fbd9080a53dff.txt"
+        }
+    ]
+}
