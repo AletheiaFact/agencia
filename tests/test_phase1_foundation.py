@@ -303,24 +303,27 @@ class TestToolsImports:
 class TestQueridoDiarioToolLogic:
     """Test the querido_diario_fetch tool logic without making real API calls."""
 
-    def test_city_not_found_returns_error(self):
+    def test_unknown_city_searches_without_filter(self):
+        """Unknown city should gracefully search without city filter instead of erroring."""
         from tools.querido_diario import querido_diario_fetch
         result = querido_diario_fetch.invoke({
             "subject": "test",
             "city": "NONEXISTENT_CITY_12345"
         })
         assert isinstance(result, dict)
-        assert "error" in result
-        assert "City not found" in result["error"]
+        # Should return a gazette (no error) since it searches without city filter
+        assert "error" not in result or "No public gazettes" in result.get("error", "")
 
-    def test_none_city_returns_error(self):
+    def test_none_city_searches_without_filter(self):
+        """None/empty city should gracefully search without city filter."""
         from tools.querido_diario import querido_diario_fetch
         result = querido_diario_fetch.invoke({
             "subject": "test",
             "city": None
         })
         assert isinstance(result, dict)
-        assert "error" in result
+        # Should return a gazette (no error) since it searches without city filter
+        assert "error" not in result or "No public gazettes" in result.get("error", "")
 
 
 # ---------------------------------------------------------------------------
