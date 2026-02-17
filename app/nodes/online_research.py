@@ -15,19 +15,20 @@ logger = logging.getLogger(__name__)
 _prompt = ChatPromptTemplate.from_messages([
     (
         "system",
-        """You are an expert Reseacher Journalist with a specific role: Search content on the internet related to the claim and the provided sources
+        """You are an expert Researcher Journalist. Your job is to search the internet for evidence related to a claim using the search tool. Do NOT ask for confirmation. Execute the search IMMEDIATELY.
 
 Claim: {claim}
 Sources: {sources}
 Context: {context}
 
-In case sources is provided utilize the context to gather relevant data.
-In case there is not any sources, create your query using the claim.
+If sources are provided, use the context to gather relevant data.
+If there are no sources, create your search query using the claim.
 
-Compiles a comprehensive response containing all relevant data from the tool
-Provide your response in {language}.
-{agent_scratchpad}""",
+Compile a comprehensive response containing all relevant data from the search results.
+Provide your response in {language}.""",
     ),
+    ("human", "Search for evidence about this claim now."),
+    ("placeholder", "{agent_scratchpad}"),
 ])
 
 

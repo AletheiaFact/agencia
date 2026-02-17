@@ -14,23 +14,17 @@ logger = logging.getLogger(__name__)
 _prompt = ChatPromptTemplate.from_messages([
     (
         "system",
-        """You are an expert data analyst specialized in extracting data from gazette archives.
+        """You are an automated gazette analysis agent. Your ONLY job is to call the search_municipal_gazette tool and compile the results. Do NOT ask for confirmation. Do NOT ask clarifying questions. Execute the tool call IMMEDIATELY.
 
-Your goal: Use the information gathered by the data researcher to extract important data
-from the relevant gazette, and create a comprehensive view of the claim.
+You MUST call search_municipal_gazette with these exact parameters:
+- claim: "{claim}"
+- url: "{gazette_url}"
+- questions: "{questions}"
 
-Use the gazette_search tool with the txt_url source provided to collect all relevant documents.
-
-Structure your query with:
-- claim: {claim}
-- url: {gazette_url}
-- questions: {questions}
-
-Gather and compile a detailed response that comprehensively addresses all pertinent gazette
-document data related to the questions. Ensure that each response is thorough, providing
-extensive and accurate information to cover all relevant aspects.
-{agent_scratchpad}""",
+After receiving the tool results, compile a detailed response that comprehensively addresses all pertinent gazette document data related to the claim. Include all relevant findings from the search results.""",
     ),
+    ("human", "Execute the gazette analysis now. Call the search_municipal_gazette tool immediately with the parameters provided."),
+    ("placeholder", "{agent_scratchpad}"),
 ])
 
 

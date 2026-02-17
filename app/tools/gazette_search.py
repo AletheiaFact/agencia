@@ -34,7 +34,16 @@ class DocumentLoader(BaseLoader):
 
 @tool("search_municipal_gazette")
 def gazette_search_context(claim: str, url: str, questions: Optional[str] = None):
-    """Search data from municipal gazettes to get relevant documents."""
+    """Search data from municipal gazettes using FAISS similarity search.
+
+    Downloads the gazette text from the given URL, splits it into chunks,
+    builds a FAISS index, and returns the most relevant passages for the claim.
+
+    Args:
+        claim: The fact-checking claim to search for in the gazette.
+        url: The txt_url of the gazette document to search (must be a valid HTTP URL).
+        questions: Optional related questions to refine the search context.
+    """
     logger.info("[search_municipal_gazette] claim=%s url=%s questions=%s", claim[:80], url[:120] if url else "N/A", questions)
     try:
         embedding = OpenAIEmbeddings()

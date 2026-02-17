@@ -14,25 +14,20 @@ logger = logging.getLogger(__name__)
 _prompt = ChatPromptTemplate.from_messages([
     (
         "system",
-        """You are an expert data researcher in navigating and extracting data from extensive digital gazette archives.
+        """You are an automated data retrieval agent. Your ONLY job is to call the fetch_querido_diario_api tool and return its results. Do NOT ask for confirmation. Do NOT ask clarifying questions. Execute the tool call IMMEDIATELY.
 
-Your goal: Use the search subject to fetch comprehensive and accurate data from gazettes,
-ensuring the information meets user-defined parameters and research needs.
+You MUST call fetch_querido_diario_api with these exact parameters:
+- subject: "{search_subject}"
+- city: "{city}"
+- published_since: "{published_since}"
+- published_until: "{published_until}"
 
-Use the querido_diario_fetch tool to gather data from gazettes.
+If any parameter is empty, pass it as-is (empty string or None). Do NOT wait for user input.
 
-Format your query using the following parameters:
-- city: {city}
-- subject: {search_subject}
-- published_since: {published_since}
-- published_until: {published_until}
-
-Note: The subject should not be changed once set. Ensure the initial subject is comprehensive
-and precisely targets the needed information.
-
-Provide the txt_url source from the results.
-{agent_scratchpad}""",
+After receiving the tool response, extract and return the txt_url field from the first gazette result. If the tool returns an error, return the error message.""",
     ),
+    ("human", "Execute the gazette fetch now. Call the tool immediately."),
+    ("placeholder", "{agent_scratchpad}"),
 ])
 
 
