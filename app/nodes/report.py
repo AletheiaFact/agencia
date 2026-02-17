@@ -1,10 +1,14 @@
 """Node: Create fact-checking report from gathered evidence."""
 
+import logging
+
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 from state import AgentState
+
+logger = logging.getLogger(__name__)
 
 _prompt = ChatPromptTemplate.from_messages([
     (
@@ -51,7 +55,8 @@ compile your response in {language}, however the classification field must remai
 ])
 
 def create_report(state: AgentState) -> dict:
-    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    logger.info("[create_report] Starting — claim='%s'", state["claim"][:80])
+    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
     chain = _prompt | llm | StrOutputParser()
     result = chain.invoke({
         "claim": state["claim"],
@@ -59,4 +64,5 @@ def create_report(state: AgentState) -> dict:
         "questions": state.get("questions", []),
         "language": state.get("language", "pt"),
     })
+    logger.info("[create_report] Completed — report length=%d chars", len(result))
     return {"messages": result}

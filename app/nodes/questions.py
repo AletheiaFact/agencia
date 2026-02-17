@@ -1,10 +1,14 @@
 """Node: Generate fact-checking questions from a claim."""
 
+import logging
+
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 from state import AgentState
+
+logger = logging.getLogger(__name__)
 
 _prompt = ChatPromptTemplate.from_messages([
     (
@@ -19,10 +23,12 @@ Provide your questions in an array format and translate them only to {language}.
 
 
 def list_questions(state: AgentState) -> dict:
-    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    logger.info("[list_questions] Starting — claim='%s' language=%s", state["claim"][:80], state["language"])
+    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
     chain = _prompt | llm | StrOutputParser()
     result = chain.invoke({
         "claim": state["claim"],
         "language": state["language"],
     })
+    logger.info("[list_questions] Generated questions (length=%d chars)", len(result))
     return {"questions": result}

@@ -1,5 +1,6 @@
 """Gazette node: Create an optimized search subject from the claim."""
 
+import logging
 import os
 
 from langchain_openai import ChatOpenAI
@@ -7,6 +8,8 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 from state import AgentState
+
+logger = logging.getLogger(__name__)
 
 # Load search context (advanced search operators guide)
 _context_path = os.path.join(
@@ -37,11 +40,13 @@ Claim: {claim}""",
 ])
 
 def create_subject(state: AgentState) -> dict:
-    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    logger.info("[create_subject] Starting — claim='%s'", state["claim"][:80])
+    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
     chain = _prompt | llm | StrOutputParser()
     result = chain.invoke({
         "claim": state["claim"],
         "language": state.get("language", "pt"),
         "search_context": _search_context,
     })
+    logger.info("[create_subject] Generated subject: '%s'", result[:120])
     return {"search_subject": result}

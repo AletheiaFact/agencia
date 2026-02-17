@@ -1,10 +1,14 @@
 """Gazette node: Create the final fact-checking report from gazette analysis."""
 
+import logging
+
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 from state import AgentState
+
+logger = logging.getLogger(__name__)
 
 _prompt = ChatPromptTemplate.from_messages([
     (
@@ -42,7 +46,8 @@ compile your response in {language}, however the classification field must remai
 ])
 
 def create_gazette_report(state: AgentState) -> dict:
-    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    logger.info("[create_gazette_report] Starting — claim='%s'", state["claim"][:80])
+    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
     chain = _prompt | llm | StrOutputParser()
     result = chain.invoke({
         "claim": state["claim"],
@@ -50,4 +55,5 @@ def create_gazette_report(state: AgentState) -> dict:
         "cross_check_result": state.get("cross_check_result", ""),
         "language": state.get("language", "pt"),
     })
+    logger.info("[create_gazette_report] Completed — report length=%d chars", len(result))
     return {"messages": result}

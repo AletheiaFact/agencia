@@ -35,15 +35,20 @@ extensive and accurate information to cover all relevant aspects.
 
 
 def analyze_gazette(state: AgentState) -> dict:
-    llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+    gazette_url = state.get("gazette_url", "")
+    logger.info("[analyze_gazette] Starting — claim='%s' url='%s'", state["claim"][:80], gazette_url[:120] if gazette_url else "N/A")
+
+    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
     tools = [gazette_search_context]
     agent = create_tool_calling_agent(llm, tools, _prompt)
     executor = AgentExecutor(agent=agent, tools=tools, verbose=False)
 
     result = executor.invoke({
         "claim": state["claim"],
-        "gazette_url": state.get("gazette_url", ""),
+        "gazette_url": gazette_url,
         "questions": state.get("questions", []),
     })
 
-    return {"gazette_analysis": result.get("output", "")}
+    output = result.get("output", "")
+    logger.info("[analyze_gazette] Completed — analysis length=%d chars", len(output))
+    return {"gazette_analysis": output}
