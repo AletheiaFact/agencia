@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TypedDict, Optional
+import operator
+from typing import Annotated, TypedDict, Optional
 
 
 class Context(TypedDict, total=False):
@@ -21,9 +22,13 @@ class AgentState(TypedDict, total=False):
     search_type: str
     language: str
 
-    # Gazette pipeline intermediate fields (new - replaces CrewAI internal state)
-    search_subject: Optional[str]
-    gazette_data: Optional[dict]
-    gazette_url: Optional[str]
+    # Gazette pipeline — adaptive search loop fields
+    search_strategies: Optional[list[str]]
+    gazette_candidates: Optional[list[dict]]
+    evidence_sufficient: Optional[bool]
+    search_iteration: Optional[int]
+    selected_gazettes: Optional[list[dict]]
+    evidence_summary: Optional[str]
     gazette_analysis: Optional[str]
     cross_check_result: Optional[str]
+    reasoning_log: Annotated[list[str], operator.add]

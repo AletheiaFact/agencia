@@ -92,8 +92,8 @@ class TestDirectoryStructure:
 
     @pytest.mark.parametrize("path", [
         "app/tools/__init__.py",
-        "app/tools/querido_diario.py",
-        "app/tools/gazette_search.py",
+        "app/tools/querido_diario_search.py",
+        "app/tools/gazette_deep_search.py",
         "app/tools/web_search.py",
         "app/nodes/__init__.py",
         "app/nodes/gazette/__init__.py",
@@ -217,7 +217,9 @@ class TestState:
     def test_agent_state_has_gazette_fields(self):
         from state import AgentState
         annotations = AgentState.__annotations__
-        gazette_fields = ["search_subject", "gazette_data", "gazette_url",
+        gazette_fields = ["search_strategies", "gazette_candidates",
+                          "evidence_sufficient", "search_iteration",
+                          "selected_gazettes", "evidence_summary",
                           "gazette_analysis", "cross_check_result"]
         for field in gazette_fields:
             assert field in annotations, f"AgentState missing gazette field: {field}"
@@ -270,79 +272,67 @@ class TestErrors:
 class TestToolsImports:
     """Verify tool modules import without errors (no API calls)."""
 
-    def test_querido_diario_imports(self):
-        """The querido_diario module should import (loads IBGE JSON at import time)."""
-        mod = importlib.import_module("tools.querido_diario")
-        assert hasattr(mod, "querido_diario_fetch")
+    def test_querido_diario_search_imports(self):
+        """The querido_diario_search module should import (loads IBGE JSON at import time)."""
+        mod = importlib.import_module("tools.querido_diario_search")
+        assert hasattr(mod, "querido_diario_search")
+        assert hasattr(mod, "_resolve_territory_ids")
 
-    def test_gazette_search_imports(self):
-        """The gazette_search module should import without needing API keys."""
-        mod = importlib.import_module("tools.gazette_search")
-        assert hasattr(mod, "gazette_search_context")
-        assert hasattr(mod, "querido_diario_glossario_tool")
-        assert hasattr(mod, "DocumentLoader")
+    def test_gazette_deep_search_imports(self):
+        """The gazette_deep_search module should import without needing API keys."""
+        mod = importlib.import_module("tools.gazette_deep_search")
+        assert hasattr(mod, "gazette_deep_search")
 
     def test_web_search_imports(self):
         """The web_search module should import without SERPAPI_API_KEY set."""
         mod = importlib.import_module("tools.web_search")
         assert hasattr(mod, "get_search_tool")
 
-    def test_querido_diario_fetch_is_langchain_tool(self):
-        from tools.querido_diario import querido_diario_fetch
+    def test_querido_diario_search_is_langchain_tool(self):
+        from tools.querido_diario_search import querido_diario_search
         # LangChain @tool decorator creates a BaseTool instance
-        assert hasattr(querido_diario_fetch, "invoke") or callable(querido_diario_fetch)
+        assert hasattr(querido_diario_search, "invoke") or callable(querido_diario_search)
 
-    def test_gazette_search_context_is_langchain_tool(self):
-        from tools.gazette_search import gazette_search_context
-        assert hasattr(gazette_search_context, "invoke") or callable(gazette_search_context)
-
-
-# ---------------------------------------------------------------------------
-# 8. Querido Diario tool logic (offline, no API call)
-# ---------------------------------------------------------------------------
-class TestQueridoDiarioToolLogic:
-    """Test the querido_diario_fetch tool logic without making real API calls."""
-
-    def test_unknown_city_searches_without_filter(self):
-        """Unknown city should gracefully search without city filter instead of erroring."""
-        from tools.querido_diario import querido_diario_fetch
-        result = querido_diario_fetch.invoke({
-            "subject": "test",
-            "city": "NONEXISTENT_CITY_12345"
-        })
-        assert isinstance(result, dict)
-        # Should return a gazette (no error) since it searches without city filter
-        assert "error" not in result or "No public gazettes" in result.get("error", "")
-
-    def test_none_city_searches_without_filter(self):
-        """None/empty city should gracefully search without city filter."""
-        from tools.querido_diario import querido_diario_fetch
-        result = querido_diario_fetch.invoke({
-            "subject": "test",
-            "city": None
-        })
-        assert isinstance(result, dict)
-        # Should return a gazette (no error) since it searches without city filter
-        assert "error" not in result or "No public gazettes" in result.get("error", "")
+    def test_gazette_deep_search_is_langchain_tool(self):
+        from tools.gazette_deep_search import gazette_deep_search
+        assert hasattr(gazette_deep_search, "invoke") or callable(gazette_deep_search)
 
 
 # ---------------------------------------------------------------------------
-# 9. DocumentLoader unit test
+# 8. Querido Diario search tool logic (offline, no API call)
 # ---------------------------------------------------------------------------
-class TestDocumentLoader:
-    """Test the DocumentLoader class from gazette_search."""
+class TestQueridoDiarioSearchToolLogic:
+    """Test the querido_diario_search tool territory resolution offline."""
 
-    def test_document_loader_loads_text_file(self):
-        from tools.gazette_search import DocumentLoader
-        # Use the glossary file as a real test file
-        glossary_path = os.path.join(PROJECT_ROOT, "app", "data",
-                                     "querido_diario_glossario_context.txt")
-        loader = DocumentLoader(glossary_path)
-        docs = loader.load()
-        assert len(docs) > 0, "DocumentLoader should load at least one document"
-        assert all(hasattr(d, "page_content") for d in docs)
-        assert all(hasattr(d, "metadata") for d in docs)
-        assert docs[0].metadata["source"] == glossary_path
+    def test_known_city_resolves_territory_id(self):
+        """Known city should resolve to a territory_id."""
+        from tools.querido_diario_search import _resolve_territory_ids
+        ids = _resolve_territory_ids("Porto Alegre")
+        assert len(ids) > 0, "Porto Alegre should resolve to at least one territory_id"
+
+    def test_unknown_city_returns_empty(self):
+        """Unknown city should return empty list (no crash)."""
+        from tools.querido_diario_search import _resolve_territory_ids
+        ids = _resolve_territory_ids("NONEXISTENT_CITY_12345")
+        assert ids == [], "Unknown city should return empty list"
+
+    def test_none_city_returns_empty(self):
+        """None/empty city should return empty list."""
+        from tools.querido_diario_search import _resolve_territory_ids
+        ids = _resolve_territory_ids(None)
+        assert ids == [], "None city should return empty list"
+
+
+# ---------------------------------------------------------------------------
+# 9. Gazette deep search tool import test
+# ---------------------------------------------------------------------------
+class TestGazetteDeepSearchTool:
+    """Test the gazette_deep_search module is importable."""
+
+    def test_gazette_deep_search_imports(self):
+        mod = importlib.import_module("tools.gazette_deep_search")
+        assert hasattr(mod, "gazette_deep_search")
+        assert callable(mod.gazette_deep_search) or hasattr(mod.gazette_deep_search, "invoke")
 
 
 # ---------------------------------------------------------------------------
