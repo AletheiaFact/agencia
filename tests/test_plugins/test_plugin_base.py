@@ -233,3 +233,37 @@ class TestDefaultMethods:
         # Tool func should be callable and return JSON
         output = tool.func("test")
         assert "test" in output
+
+
+# --- Reliability score tests ---
+
+
+class TestReliabilityScore:
+    def test_default_reliability_score(self):
+        meta = PluginMetadata(
+            name="test",
+            display_name="Test",
+            description="A test plugin",
+            category=PluginCategory.WEB_SEARCH,
+        )
+        assert meta.reliability_score == 0.5
+
+    def test_custom_reliability_score(self):
+        meta = PluginMetadata(
+            name="test",
+            display_name="Test",
+            description="A test plugin",
+            category=PluginCategory.WEB_SEARCH,
+            reliability_score=0.9,
+        )
+        assert meta.reliability_score == 0.9
+
+    def test_reliability_score_bounds(self):
+        meta = PluginMetadata(
+            name="test",
+            display_name="Test",
+            description="A test plugin",
+            category=PluginCategory.WEB_SEARCH,
+            reliability_score=0.0,
+        )
+        assert meta.reliability_score == 0.0

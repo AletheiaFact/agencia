@@ -33,6 +33,7 @@ class IBGESidraPlugin(DataSourcePlugin):
             "Useful for verifying claims involving Brazilian economic or demographic data.",
             category=PluginCategory.GOVERNMENT_DATA,
             required_env_vars=[],
+            reliability_score=0.9,
         )
 
     def is_available(self) -> bool:

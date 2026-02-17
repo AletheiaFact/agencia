@@ -30,6 +30,7 @@ class PluginMetadata(BaseModel):
     auth_env_var_groups: list[list[str]] = []
     rate_limit_rpm: Optional[int] = None
     version: str = "0.1.0"
+    reliability_score: float = 0.5  # 0.0-1.0, source trustworthiness
 
 
 class PluginResult(BaseModel):

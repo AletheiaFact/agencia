@@ -22,6 +22,7 @@ class TavilySearchPlugin(DataSourcePlugin):
             "applications. Returns relevant web results with content extraction.",
             category=PluginCategory.WEB_SEARCH,
             required_env_vars=["TAVILY_API_KEY"],
+            reliability_score=0.6,
         )
 
     def is_available(self) -> bool:
