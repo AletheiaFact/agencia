@@ -13,7 +13,12 @@ fastapi>=0.110.0,<1.0.0
 uvicorn>=0.27.0,<1.0.0
 
 # LLM & Search
-google-search-results>=2.4.2,<3.0.0
+tavily-python>=0.5.0,<1.0.0
+google-auth>=2.29.0,<3.0.0
+google-search-results>=2.4.2,<3.0.0  # SerpAPI fallback — remove after Tavily migration confirmed
+
+# Government data
+sidrapy>=0.1.0
 
 # Vector search
 faiss-cpu

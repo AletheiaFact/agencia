@@ -9,6 +9,8 @@ from langchain_community.document_loaders import WebBaseLoader
 
 from state import AgentState
 from tools.web_search import get_search_tool
+from plugins.base import PluginCategory
+from plugins.registry import get_langchain_tools
 
 logger = logging.getLogger(__name__)
 
@@ -48,9 +50,11 @@ def search_online(state: AgentState) -> dict:
         doc_context = load_document[0].page_content
         logger.info("[search_online] Loaded source content (length=%d chars)", len(doc_context))
 
-    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
+    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
     search_tool = get_search_tool()
     tools = [search_tool]
+    tools.extend(get_langchain_tools(PluginCategory.GOVERNMENT_DATA))
+    logger.info("[search_online] Agent tools: %s", [t.name for t in tools])
     agent = create_tool_calling_agent(llm, tools, _prompt)
     executor = AgentExecutor(agent=agent, tools=tools, verbose=False)
 
@@ -61,5 +65,13 @@ def search_online(state: AgentState) -> dict:
         "context": doc_context,
     })
 
-    logger.info("[search_online] Completed — output length=%d chars", len(str(result.get("output", ""))))
-    return {"messages": [result]}
+    output_len = len(str(result.get("output", "")))
+    tool_names = [t.name for t in tools]
+    logger.info("[search_online] Completed — output length=%d chars", output_len)
+    return {
+        "messages": [result],
+        "reasoning_log": [
+            f"[search_online] Researched claim online using tools {tool_names}, "
+            f"collected {output_len} chars of evidence"
+        ],
+    }

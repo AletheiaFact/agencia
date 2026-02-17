@@ -7,6 +7,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Register all plugins before building the workflow
+from plugins import register_all_plugins
+register_all_plugins()
+
 # Configure structured logging before importing anything else
 logging.basicConfig(
     level=logging.INFO,

@@ -32,3 +32,6 @@ class AgentState(TypedDict, total=False):
     gazette_analysis: Optional[str]
     cross_check_result: Optional[str]
     reasoning_log: Annotated[list[str], operator.add]
+
+    # Existing fact-check lookup results (Phase 1 tooling expansion)
+    existing_factchecks: Optional[list[dict]]
