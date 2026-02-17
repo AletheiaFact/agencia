@@ -31,4 +31,9 @@ def list_questions(state: AgentState) -> dict:
         "language": state["language"],
     })
     logger.info("[list_questions] Generated questions (length=%d chars)", len(result))
-    return {"questions": result}
+    return {
+        "questions": result,
+        "reasoning_log": [
+            f"[list_questions] Generated verification questions ({len(result)} chars)"
+        ],
+    }
