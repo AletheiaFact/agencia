@@ -93,7 +93,7 @@ class TestPluginRegistration:
         # Should not raise — plugins just register as unavailable
         register_all_plugins()
         all_plugins = registry.get_all()
-        assert len(all_plugins) == 4
+        assert len(all_plugins) == 8
 
     def test_registered_plugin_names(self):
         from plugins import register_all_plugins
@@ -104,6 +104,10 @@ class TestPluginRegistration:
             "portal_transparencia",
             "ibge_sidra",
             "tavily_search",
+            "tse",
+            "bacen",
+            "claimbuster",
+            "wikipedia",
         }
 
     def test_government_data_tools_available(self):
@@ -112,10 +116,32 @@ class TestPluginRegistration:
         from plugins.base import PluginCategory
         register_all_plugins()
         gov_plugins = registry.get_available(PluginCategory.GOVERNMENT_DATA)
-        # portal_transparencia is always available, ibge_sidra if sidrapy installed
+        # portal_transparencia always available; ibge_sidra if sidrapy; bacen if python-bcb
         assert len(gov_plugins) >= 1
         names = {p.get_metadata().name for p in gov_plugins}
         assert "portal_transparencia" in names
+
+    def test_electoral_tools_available(self):
+        """Electoral plugins should be available (no API keys needed)."""
+        from plugins import register_all_plugins
+        from plugins.base import PluginCategory
+        register_all_plugins()
+        electoral_plugins = registry.get_available(PluginCategory.ELECTORAL)
+        # tse is always available if ckanapi is installed
+        assert len(electoral_plugins) >= 1
+        names = {p.get_metadata().name for p in electoral_plugins}
+        assert "tse" in names
+
+    def test_knowledge_base_tools_available(self):
+        """Knowledge base plugins should be available (no API keys needed)."""
+        from plugins import register_all_plugins
+        from plugins.base import PluginCategory
+        register_all_plugins()
+        kb_plugins = registry.get_available(PluginCategory.KNOWLEDGE_BASE)
+        # wikipedia is always available if wikipedia-api is installed
+        assert len(kb_plugins) >= 1
+        names = {p.get_metadata().name for p in kb_plugins}
+        assert "wikipedia" in names
 
 
 # --- Check existing factchecks node ---
