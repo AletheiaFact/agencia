@@ -25,6 +25,18 @@ class TestSourceRecommendation:
         SourceRecommendation(plugin_name="x", relevance=0.0, reason="low")
         SourceRecommendation(plugin_name="x", relevance=1.0, reason="high")
 
+    def test_relevance_below_range_rejected(self):
+        with pytest.raises(ValidationError):
+            SourceRecommendation(plugin_name="x", relevance=-0.1, reason="too low")
+
+    def test_relevance_above_range_rejected(self):
+        with pytest.raises(ValidationError):
+            SourceRecommendation(plugin_name="x", relevance=1.1, reason="too high")
+
+    def test_missing_fields_rejected(self):
+        with pytest.raises(ValidationError):
+            SourceRecommendation(plugin_name="x")  # missing relevance and reason
+
     def test_serialization(self):
         rec = SourceRecommendation(
             plugin_name="ibge_sidra",
