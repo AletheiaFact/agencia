@@ -4,7 +4,7 @@ Provides a pluggable architecture for integrating external data sources
 into the fact-checking pipeline.
 """
 
-from plugins.registry import register, get, get_available, get_all, get_langchain_tools, clear  # noqa: F401
+from plugins.registry import register, get, get_available, get_all, get_langchain_tools, get_tools_for_selection, clear  # noqa: F401
 
 
 def register_all_plugins() -> None:

@@ -9,8 +9,7 @@ from langchain_community.document_loaders import WebBaseLoader
 
 from state import AgentState
 from tools.web_search import get_search_tool
-from plugins.base import PluginCategory
-from plugins.registry import get_langchain_tools
+from plugins.registry import get_langchain_tools, get_tools_for_selection
 
 logger = logging.getLogger(__name__)
 
@@ -53,7 +52,12 @@ def search_online(state: AgentState) -> dict:
     llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
     search_tool = get_search_tool()
     tools = [search_tool]
-    tools.extend(get_langchain_tools(PluginCategory.GOVERNMENT_DATA))
+    # Use source selection results if available, otherwise fall back to all plugins
+    selected = state.get("selected_sources")
+    if selected:
+        tools.extend(get_tools_for_selection(selected))
+    else:
+        tools.extend(get_langchain_tools())
     logger.info("[search_online] Agent tools: %s", [t.name for t in tools])
     agent = create_tool_calling_agent(llm, tools, _prompt)
     executor = AgentExecutor(agent=agent, tools=tools, verbose=False)

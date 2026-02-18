@@ -67,6 +67,7 @@ class GoogleFactCheckPlugin(DataSourcePlugin):
                 ["GOOGLE_FACTCHECK_API_KEY"],
                 ["GOOGLE_APPLICATION_CREDENTIALS"],
             ],
+            reliability_score=0.9,
         )
 
     def is_available(self) -> bool:

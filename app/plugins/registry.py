@@ -52,6 +52,24 @@ def get_langchain_tools(category: Optional[PluginCategory] = None) -> list:
     return [p.as_langchain_tool() for p in get_available(category)]
 
 
+
+def get_tools_for_selection(selection: list[dict]) -> list:
+    """Get LangChain Tool objects for specifically selected plugins.
+
+    Used by the source selection node to provide only relevant tools
+    to the research agent.
+
+    Args:
+        selection: List of dicts with at least a "plugin_name" key.
+    """
+    selected_names = {s["plugin_name"] for s in selection if s.get("plugin_name")}
+    return [
+        p.as_langchain_tool()
+        for p in _registry.values()
+        if p.get_metadata().name in selected_names and p.is_available()
+    ]
+
+
 def clear() -> None:
     """Clear all registered plugins. Used in tests."""
     _registry.clear()

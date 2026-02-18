@@ -22,6 +22,8 @@ _prompt = ChatPromptTemplate.from_messages([
 
 {existing_factchecks_section}
 
+{source_confidence_section}
+
 Use critical thinking and analytical skills to assess the accuracy and relevance of the data in relation to the following claim: {claim}.
 
 The report should be presented in a structured JSON format. Below is the format you are to follow:
@@ -81,6 +83,25 @@ def _build_existing_factchecks_section(state: AgentState) -> str:
     return "\n".join(lines)
 
 
+def _build_source_confidence_section(state: AgentState) -> str:
+    """Build a prompt section with source reliability and relevance scores."""
+    confidence = state.get("source_confidence") or {}
+    selected = state.get("selected_sources") or []
+    if not confidence and not selected:
+        return ""
+    lines = ["Source reliability and relevance scores:"]
+    for src in selected:
+        reliability = confidence.get(src.get("plugin_name", ""), "N/A")
+        lines.append(
+            f"- {src.get('plugin_name', 'unknown')}: reliability={reliability}, "
+            f"relevance={src.get('relevance', 'N/A')} ({src.get('reason', '')})"
+        )
+    lines.append(
+        "\nWeigh higher-reliability sources more heavily in your analysis."
+    )
+    return "\n".join(lines)
+
+
 def _inject_reasoning_log(llm_output: str, reasoning_log: list[str]) -> str:
     """Inject the reasoning_log timeline into the LLM-generated JSON report.
 
@@ -112,6 +133,7 @@ def create_report(state: AgentState) -> dict:
         "questions": state.get("questions", []),
         "language": state.get("language", "pt"),
         "existing_factchecks_section": _build_existing_factchecks_section(state),
+        "source_confidence_section": _build_source_confidence_section(state),
     })
 
     # Collect the reasoning_log accumulated so far and add our own entry

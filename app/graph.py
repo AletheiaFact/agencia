@@ -6,6 +6,7 @@ from state import AgentState
 from nodes.questions import list_questions
 from nodes.factcheck_lookup import check_existing_factchecks, factcheck_router
 from nodes.online_research import search_online
+from nodes.source_selection import select_sources
 from nodes.report import create_report
 from nodes.gazette.subgraph import build_gazette_subgraph
 
@@ -17,7 +18,7 @@ def build_workflow():
       list_questions -> check_existing_factchecks -> factcheck_router
         -> "found":    create_report -> END   (short-circuit for known claims)
         -> "gazettes": gazette subgraph -> END
-        -> "online":   search_online -> create_report -> END
+        -> "online":   select_sources -> search_online -> create_report -> END
     """
     workflow = StateGraph(AgentState)
 
@@ -25,6 +26,7 @@ def build_workflow():
     workflow.add_node("list_questions", list_questions)
     workflow.add_node("check_existing_factchecks", check_existing_factchecks)
     workflow.add_node("search_online", search_online)
+    workflow.add_node("select_sources", select_sources)
     workflow.add_node("create_report", create_report)
     workflow.add_node("fact_check_gazettes", build_gazette_subgraph())
 
@@ -41,11 +43,12 @@ def build_workflow():
         {
             "found": "create_report",
             "gazettes": "fact_check_gazettes",
-            "online": "search_online",
+            "online": "select_sources",
         },
     )
 
     # Online path
+    workflow.add_edge("select_sources", "search_online")
     workflow.add_edge("search_online", "create_report")
     workflow.add_edge("create_report", END)
 

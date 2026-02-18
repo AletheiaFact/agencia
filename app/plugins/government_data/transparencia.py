@@ -27,6 +27,7 @@ class PortalTransparenciaPlugin(DataSourcePlugin):
             category=PluginCategory.GOVERNMENT_DATA,
             required_env_vars=[],
             rate_limit_rpm=30,
+            reliability_score=0.85,
         )
 
     def is_available(self) -> bool:
