@@ -13,8 +13,16 @@ def register_all_plugins() -> None:
     from plugins.government_data.transparencia import PortalTransparenciaPlugin
     from plugins.government_data.ibge_sidra import IBGESidraPlugin
     from plugins.web_search.tavily_search import TavilySearchPlugin
+    from plugins.electoral.tse import TSEPlugin
+    from plugins.government_data.bacen import BACENPlugin
+    from plugins.claim_databases.claimbuster import ClaimBusterPlugin
+    from plugins.knowledge_bases.wikipedia import WikipediaPlugin
 
     register(GoogleFactCheckPlugin())
     register(PortalTransparenciaPlugin())
     register(IBGESidraPlugin())
     register(TavilySearchPlugin())
+    register(TSEPlugin())
+    register(BACENPlugin())
+    register(ClaimBusterPlugin())
+    register(WikipediaPlugin())
