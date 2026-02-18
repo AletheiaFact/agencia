@@ -95,9 +95,8 @@ class LLMSourceClassifier(SourceClassifier):
     alternatives (RuleBasedClassifier, EmbeddingClassifier).
     """
 
-    def __init__(self, model: str = "gpt-5-mini-2025-08-07", temperature: float = 0):
+    def __init__(self, model: str = "gpt-5-mini-2025-08-07"):
         self._model = model
-        self._temperature = temperature
 
     def classify(
         self, claim: str, available_plugins: list[PluginMetadata]
@@ -107,7 +106,7 @@ class LLMSourceClassifier(SourceClassifier):
         )
 
         try:
-            llm = ChatOpenAI(model=self._model, temperature=self._temperature)
+            llm = ChatOpenAI(model=self._model)
             response = llm.invoke([
                 SystemMessage(content=_CLASSIFIER_SYSTEM_PROMPT.format(
                     plugins_description=plugins_desc

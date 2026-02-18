@@ -19,6 +19,13 @@ google-search-results>=2.4.2,<3.0.0  # SerpAPI fallback — remove after Tavily 
 
 # Government data
 sidrapy>=0.1.0
+python-bcb>=0.3.0
+
+# Electoral data
+ckanapi>=0.1.0
+
+# Wikipedia
+wikipedia-api>=0.6.0
 
 # Vector search
 faiss-cpu

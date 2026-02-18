@@ -16,6 +16,7 @@ class PluginCategory(str, Enum):
     ACADEMIC = "academic"
     LEGISLATION = "legislation"
     MULTIMEDIA = "multimedia"
+    ELECTORAL = "electoral"
 
 
 class PluginMetadata(BaseModel):
