@@ -127,3 +127,50 @@ class TestClear:
         assert len(registry.get_all()) == 2
         registry.clear()
         assert len(registry.get_all()) == 0
+
+
+# --- Selection-based tool retrieval tests ---
+
+
+class TestGetToolsForSelection:
+    def test_returns_tools_for_selected_names(self):
+        registry.register(FakePlugin("alpha", PluginCategory.WEB_SEARCH))
+        registry.register(FakePlugin("beta", PluginCategory.GOVERNMENT_DATA))
+        registry.register(FakePlugin("gamma", PluginCategory.CLAIM_DATABASE))
+
+        selection = [
+            {"plugin_name": "alpha", "relevance": 0.9, "reason": "r1"},
+            {"plugin_name": "gamma", "relevance": 0.8, "reason": "r2"},
+        ]
+        tools = registry.get_tools_for_selection(selection)
+        assert len(tools) == 2
+        tool_names = {t.name for t in tools}
+        assert tool_names == {"alpha", "gamma"}
+
+    def test_excludes_unavailable_plugins(self):
+        registry.register(FakePlugin("avail", PluginCategory.WEB_SEARCH, available=True))
+        registry.register(FakePlugin("down", PluginCategory.WEB_SEARCH, available=False))
+
+        selection = [
+            {"plugin_name": "avail", "relevance": 0.9, "reason": "r1"},
+            {"plugin_name": "down", "relevance": 0.8, "reason": "r2"},
+        ]
+        tools = registry.get_tools_for_selection(selection)
+        assert len(tools) == 1
+        assert tools[0].name == "avail"
+
+    def test_handles_unknown_plugin_names(self):
+        registry.register(FakePlugin("known", PluginCategory.WEB_SEARCH))
+
+        selection = [
+            {"plugin_name": "known", "relevance": 0.9, "reason": "r1"},
+            {"plugin_name": "nonexistent", "relevance": 0.7, "reason": "r2"},
+        ]
+        tools = registry.get_tools_for_selection(selection)
+        assert len(tools) == 1
+        assert tools[0].name == "known"
+
+    def test_returns_empty_for_empty_selection(self):
+        registry.register(FakePlugin("a", PluginCategory.WEB_SEARCH))
+        tools = registry.get_tools_for_selection([])
+        assert tools == []
