@@ -35,3 +35,7 @@ class AgentState(TypedDict, total=False):
 
     # Existing fact-check lookup results (Phase 1 tooling expansion)
     existing_factchecks: Optional[list[dict]]
+
+    # Phase 2: Source selection & confidence scoring
+    selected_sources: Optional[list[dict]]
+    source_confidence: Optional[dict]

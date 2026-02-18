@@ -166,3 +166,36 @@ class TestReportNode:
         assert "Lupa" in section
         assert "False" in section
         assert "Incorporate" in section
+
+
+class TestSourceSelectionIntegration:
+    @patch("nodes.source_selection.get_classifier")
+    @patch("nodes.source_selection.get_available", return_value=[])
+    @patch("nodes.source_selection.get", return_value=None)
+    def test_select_sources_node_runs_on_online_path(
+        self, mock_get, mock_avail, mock_get_clf
+    ):
+        from plugins.source_selector import (
+            SourceSelectionResult,
+            SourceRecommendation,
+        )
+
+        clf = MagicMock()
+        clf.classify.return_value = SourceSelectionResult(
+            claim_type="general",
+            selected_sources=[
+                SourceRecommendation(
+                    plugin_name="tavily_search",
+                    relevance=0.8,
+                    reason="general web search",
+                )
+            ],
+            classification_method="llm",
+        )
+        mock_get_clf.return_value = clf
+
+        from nodes.source_selection import select_sources
+
+        state = {"claim": "Test claim", "language": "pt"}
+        result = select_sources(state)
+        assert result["selected_sources"][0]["plugin_name"] == "tavily_search"
