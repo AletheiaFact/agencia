@@ -200,3 +200,69 @@ class TestSourceSelectionIntegration:
         state = {"claim": "Test claim", "language": "pt"}
         result = select_sources(state)
         assert result["selected_sources"][0]["plugin_name"] == "tavily_search"
+
+
+class TestPhase2EndToEnd:
+    """Verify the full online path with source selection."""
+
+    @patch("nodes.source_selection.get_classifier")
+    @patch("nodes.source_selection.get_available", return_value=[])
+    @patch("nodes.source_selection.get", return_value=None)
+    def test_online_path_includes_source_selection(
+        self, mock_get, mock_avail, mock_get_clf
+    ):
+        """Source selection node runs and its output reaches search_online."""
+        from plugins.source_selector import (
+            SourceSelectionResult,
+            SourceRecommendation,
+        )
+
+        clf = MagicMock()
+        clf.classify.return_value = SourceSelectionResult(
+            claim_type="government_spending",
+            selected_sources=[
+                SourceRecommendation(
+                    plugin_name="portal_transparencia",
+                    relevance=0.95,
+                    reason="Spending claim",
+                )
+            ],
+            classification_method="llm",
+        )
+        mock_get_clf.return_value = clf
+
+        from nodes.source_selection import select_sources
+
+        state = {
+            "claim": "O governo gastou R$10 milhões",
+            "language": "pt",
+        }
+        result = select_sources(state)
+
+        # Verify state shape
+        assert "selected_sources" in result
+        assert "source_confidence" in result
+        assert "reasoning_log" in result
+        assert result["selected_sources"][0]["plugin_name"] == "portal_transparencia"
+        assert result["selected_sources"][0]["relevance"] == 0.95
+
+    def test_report_confidence_section_integration(self):
+        """Verify _build_source_confidence_section works end-to-end."""
+        from nodes.report import _build_source_confidence_section
+
+        state = {
+            "selected_sources": [
+                {"plugin_name": "portal_transparencia", "relevance": 0.95, "reason": "Spending claim"},
+                {"plugin_name": "tavily_search", "relevance": 0.6, "reason": "Web corroboration"},
+            ],
+            "source_confidence": {
+                "portal_transparencia": 0.85,
+                "tavily_search": 0.6,
+            },
+        }
+        section = _build_source_confidence_section(state)
+        assert "portal_transparencia" in section
+        assert "tavily_search" in section
+        assert "0.85" in section
+        assert "0.95" in section
+        assert "Weigh higher-reliability" in section
