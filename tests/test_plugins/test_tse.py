@@ -1,6 +1,5 @@
 """Tests for the TSE (Superior Electoral Court) plugin."""
 
-import sys
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -37,7 +36,7 @@ class TestAvailability:
         assert plugin.is_available() is True
 
     def test_unavailable_when_ckanapi_missing(self, plugin):
-        with patch.dict(sys.modules, {"ckanapi": None}):
+        with patch("plugins.electoral.tse.ckanapi", None):
             assert plugin.is_available() is False
 
 
