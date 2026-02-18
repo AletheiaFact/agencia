@@ -2,8 +2,16 @@
 
 from unittest.mock import patch, MagicMock
 
+import pytest
+
 from plugins.source_selector import SourceSelectionResult, SourceRecommendation
-from nodes.source_selection import select_sources
+from nodes.source_selection import select_sources, set_classifier
+
+
+@pytest.fixture(autouse=True)
+def _reset_classifier():
+    yield
+    set_classifier(None)
 
 
 def _state(**overrides):
