@@ -40,6 +40,7 @@ class TestGraphStructure:
         expected = {
             "list_questions",
             "check_existing_factchecks",
+            "select_sources",
             "search_online",
             "create_report",
             "fact_check_gazettes",

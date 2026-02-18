@@ -9,7 +9,7 @@ from langchain_community.document_loaders import WebBaseLoader
 
 from state import AgentState
 from tools.web_search import get_search_tool
-from plugins.registry import get_langchain_tools
+from plugins.registry import get_langchain_tools, get_tools_for_selection
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +55,6 @@ def search_online(state: AgentState) -> dict:
     # Use source selection results if available, otherwise fall back to all plugins
     selected = state.get("selected_sources")
     if selected:
-        from plugins.registry import get_tools_for_selection
         tools.extend(get_tools_for_selection(selected))
     else:
         tools.extend(get_langchain_tools())
