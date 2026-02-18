@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class PluginCategory(str, Enum):
@@ -30,7 +30,7 @@ class PluginMetadata(BaseModel):
     auth_env_var_groups: list[list[str]] = []
     rate_limit_rpm: Optional[int] = None
     version: str = "0.1.0"
-    reliability_score: float = 0.5  # 0.0-1.0, source trustworthiness
+    reliability_score: float = Field(default=0.5, ge=0.0, le=1.0, description="Source trustworthiness")
 
 
 class PluginResult(BaseModel):

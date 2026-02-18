@@ -2,6 +2,7 @@
 
 import pytest
 
+from pydantic import ValidationError
 from plugins.base import (
     DataSourcePlugin,
     PluginCategory,
@@ -258,7 +259,7 @@ class TestReliabilityScore:
         )
         assert meta.reliability_score == 0.9
 
-    def test_reliability_score_bounds(self):
+    def test_reliability_score_lower_bound(self):
         meta = PluginMetadata(
             name="test",
             display_name="Test",
@@ -267,3 +268,33 @@ class TestReliabilityScore:
             reliability_score=0.0,
         )
         assert meta.reliability_score == 0.0
+
+    def test_reliability_score_upper_bound(self):
+        meta = PluginMetadata(
+            name="test",
+            display_name="Test",
+            description="A test plugin",
+            category=PluginCategory.WEB_SEARCH,
+            reliability_score=1.0,
+        )
+        assert meta.reliability_score == 1.0
+
+    def test_reliability_score_below_range(self):
+        with pytest.raises(ValidationError):
+            PluginMetadata(
+                name="test",
+                display_name="Test",
+                description="A test plugin",
+                category=PluginCategory.WEB_SEARCH,
+                reliability_score=-0.1,
+            )
+
+    def test_reliability_score_above_range(self):
+        with pytest.raises(ValidationError):
+            PluginMetadata(
+                name="test",
+                display_name="Test",
+                description="A test plugin",
+                category=PluginCategory.WEB_SEARCH,
+                reliability_score=1.1,
+            )
