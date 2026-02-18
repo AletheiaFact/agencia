@@ -1,6 +1,5 @@
 """Tests for the BACEN (Central Bank) plugin."""
 
-import sys
 from unittest.mock import MagicMock, patch
 
 import pytest

@@ -114,7 +114,7 @@ class WikipediaPlugin(DataSourcePlugin):
 
     def _search_wikidata(self, query: str) -> PluginResult:
         """Search Wikidata via SPARQL for structured entity data."""
-        safe_query = query.replace("'", "\\'")
+        safe_query = query.replace("\\", "\\\\").replace('"', '\\"').replace("'", "\\'")
         sparql = f"""
         SELECT ?item ?itemLabel ?itemDescription WHERE {{
             ?item rdfs:label "{safe_query}"@pt .

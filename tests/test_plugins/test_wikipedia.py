@@ -94,9 +94,9 @@ class TestSearchWikipedia:
         plugin.search("test", endpoint="wikipedia", language="en")
         mock_wikiapi.Wikipedia.assert_called_once()
         call_args = mock_wikiapi.Wikipedia.call_args
-        # The language param should be passed — check either positional or keyword
-        all_args = str(call_args)
-        assert "en" in all_args
+        # The language param should be passed — check positional or keyword args
+        args, kwargs = call_args
+        assert "en" in args or kwargs.get("language") == "en"
 
 
 # --- Wikidata search ---
