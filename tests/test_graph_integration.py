@@ -93,7 +93,7 @@ class TestPluginRegistration:
         # Should not raise — plugins just register as unavailable
         register_all_plugins()
         all_plugins = registry.get_all()
-        assert len(all_plugins) == 8
+        assert len(all_plugins) == 7
 
     def test_registered_plugin_names(self):
         from plugins import register_all_plugins
@@ -106,7 +106,6 @@ class TestPluginRegistration:
             "tavily_search",
             "tse",
             "bacen",
-            "claimbuster",
             "wikipedia",
         }
 

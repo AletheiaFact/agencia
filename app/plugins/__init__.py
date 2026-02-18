@@ -15,7 +15,6 @@ def register_all_plugins() -> None:
     from plugins.web_search.tavily_search import TavilySearchPlugin
     from plugins.electoral.tse import TSEPlugin
     from plugins.government_data.bacen import BACENPlugin
-    from plugins.claim_databases.claimbuster import ClaimBusterPlugin
     from plugins.knowledge_bases.wikipedia import WikipediaPlugin
 
     register(GoogleFactCheckPlugin())
@@ -24,5 +23,4 @@ def register_all_plugins() -> None:
     register(TavilySearchPlugin())
     register(TSEPlugin())
     register(BACENPlugin())
-    register(ClaimBusterPlugin())
     register(WikipediaPlugin())
