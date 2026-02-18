@@ -1,9 +1,13 @@
 """Tests for source classifier strategy."""
 
+from unittest.mock import patch, MagicMock
+
 import pytest
 from pydantic import ValidationError
 
+from plugins.base import PluginMetadata, PluginCategory
 from plugins.source_selector import (
+    LLMSourceClassifier,
     SourceClassifier,
     SourceSelectionResult,
     SourceRecommendation,
@@ -92,11 +96,6 @@ class TestSourceClassifierABC:
         result = c.classify("test claim", [])
         assert result.claim_type == "test"
 
-
-from unittest.mock import patch, MagicMock
-
-from plugins.base import PluginMetadata, PluginCategory
-from plugins.source_selector import LLMSourceClassifier
 
 
 def _sample_plugins():
@@ -215,3 +214,19 @@ class TestLLMSourceClassifier:
         plugin_names = [s.plugin_name for s in result.selected_sources]
         assert "nonexistent_plugin" not in plugin_names
         assert "tavily_search" in plugin_names
+
+    @patch("plugins.source_selector.ChatOpenAI")
+    def test_strips_markdown_fences_from_response(self, mock_llm_cls):
+        """LLMs sometimes wrap JSON in ```json ... ``` fences."""
+        mock_llm = MagicMock()
+        mock_llm_cls.return_value = mock_llm
+        mock_llm.invoke.return_value = MagicMock(
+            content='```json\n{"claim_type": "demographics", "sources": [{"plugin_name": "ibge_sidra", "relevance": 0.9, "reason": "Population data"}]}\n```'
+        )
+
+        classifier = LLMSourceClassifier()
+        result = classifier.classify("população do Brasil", _sample_plugins())
+
+        assert result.claim_type == "demographics"
+        assert result.classification_method == "llm"
+        assert result.selected_sources[0].plugin_name == "ibge_sidra"

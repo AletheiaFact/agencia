@@ -86,7 +86,7 @@ Rules:
 
 
 class LLMSourceClassifier(SourceClassifier):
-    """LLM-based claim classifier using gpt-4o-mini.
+    """LLM-based claim classifier using gpt-5-mini.
 
     Classifies claims by type and recommends the most relevant data sources.
     Uses a cheap, fast model to minimize latency and cost.
@@ -95,7 +95,7 @@ class LLMSourceClassifier(SourceClassifier):
     alternatives (RuleBasedClassifier, EmbeddingClassifier).
     """
 
-    def __init__(self, model: str = "gpt-4o-mini", temperature: float = 0):
+    def __init__(self, model: str = "gpt-5-mini-2025-08-07", temperature: float = 0):
         self._model = model
         self._temperature = temperature
 
@@ -130,7 +130,7 @@ class LLMSourceClassifier(SourceClassifier):
             # Strip markdown code fences if present
             if raw.startswith("```"):
                 lines = raw.split("\n")
-                lines = [l for l in lines if not l.strip().startswith("```")]
+                lines = [line for line in lines if not line.strip().startswith("```")]
                 raw = "\n".join(lines).strip()
 
             data = json.loads(raw)
