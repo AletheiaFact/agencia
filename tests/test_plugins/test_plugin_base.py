@@ -209,10 +209,14 @@ class TestPluginCategory:
         expected = [
             "claim_databases", "government_data", "web_search",
             "knowledge_bases", "fact_check_orgs", "academic",
-            "legislation", "multimedia",
+            "legislation", "multimedia", "electoral",
         ]
         actual = [c.value for c in PluginCategory]
         assert sorted(actual) == sorted(expected)
+
+    def test_electoral_category_exists(self):
+        """ELECTORAL category should exist for TSE plugin."""
+        assert PluginCategory.ELECTORAL == "electoral"
 
 
 # --- Default method tests ---
