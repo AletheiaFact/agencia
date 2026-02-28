@@ -72,6 +72,10 @@ spec:
               value: OPENAI_API_KEY_STUB
             - name: SERPAPI_API_KEY
               value: SERPAPI_API_KEY_STUB
+            - name: TAVILY_API_KEY
+              value: TAVILY_API_KEY_STUB
+            - name: GOOGLE_FACTCHECK_API_KEY
+              value: GOOGLE_FACTCHECK_API_KEY_STUB
           resources:
             limits:
               cpu: 400m
