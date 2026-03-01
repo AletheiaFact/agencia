@@ -1,0 +1,12 @@
+version: "3"
+services:
+  mongodb:
+    container_name: agencia-mongodb
+    image: mongo:6.0.17
+    restart: unless-stopped
+    volumes:
+      - mongodb-data:/data/db
+    ports:
+      - "27017:27017"
+volumes:
+  mongodb-data:

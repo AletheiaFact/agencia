@@ -76,6 +76,8 @@ spec:
               value: TAVILY_API_KEY_STUB
             - name: GOOGLE_FACTCHECK_API_KEY
               value: GOOGLE_FACTCHECK_API_KEY_STUB
+            - name: MONGODB_URI
+              value: MONGODB_URI_STUB
           resources:
             limits:
               cpu: 400m
