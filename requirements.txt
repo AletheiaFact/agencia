@@ -34,9 +34,15 @@ faiss-cpu
 python-jose[cryptography]
 python-dotenv>=1.0.1,<2.0.0
 
+# Async MongoDB driver
+motor>=3.3.0,<4.0.0
+
 # Type system (using Python 3.11+ native typing)
 typing_extensions>=4.11.0,<5.0.0
 pydantic>=2.0.0,<3.0.0
 
 # Testing
 pytest>=8.0.0,<9.0.0
+pytest-asyncio>=0.23.0,<1.0.0
+httpx>=0.27.0,<1.0.0
+mongomock-motor>=0.0.36
