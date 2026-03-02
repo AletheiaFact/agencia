@@ -21,6 +21,7 @@ class AgentState(TypedDict, total=False):
     can_be_fact_checked: bool
     search_type: str
     language: str
+    sources: Optional[list[dict]]
 
     # Gazette pipeline — adaptive search loop fields
     search_strategies: Optional[list[str]]
