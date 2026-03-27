@@ -133,10 +133,10 @@ def _sample_plugins():
 
 
 class TestLLMSourceClassifier:
-    @patch("plugins.source_selector.ChatOpenAI")
-    def test_returns_valid_selection_result(self, mock_llm_cls):
+    @patch("plugins.source_selector.get_llm")
+    def test_returns_valid_selection_result(self, mock_get_llm):
         mock_llm = MagicMock()
-        mock_llm_cls.return_value = mock_llm
+        mock_get_llm.return_value = mock_llm
 
         # Simulate LLM returning valid JSON
         mock_llm.invoke.return_value = MagicMock(
@@ -152,10 +152,10 @@ class TestLLMSourceClassifier:
         assert len(result.selected_sources) >= 1
         assert result.selected_sources[0].plugin_name == "portal_transparencia"
 
-    @patch("plugins.source_selector.ChatOpenAI")
-    def test_falls_back_to_all_sources_on_parse_error(self, mock_llm_cls):
+    @patch("plugins.source_selector.get_llm")
+    def test_falls_back_to_all_sources_on_parse_error(self, mock_get_llm):
         mock_llm = MagicMock()
-        mock_llm_cls.return_value = mock_llm
+        mock_get_llm.return_value = mock_llm
         mock_llm.invoke.return_value = MagicMock(content="not valid json")
 
         classifier = LLMSourceClassifier()
@@ -167,10 +167,10 @@ class TestLLMSourceClassifier:
         # Should include all available plugins as fallback
         assert len(result.selected_sources) == len(plugins)
 
-    @patch("plugins.source_selector.ChatOpenAI")
-    def test_falls_back_on_llm_exception(self, mock_llm_cls):
+    @patch("plugins.source_selector.get_llm")
+    def test_falls_back_on_llm_exception(self, mock_get_llm):
         mock_llm = MagicMock()
-        mock_llm_cls.return_value = mock_llm
+        mock_get_llm.return_value = mock_llm
         mock_llm.invoke.side_effect = Exception("API timeout")
 
         classifier = LLMSourceClassifier()
@@ -181,10 +181,10 @@ class TestLLMSourceClassifier:
         assert result.classification_method == "llm_fallback"
         assert len(result.selected_sources) == len(plugins)
 
-    @patch("plugins.source_selector.ChatOpenAI")
-    def test_passes_plugin_descriptions_in_prompt(self, mock_llm_cls):
+    @patch("plugins.source_selector.get_llm")
+    def test_passes_plugin_descriptions_in_prompt(self, mock_get_llm):
         mock_llm = MagicMock()
-        mock_llm_cls.return_value = mock_llm
+        mock_get_llm.return_value = mock_llm
         mock_llm.invoke.return_value = MagicMock(
             content='{"claim_type": "general", "sources": []}'
         )
@@ -198,11 +198,11 @@ class TestLLMSourceClassifier:
         assert "portal_transparencia" in prompt_content
         assert "ibge_sidra" in prompt_content
 
-    @patch("plugins.source_selector.ChatOpenAI")
-    def test_filters_unknown_plugin_names(self, mock_llm_cls):
+    @patch("plugins.source_selector.get_llm")
+    def test_filters_unknown_plugin_names(self, mock_get_llm):
         """LLM may hallucinate plugin names — those should be filtered out."""
         mock_llm = MagicMock()
-        mock_llm_cls.return_value = mock_llm
+        mock_get_llm.return_value = mock_llm
         mock_llm.invoke.return_value = MagicMock(
             content='{"claim_type": "general", "sources": [{"plugin_name": "nonexistent_plugin", "relevance": 0.9, "reason": "hallucinated"}, {"plugin_name": "tavily_search", "relevance": 0.8, "reason": "real"}]}'
         )
@@ -215,11 +215,11 @@ class TestLLMSourceClassifier:
         assert "nonexistent_plugin" not in plugin_names
         assert "tavily_search" in plugin_names
 
-    @patch("plugins.source_selector.ChatOpenAI")
-    def test_strips_markdown_fences_from_response(self, mock_llm_cls):
+    @patch("plugins.source_selector.get_llm")
+    def test_strips_markdown_fences_from_response(self, mock_get_llm):
         """LLMs sometimes wrap JSON in ```json ... ``` fences."""
         mock_llm = MagicMock()
-        mock_llm_cls.return_value = mock_llm
+        mock_get_llm.return_value = mock_llm
         mock_llm.invoke.return_value = MagicMock(
             content='```json\n{"claim_type": "demographics", "sources": [{"plugin_name": "ibge_sidra", "relevance": 0.9, "reason": "Population data"}]}\n```'
         )
