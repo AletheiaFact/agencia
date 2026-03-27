@@ -6,10 +6,10 @@ or refine the search queries for another iteration.
 
 import logging
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from llm import get_llm
 from state import AgentState
 
 logger = logging.getLogger(__name__)
@@ -75,19 +75,10 @@ def evaluate_evidence(state: AgentState) -> dict:
             ],
         }
 
-    # Check if top candidate has a strong relevance score
-    top_score = candidates[0].get("_relevance_score", 0) if candidates else 0
-    if top_score >= 7:
-        logger.info("[evaluate_evidence] Top score %d >= 7, SUFFICIENT without LLM", top_score)
-        return {
-            "evidence_sufficient": True,
-            "reasoning_log": [
-                f"[evaluate_evidence] Iteration {iteration + 1}/3 — top score {top_score}/10, evidence sufficient"
-            ],
-        }
-
-    # Use LLM for borderline cases
-    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
+    # Use LLM to independently evaluate evidence sufficiency
+    # (Previously short-circuited on score>=7, but that score came from
+    # the same LLM in fetch_and_score — a self-evaluation bias.)
+    llm = get_llm()
     chain = _prompt | llm | StrOutputParser()
     result = chain.invoke({
         "claim": claim,

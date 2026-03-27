@@ -7,10 +7,10 @@ confidence level, and a reasoning_log timeline in the structured JSON output.
 import json
 import logging
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from llm import get_llm
 from state import AgentState
 from utils.llm_retry import invoke_with_retry
 
@@ -68,7 +68,7 @@ def create_gazette_report(state: AgentState) -> dict:
         claim[:80], len(gazette_sources), len(reasoning_log),
     )
 
-    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
+    llm = get_llm(mini=True)
     chain = _prompt | llm | StrOutputParser()
     result = invoke_with_retry(
         chain,

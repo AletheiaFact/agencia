@@ -30,6 +30,8 @@ class AgentState(TypedDict, total=False):
     selected_gazettes: Optional[list[dict]]
     evidence_summary: Optional[str]
     gazette_analysis: Optional[str]
+    raw_gazette_passages: Optional[str]
+    contradictory_evidence: Optional[str]
     cross_check_result: Optional[str]
     reasoning_log: Annotated[list[str], operator.add]
 

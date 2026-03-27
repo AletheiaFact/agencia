@@ -10,8 +10,9 @@ import logging
 from abc import ABC, abstractmethod
 
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_openai import ChatOpenAI
 from pydantic import BaseModel, Field
+
+from llm import get_llm
 
 from plugins.base import PluginMetadata
 
@@ -86,7 +87,7 @@ Rules:
 
 
 class LLMSourceClassifier(SourceClassifier):
-    """LLM-based claim classifier using gpt-5-mini.
+    """LLM-based claim classifier using the mini model.
 
     Classifies claims by type and recommends the most relevant data sources.
     Uses a cheap, fast model to minimize latency and cost.
@@ -94,9 +95,6 @@ class LLMSourceClassifier(SourceClassifier):
     This is the MVP strategy. See SourceClassifier docstring for future
     alternatives (RuleBasedClassifier, EmbeddingClassifier).
     """
-
-    def __init__(self, model: str = "gpt-5-mini-2025-08-07"):
-        self._model = model
 
     def classify(
         self, claim: str, available_plugins: list[PluginMetadata]
@@ -106,7 +104,7 @@ class LLMSourceClassifier(SourceClassifier):
         )
 
         try:
-            llm = ChatOpenAI(model=self._model)
+            llm = get_llm(mini=True)
             response = llm.invoke([
                 SystemMessage(content=_CLASSIFIER_SYSTEM_PROMPT.format(
                     plugins_description=plugins_desc

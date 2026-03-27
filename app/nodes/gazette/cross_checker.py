@@ -6,10 +6,10 @@ including evidence_summary and selected_gazettes metadata.
 
 import logging
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from llm import get_llm
 from state import AgentState
 from utils.llm_retry import invoke_with_retry
 
@@ -18,24 +18,32 @@ logger = logging.getLogger(__name__)
 _prompt = ChatPromptTemplate.from_messages([
     (
         "system",
-        """You are an expert data analyst specialized in creating fact-checking reports.
+        """You are an independent fact-checking evaluator. You receive evidence from multiple sources
+and must cross-reference them to reach an impartial classification.
 
-Your goal: Perform a deep and thorough analysis to derive an informed conclusion by comparing
-collected gazette evidence with the claim. Use critical thinking and analytical skills to assess
-the accuracy and relevance of the data.
+CRITICAL: You receive three types of evidence below. The AI-generated analysis may contain bias.
+You MUST cross-reference it against the raw gazette passages. If the analysis claims something
+not supported by the raw passages, note the discrepancy. If the raw passages contain relevant
+information the analysis omitted, factor it into your classification.
 
 Claim: {claim}
 
-Gazette deep analysis (from multiple documents):
+--- RAW GAZETTE PASSAGES (not filtered by AI — review independently) ---
+{raw_passages}
+
+--- AI-GENERATED ANALYSIS (may contain bias — cross-reference with raw passages above) ---
 {gazette_analysis}
 
-Evidence summary (key excerpts from search):
+--- CONTRADICTORY EVIDENCE (independently extracted — weigh carefully) ---
+{contradictory_evidence}
+
+--- EVIDENCE SUMMARY (key search excerpts) ---
 {evidence_summary}
 
-Gazettes analyzed:
+--- GAZETTES ANALYZED ---
 {gazette_metadata}
 
-CLASSIFICATION — Assign one of the following labels based on your analysis:
+CLASSIFICATION — Assign one of the following labels:
 
 - Not Fact: The information lacks evidence or a factual basis.
 - Trustworthy: The information is reliable, backed by evidence or reputable sources.
@@ -47,12 +55,18 @@ CLASSIFICATION — Assign one of the following labels based on your analysis:
 - Exaggerated: Contains elements of truth but is overstated or embellished.
 - Unverifiable: Cannot be substantiated through the gazette sources searched.
 
-IMPORTANT REASONING GUIDELINES:
+REASONING GUIDELINES:
 - Pay careful attention to dates, names, and specific details in both the claim and evidence
 - Distinguish between similar but different events (e.g., "conducted exam" vs. "called approved candidates")
 - If evidence partially supports the claim, use "Trustworthy, but" or "Arguable" rather than "Trustworthy"
 - If no relevant evidence was found after searching, use "Unverifiable"
 - Cite specific gazette data (dates, contract numbers, names) to support your classification
+- Note any discrepancies between the AI analysis and the raw passages
+
+CONFIDENCE ASSESSMENT — After your classification, provide:
+- Evidence quality: high/medium/low (how relevant are the raw passages to the claim?)
+- Analysis accuracy: high/medium/low (does the AI analysis faithfully represent the raw passages?)
+- Overall confidence: high/medium/low (how confident are you in this classification?)
 
 Compile a comprehensive report detailing your investigative process, key findings, and evidence.""",
     ),
@@ -60,10 +74,16 @@ Compile a comprehensive report detailing your investigative process, key finding
 
 
 def cross_check(state: AgentState) -> dict:
-    """Cross-check gazette evidence against the claim using gpt-5."""
+    """Cross-check gazette evidence against the claim with independent verification.
+
+    Receives raw passages alongside LLM summaries so the classifier can
+    cross-reference and detect bias in the AI-generated analysis.
+    """
     claim = state["claim"]
     gazette_analysis = state.get("gazette_analysis", "")
     evidence_summary = state.get("evidence_summary", "")
+    raw_passages = state.get("raw_gazette_passages", "")
+    contradictory_evidence = state.get("contradictory_evidence", "")
     selected = state.get("selected_gazettes", [])
 
     # Format gazette metadata
@@ -79,22 +99,29 @@ def cross_check(state: AgentState) -> dict:
     else:
         gazette_metadata = "No gazette documents were analyzed."
 
+    # Truncate inputs for context window management
+    raw_passages_truncated = raw_passages[:4000] if raw_passages else "No raw passages available."
+    contra_truncated = contradictory_evidence[:2000] if contradictory_evidence else "No contradictory evidence extracted."
+
     logger.info(
-        "[cross_check] Starting — claim='%s' analysis_len=%d gazettes=%d",
-        claim[:80], len(gazette_analysis), len(selected),
+        "[cross_check] Starting — claim='%s' analysis_len=%d raw_len=%d contra_len=%d gazettes=%d",
+        claim[:80], len(gazette_analysis), len(raw_passages_truncated),
+        len(contra_truncated), len(selected),
     )
 
-    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
+    llm = get_llm()
     chain = _prompt | llm | StrOutputParser()
     result = invoke_with_retry(
         chain,
         params={
             "claim": claim,
-            "gazette_analysis": gazette_analysis[:6000],
-            "evidence_summary": evidence_summary[:3000],
+            "gazette_analysis": gazette_analysis[:5000],
+            "evidence_summary": evidence_summary[:2000],
             "gazette_metadata": gazette_metadata,
+            "raw_passages": raw_passages_truncated,
+            "contradictory_evidence": contra_truncated,
         },
-        truncatable_keys=["gazette_analysis", "evidence_summary"],
+        truncatable_keys=["gazette_analysis", "evidence_summary", "raw_passages"],
     )
 
     logger.info("[cross_check] Completed — result length=%d chars", len(result))

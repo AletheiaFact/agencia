@@ -7,10 +7,10 @@ operators, designed to maximize the chance of finding relevant gazette evidence.
 import logging
 import os
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from llm import get_llm
 from state import AgentState
 
 logger = logging.getLogger(__name__)
@@ -64,7 +64,7 @@ def plan_search(state: AgentState) -> dict:
 
     logger.info("[plan_search] Starting — claim='%s' city='%s'", claim[:80], city)
 
-    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
+    llm = get_llm()
     chain = _prompt | llm | StrOutputParser()
     result = chain.invoke({
         "claim": claim,

@@ -8,10 +8,10 @@ Uses map-reduce to handle large documents without losing evidence:
 
 import logging
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from llm import get_llm
 from state import AgentState
 from tools.gazette_deep_search import gazette_deep_search
 from utils.llm_retry import invoke_with_retry
@@ -20,18 +20,38 @@ logger = logging.getLogger(__name__)
 
 MAX_GAZETTES = 3
 BATCH_CHAR_LIMIT = 4000  # chars per batch sent to LLM
+RAW_PASSAGES_LIMIT = 8000  # max chars of raw passages to preserve in state
+
+_contradiction_prompt = ChatPromptTemplate.from_messages([
+    (
+        "system",
+        """You are a critical reviewer tasked with finding evidence AGAINST a claim.
+Your job is adversarial: actively look for facts that CONTRADICT, WEAKEN, or cast doubt on the claim.
+
+Claim: {claim}
+
+Raw gazette passages:
+{raw_passages}
+
+List every fact in these passages that could contradict or weaken the claim.
+Include: wrong dates, different amounts, different parties, missing expected records,
+contradictory statements, or any detail that does not match the claim.
+
+If the passages genuinely contain no contradictory evidence, explain:
+1. What contradictory evidence would look like for this claim
+2. Whether the absence of expected records is itself significant
+
+Be thorough and specific. Cite passage details.""",
+    ),
+])
 
 _batch_prompt = ChatPromptTemplate.from_messages([
     (
         "system",
         """You are an expert analyst for Brazilian municipal gazettes.
 
-Given a claim and a batch of gazette passages, extract ALL relevant evidence:
-- Names, dates, contract numbers, monetary values, decree numbers
-- Specific facts that support OR contradict the claim
-- Context that helps evaluate the claim's accuracy
-
-Be thorough — do not omit any detail that could be relevant.
+Given a claim and a batch of gazette passages, extract evidence organized into three categories.
+Be thorough and impartial — give equal attention to supporting AND contradicting evidence.
 
 Claim: {claim}
 Questions: {questions}
@@ -39,7 +59,19 @@ Questions: {questions}
 Passages (batch {batch_number} of {total_batches}):
 {passages}
 
-Extract all relevant evidence from these passages. Be specific and cite details.""",
+Organize your extraction as follows:
+
+SUPPORTING EVIDENCE:
+- [List specific facts, dates, names, contract numbers, monetary values that SUPPORT the claim]
+
+CONTRADICTING EVIDENCE:
+- [List specific facts that CONTRADICT or cast doubt on the claim]
+- [If none found, explain what you would expect to find if the claim were false]
+
+AMBIGUOUS/CONTEXTUAL INFORMATION:
+- [Facts that neither clearly support nor contradict, but provide useful context]
+
+Be specific and cite details from the passages.""",
     ),
 ])
 
@@ -49,13 +81,16 @@ _merge_prompt = ChatPromptTemplate.from_messages([
         """You are an expert data analyst for Brazilian municipal gazettes.
 
 You have received evidence summaries extracted from multiple batches of gazette passages.
-Synthesize them into a single comprehensive analysis covering:
+Synthesize them into a single comprehensive analysis. Give EQUAL weight to supporting
+and contradicting evidence — do not let volume of supporting evidence overshadow contradictions.
 
-1. What specific evidence was found in the gazettes
-2. Which gazette(s) contain the most relevant information
+Structure your analysis as:
+
+1. SUPPORTING evidence found across all batches — specific facts backing the claim
+2. CONTRADICTING evidence found across all batches — specific facts opposing the claim (give this EQUAL attention even if less evidence exists)
 3. Key facts: names, dates, contract numbers, monetary values, decree numbers
-4. Whether the evidence supports, contradicts, or is ambiguous about the claim
-5. Any contradictions or inconsistencies across different passages
+4. Weight of evidence: does the balance lean toward supporting or contradicting the claim?
+5. Evidence GAPS: what evidence is MISSING that you would expect to find if the claim were true/false?
 
 Claim: {claim}
 Questions: {questions}
@@ -63,7 +98,7 @@ Questions: {questions}
 Evidence from all batches:
 {batch_summaries}
 
-Provide a thorough, evidence-based analysis. Cite specific details.
+Provide a thorough, impartial analysis. Cite specific details.
 If the evidence is insufficient, say so clearly.""",
     ),
 ])
@@ -153,7 +188,7 @@ def download_and_analyze(state: AgentState) -> dict:
 
     # MAP phase: split passages into batches and extract evidence from each
     batches = _split_into_batches(passages, BATCH_CHAR_LIMIT)
-    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
+    llm = get_llm(mini=True)
     questions_display = questions_str or "No specific questions provided."
 
     analysis_method = ""
@@ -218,14 +253,32 @@ def download_and_analyze(state: AgentState) -> dict:
             truncatable_keys=["batch_summaries"],
         )
 
+    # Adversarial extraction: dedicated call hunting for contradictions
+    raw_passages_truncated = passages[:RAW_PASSAGES_LIMIT]
     logger.info(
-        "[download_and_analyze] Completed — analysis length=%d chars, gazettes=%d",
-        len(analysis), len(top_gazettes),
+        "[download_and_analyze] Running adversarial contradiction extraction (%d chars)",
+        len(raw_passages_truncated),
+    )
+    contra_chain = _contradiction_prompt | get_llm(mini=True) | StrOutputParser()
+    contra_analysis = invoke_with_retry(
+        contra_chain,
+        params={
+            "claim": claim,
+            "raw_passages": raw_passages_truncated,
+        },
+        truncatable_keys=["raw_passages"],
+    )
+
+    logger.info(
+        "[download_and_analyze] Completed — analysis=%d chars, contradictions=%d chars, gazettes=%d",
+        len(analysis), len(contra_analysis), len(top_gazettes),
     )
 
     gazette_names = [f"{g.get('territory_name', '?')} ({g.get('date', '?')})" for g in top_gazettes]
     return {
         "gazette_analysis": analysis,
+        "raw_gazette_passages": raw_passages_truncated,
+        "contradictory_evidence": contra_analysis,
         "selected_gazettes": [
             {
                 "territory_name": g.get("territory_name", ""),
@@ -239,5 +292,6 @@ def download_and_analyze(state: AgentState) -> dict:
         "reasoning_log": [
             f"[deep_analyzer] Downloaded and analyzed {len(urls)} gazettes via {analysis_method}: "
             + ", ".join(gazette_names)
+            + f". Adversarial extraction: {len(contra_analysis)} chars of contradictory evidence."
         ],
     }

@@ -2,11 +2,11 @@
 
 import logging
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.agents import create_tool_calling_agent, AgentExecutor
 from langchain_community.document_loaders import WebBaseLoader
 
+from llm import get_llm
 from state import AgentState
 from tools.web_search import get_search_tool
 from plugins.registry import get_langchain_tools, get_tools_for_selection
@@ -49,7 +49,7 @@ def search_online(state: AgentState) -> dict:
         doc_context = load_document[0].page_content
         logger.info("[search_online] Loaded source content (length=%d chars)", len(doc_context))
 
-    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
+    llm = get_llm()
     search_tool = get_search_tool()
     tools = [search_tool]
     # Use source selection results if available, otherwise fall back to all plugins

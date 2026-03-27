@@ -1,0 +1,77 @@
+{
+  "_meta": {
+    "description": "Reusable test claims for validating the fact-checking pipeline. Each claim has an expected classification range to track consistency across model/provider changes.",
+    "version": "1.0.0",
+    "categories": ["online", "gazettes", "factcheck_shortcircuit"]
+  },
+  "claims": [
+    {
+      "id": "online-01",
+      "claim": "The Earth is flat",
+      "language": "en",
+      "search_type": "online",
+      "context": {},
+      "expected_classifications": ["False"],
+      "difficulty": "easy",
+      "notes": "Well-known false claim. Should be classified as False with high confidence."
+    },
+    {
+      "id": "online-02",
+      "claim": "O Brasil foi o primeiro país a adotar a urna eletrônica em eleições nacionais",
+      "language": "pt",
+      "search_type": "online",
+      "context": {},
+      "expected_classifications": ["Trustworthy", "Trustworthy, but", "Arguable", "Unverifiable"],
+      "difficulty": "medium",
+      "notes": "Brazil was a pioneer but not strictly 'first' depending on definition. Tests nuanced classification. May return Unverifiable if web search doesn't find definitive sources."
+    },
+    {
+      "id": "online-03",
+      "claim": "COVID-19 vaccines contain microchips for tracking people",
+      "language": "en",
+      "search_type": "online",
+      "context": {},
+      "expected_classifications": ["False"],
+      "difficulty": "easy",
+      "notes": "Well-known conspiracy theory. Should be classified as False."
+    },
+    {
+      "id": "online-04",
+      "claim": "A Amazônia produz 20% do oxigênio do mundo",
+      "language": "pt",
+      "search_type": "online",
+      "context": {},
+      "expected_classifications": ["Exaggerated", "Misleading", "Arguable"],
+      "difficulty": "medium",
+      "notes": "Common claim that oversimplifies — Amazon's net O2 contribution is debated. Tests Exaggerated/Misleading detection."
+    },
+    {
+      "id": "gazette-01",
+      "claim": "A prefeitura de São Paulo abriu licitação para compra de uniformes escolares em 2024",
+      "language": "pt",
+      "search_type": "gazettes",
+      "context": {
+        "city": "São Paulo",
+        "published_since": "2024-01-01",
+        "published_until": "2024-12-31"
+      },
+      "expected_classifications": ["Trustworthy", "Trustworthy, but", "Unverifiable"],
+      "difficulty": "medium",
+      "notes": "Tests gazette pipeline with a plausible municipal procurement claim."
+    },
+    {
+      "id": "gazette-02",
+      "claim": "O município de Curitiba publicou decreto sobre restrições de circulação durante a pandemia",
+      "language": "pt",
+      "search_type": "gazettes",
+      "context": {
+        "city": "Curitiba",
+        "published_since": "2020-03-01",
+        "published_until": "2021-12-31"
+      },
+      "expected_classifications": ["Trustworthy", "Trustworthy, but"],
+      "difficulty": "easy",
+      "notes": "High-probability gazette hit — COVID decrees were widely published."
+    }
+  ]
+}

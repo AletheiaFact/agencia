@@ -14,7 +14,11 @@ env:
   KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
   IMAGE: agencia-production
   ENVIRONMENT: development
+  LLM_PROVIDER: ${{ secrets.LLM_PROVIDER }}
+  LLM_MODEL: ${{ secrets.LLM_MODEL }}
+  LLM_MODEL_MINI: ${{ secrets.LLM_MODEL_MINI }}
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
   SERPAPI_API_KEY: ${{ secrets.SERPAPI_API_KEY }}
   TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
   GOOGLE_FACTCHECK_API_KEY: ${{ secrets.GOOGLE_FACTCHECK_API_KEY }}
@@ -78,7 +82,11 @@ jobs:
         run: |
           sed -i "s/TAG/$GITHUB_SHA/" deployment/app.yml
           sed -i 's%ENVIRONMENT%${{ env.ENVIRONMENT }}%g' deployment/app.yml
+          sed -i "s%LLM_PROVIDER_STUB%${{ env.LLM_PROVIDER }}%g" deployment/app.yml
+          sed -i "s%LLM_MODEL_STUB%${{ env.LLM_MODEL }}%g" deployment/app.yml
+          sed -i "s%LLM_MODEL_MINI_STUB%${{ env.LLM_MODEL_MINI }}%g" deployment/app.yml
           sed -i "s%OPENAI_API_KEY_STUB%${{ env.OPENAI_API_KEY }}%g" deployment/app.yml
+          sed -i "s%ANTHROPIC_API_KEY_STUB%${{ env.ANTHROPIC_API_KEY }}%g" deployment/app.yml
           sed -i "s%SERPAPI_API_KEY_STUB%${{ env.SERPAPI_API_KEY }}%g" deployment/app.yml
           sed -i "s%TAVILY_API_KEY_STUB%${{ env.TAVILY_API_KEY }}%g" deployment/app.yml
           sed -i "s%GOOGLE_FACTCHECK_API_KEY_STUB%${{ env.GOOGLE_FACTCHECK_API_KEY }}%g" deployment/app.yml
