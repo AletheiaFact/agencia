@@ -8,10 +8,10 @@ Uses map-reduce to handle large documents without losing evidence:
 
 import logging
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from llm import get_llm
 from state import AgentState
 from tools.gazette_deep_search import gazette_deep_search
 from utils.llm_retry import invoke_with_retry
@@ -153,7 +153,7 @@ def download_and_analyze(state: AgentState) -> dict:
 
     # MAP phase: split passages into batches and extract evidence from each
     batches = _split_into_batches(passages, BATCH_CHAR_LIMIT)
-    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
+    llm = get_llm(mini=True)
     questions_display = questions_str or "No specific questions provided."
 
     analysis_method = ""

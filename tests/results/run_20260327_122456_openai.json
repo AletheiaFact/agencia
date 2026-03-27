@@ -1,0 +1,80 @@
+{
+  "run_id": "03b11a9bbbd8",
+  "timestamp": "2026-03-27T15:24:56.436490+00:00",
+  "tag": "openai",
+  "provider": "openai",
+  "model": "default",
+  "model_mini": "default",
+  "total_claims": 1,
+  "passed": 1,
+  "failed": 0,
+  "errors": 0,
+  "total_duration_seconds": 80.02,
+  "results": [
+    {
+      "claim_id": "online-01",
+      "claim": "The Earth is flat",
+      "search_type": "online",
+      "language": "en",
+      "expected_classifications": [
+        "False"
+      ],
+      "session_id": "e2e-test-4ddbcb2e",
+      "execution_id": "623af91c23ad4a4e9ba001f91523b7c6",
+      "started_at": "2026-03-27T15:23:36.414739+00:00",
+      "completed_at": "2026-03-27T15:24:56.436019+00:00",
+      "duration_seconds": 80.02,
+      "status": "complete",
+      "classification": "False",
+      "classification_match": true,
+      "steps": [
+        "[list_questions] Generated verification questions (1479 chars)",
+        "[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=The+Earth+is+flat&languageCode=en&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c",
+        "[select_sources] Classified claim as 'general', selected 3 sources: ['wikipedia', 'google_factcheck', 'tavily_search'] (method=llm)",
+        "still working...",
+        "[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 5227 chars of evidence",
+        "still working...",
+        "[create_report] Final report generated (9732 chars)"
+      ],
+      "final_message": {
+        "claim": "The Earth is flat",
+        "context": {},
+        "messages": "{\n  \"classification\": \"False\",\n  \"summary\": \"The claim “The Earth is flat” is contradicted by multiple independent, long-established and modern lines of evidence (astronomical observations, repeatable ground measurements, satellite imagery and tracking, and the operational requirements of GPS/GNSS and global navigation). The preponderance of verifiable evidence supports Earth being approximately spherical (more precisely an oblate spheroid), not flat.\",\n  \"questions\": [\n    \"What do independent geodesists (e.g., national geodetic agencies like NGS/NOAA, Ordnance Survey, or equivalent) report about Earth’s shape based on their measurement datasets (triangulation, satellite geodesy, gravimetry), and can they provide raw data and methodology for verification?\",\n    \"What do NASA/ESA/JAXA (or other space agencies) provide as primary-source evidence (mission telemetry, tracking data, star-tracker logs, and unedited imagery with provenance) for Earth’s curvature, and can independent analysts audit that material end-to-end?\",\n    \"What do commercial airlines and maritime navigation authorities say about how long-haul routes are planned (great-circle routing), and can they supply flight plans, GPS logs, and inertial navigation data that can be independently checked against flat vs. spherical Earth predictions?\",\n    \"What do telecommunications and satellite operators (Iridium, Starlink, Inmarsat, GPS/GNSS providers) state about network/satellite geometry, orbital mechanics, and coverage footprints, and can they provide public technical documentation or datasets that would be inconsistent with a flat Earth model?\",\n    \"What results do independent observational experiments (conducted by surveyors/physicists) show—e.g., horizon dip vs. altitude, ship-hull disappearance, simultaneous time-zone solar angles, and stellar constellations by latitude—and are their protocols, locations, instruments, and raw measurements publicly reproducible?\"\n  ],\n  \"report\": \"### Claim\\n“The Earth is flat.”\\n\\n### Key finding\\nThe claim is **false**. A flat-Earth model fails to account for a wide range of mutually reinforcing observations and measurement systems that are repeatable and used operationally worldwide.\\n\\n### Evidence reviewed (from provided web context)\\nThe supplied web context relies primarily on a **Reuters fact check** and a **popular-science explainer (Astronomy magazine)**, plus a **Wikipedia** overview for context.\\n\\n#### 1) Repeatable ground/astronomy measurements indicate curvature\\n- **Eratosthenes-style shadow measurements**: Comparing shadow angles at different latitudes at the same time implies curvature and yields an estimate of Earth’s circumference. Reuters references this as early experimental evidence and the logic remains reproducible with basic instruments and careful timing.\\n  - Source: Reuters fact check (Alexander Gleason map does not prove flat Earth) — https://www.reuters.com/article/fact-check/alexander-gleasons-map-of-the-world-does-not-prove-the-earth-is-flat-idUSL1N31S27S/\\n- **Polaris altitude changes with latitude**: The observed change in the North Star’s angle above the horizon tracks latitude in a way consistent with a spherical Earth. Reuters cites this as an observational rebuttal to flat-Earth geometry.\\n  - Source: Reuters — same link as above.\\n- **Objects disappearing bottom-first over distance**: Reports/observations (often demonstrated with ships) of hull-first disappearance align with curvature (with atmospheric refraction as a known secondary factor that can affect exact distances but not reverse the overall geometry). Astronomy magazine discusses this among common debunks.\\n  - Source: Astronomy — https://www.astronomy.com/astronomy-for-beginners/why-earth-is-not-flat-the-conspiracy-debunked/\\n\\n#### 2) Lunar eclipses show a consistently round Earth shadow\\nDuring a lunar eclipse, Earth’s shadow on the Moon appears round. A consistently circular shadow across different eclipse geometries is naturally explained by a spherical Earth. Reuters cites expert commentary to this effect, and Astronomy discusses it as well.\\n- Source: Reuters — https://www.reuters.com/article/fact-check/alexander-gleasons-map-of-the-world-does-not-prove-the-earth-is-flat-idUSL1N31S27S/\\n- Source: Astronomy — https://www.astronomy.com/astronomy-for-beginners/why-earth-is-not-flat-the-conspiracy-debunked/\\n\\n#### 3) Space-based observation and imagery consistently show a globe\\nThe provided context notes extensive images and videos from satellites and crewed missions (e.g., ISS) showing Earth as a globe. While some flat-Earth arguments allege fabrication, the claim must contend not with a single source but with multiple independent streams of imagery and observations across decades.\\n- Source: Reuters — https://www.reuters.com/article/fact-check/alexander-gleasons-map-of-the-world-does-not-prove-the-earth-is-flat-idUSL1N31S27S/\\n- Additional historical context on Earth imagery: Nautilus — https://nautil.us/the-photos-that-shaped-our-understanding-of-earths-shape-1258527\\n\\n#### 4) GPS/GNSS operational requirements conflict with flat-Earth models\\nReuters reports expert statements that GPS “would make no sense” under a flat-Earth picture. In practice, global navigation depends on satellites in orbit and a consistent Earth-centered coordinate framework; large, systematic discrepancies would emerge if Earth were planar in the manner claimed.\\n- Source: Reuters — https://www.reuters.com/article/fact-check/alexander-gleasons-map-of-the-world-does-not-prove-the-earth-is-flat-idUSL1N31S27S/\\n\\n#### 5) “Flat maps prove a flat Earth” misunderstands map projections\\nThe argument that a flat map implies a flat Earth is a category error: projecting a 3D surface onto 2D necessarily creates distortions (distance/area/shape). Reuters explicitly addresses this point with expert explanation.\\n- Source: Reuters — https://www.reuters.com/article/fact-check/alexander-gleasons-map-of-the-world-does-not-prove-the-earth-is-flat-idUSL1N31S27S/\\n\\n### Source quality and weighting\\n- **Reuters** (high reliability as a mainstream wire-service fact-check operation) is the strongest source in the provided set and directly addresses flat-Earth arguments with expert input.\\n- **Astronomy magazine** is a reputable popular-science outlet; it is useful for explanation and synthesis, though it is secondary rather than primary data.\\n- **Wikipedia** provides contextual description of modern flat-Earth belief; it is not treated as primary evidence but can help summarize the landscape of claims.\\n\\n### Conclusion\\nGiven the convergence of repeatable observations (shadows/latitude-star geometry, eclipse shadows, horizon/occlusion phenomena), plus the operational consistency of satellite navigation and abundant space-based observation, the statement “The Earth is flat” is **demonstrably untrue**. The best-supported scientific description is that Earth is approximately spherical (specifically an oblate spheroid).\",\n  \"verification\": \"### Approach\\n1. **Claim parsing**: Interpreted the claim as a literal geometric assertion (Earth is planar), which makes testable predictions about shadows, horizons, celestial navigation, and satellite behavior.\\n2. **Evidence triangulation**: Cross-checked multiple independent categories of evidence cited in the provided context:\\n   - classical/ground geometry (Eratosthenes-style measurements),\\n   - observational astronomy (Polaris altitude vs. latitude; lunar eclipse shadow),\\n   - remote sensing/space imagery,\\n   - engineering/operational systems (GPS/GNSS feasibility),\\n   - cartography logic (map projections).\\n3. **Source weighting**: Weighted higher-reliability sources more heavily (Reuters > popular-science explainer > Wikipedia context), consistent with the supplied guidance.\\n\\n### Tools and materials\\n- Relied on the **provided web context and links**, especially the Reuters fact-check article and supporting popular-science discussion.\\n- Did not use Google Fact Check Tools directly because the provided context notes an access error (HTTP 403) during attempted retrieval.\\n\\n### Verification logic (how the claim is falsified)\\n- Evaluated whether a flat-Earth model can simultaneously explain: (a) latitude-dependent star angles, (b) round eclipse shadows, (c) reproducible circumference estimates from separated shadow angles, and (d) satellite navigation/orbits as used in practice.\\n- The claim fails under this multi-domain consistency check: it requires ad hoc assumptions to address each domain and still conflicts with how global navigation and observation work.\\n\\n### Limitations\\n- This report is constrained to the sources and context supplied in the prompt; it does not include fresh retrieval of primary datasets (e.g., raw GNSS observables, SLR data, or geodetic agency reports). However, the evidence cited is sufficient to classify the claim as false because it rests on well-established, independently verifiable observations.\",\n  \"reasoning_log\": [\n    \"[list_questions] Generated verification questions (1479 chars)\",\n    \"[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=The+Earth+is+flat&languageCode=en&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c\",\n    \"[select_sources] Classified claim as 'general', selected 3 sources: ['wikipedia', 'google_factcheck', 'tavily_search'] (method=llm)\",\n    \"[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 5227 chars of evidence\",\n    \"[create_report] Final report generated (9018 chars)\"\n  ]\n}",
+        "questions": "[\n  \"What do independent geodesists (e.g., national geodetic agencies like NGS/NOAA, Ordnance Survey, or equivalent) report about Earth’s shape based on their measurement datasets (triangulation, satellite geodesy, gravimetry), and can they provide raw data and methodology for verification?\",\n  \"What do NASA/ESA/JAXA (or other space agencies) provide as primary-source evidence (mission telemetry, tracking data, star-tracker logs, and unedited imagery with provenance) for Earth’s curvature, and can independent analysts audit that material end-to-end?\",\n  \"What do commercial airlines and maritime navigation authorities say about how long-haul routes are planned (great-circle routing), and can they supply flight plans, GPS logs, and inertial navigation data that can be independently checked against flat vs. spherical Earth predictions?\",\n  \"What do telecommunications and satellite operators (Iridium, Starlink, Inmarsat, GPS/GNSS providers) state about network/satellite geometry, orbital mechanics, and coverage footprints, and can they provide public technical documentation or datasets that would be inconsistent with a flat Earth model?\",\n  \"What results do independent observational experiments (conducted by surveyors/physicists) show—e.g., horizon dip vs. altitude, ship-hull disappearance, simultaneous time-zone solar angles, and stellar constellations by latitude—and are their protocols, locations, instruments, and raw measurements publicly reproducible?\"\n]",
+        "search_type": "online",
+        "language": "en",
+        "reasoning_log": [
+          "[list_questions] Generated verification questions (1479 chars)",
+          "[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=The+Earth+is+flat&languageCode=en&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c",
+          "[select_sources] Classified claim as 'general', selected 3 sources: ['wikipedia', 'google_factcheck', 'tavily_search'] (method=llm)",
+          "[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 5227 chars of evidence",
+          "[create_report] Final report generated (9732 chars)"
+        ],
+        "existing_factchecks": [],
+        "selected_sources": [
+          {
+            "plugin_name": "wikipedia",
+            "relevance": 1.0,
+            "reason": "Authoritative encyclopedic article on Earth's shape, geodesy, and historical/observational evidence (spherical/oblate spheroid)."
+          },
+          {
+            "plugin_name": "google_factcheck",
+            "relevance": 0.7,
+            "reason": "Searches existing fact-checks that directly address flat Earth claims and summarize expert rebuttals."
+          },
+          {
+            "plugin_name": "tavily_search",
+            "relevance": 0.6,
+            "reason": "General web search to retrieve scientific articles, educational resources, and experiments demonstrating Earth's curvature for verification and public explanations."
+          }
+        ],
+        "source_confidence": {
+          "wikipedia": 0.6,
+          "google_factcheck": 0.9,
+          "tavily_search": 0.6
+        }
+      },
+      "error": null
+    }
+  ]
+}

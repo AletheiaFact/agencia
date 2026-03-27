@@ -6,10 +6,10 @@ including evidence_summary and selected_gazettes metadata.
 
 import logging
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from llm import get_llm
 from state import AgentState
 from utils.llm_retry import invoke_with_retry
 
@@ -84,7 +84,7 @@ def cross_check(state: AgentState) -> dict:
         claim[:80], len(gazette_analysis), len(selected),
     )
 
-    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
+    llm = get_llm()
     chain = _prompt | llm | StrOutputParser()
     result = invoke_with_retry(
         chain,

@@ -2,10 +2,10 @@
 
 import logging
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from llm import get_llm
 from state import AgentState
 
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ Provide your questions in an array format and translate them only to {language}.
 
 def list_questions(state: AgentState) -> dict:
     logger.info("[list_questions] Starting — claim='%s' language=%s", state["claim"][:80], state["language"])
-    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
+    llm = get_llm()
     chain = _prompt | llm | StrOutputParser()
     result = chain.invoke({
         "claim": state["claim"],

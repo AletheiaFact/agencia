@@ -6,10 +6,10 @@ gazette candidates by how relevant their excerpts are to the claim.
 
 import logging
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from llm import get_llm
 from state import AgentState
 from tools.querido_diario_search import querido_diario_search
 from utils.llm_retry import invoke_with_retry
@@ -91,7 +91,7 @@ def fetch_and_score(state: AgentState) -> dict:
     SCORING_BATCH_SIZE = 10
     gazettes_to_score = gazettes[:20]
 
-    llm = ChatOpenAI(model="gpt-5-mini-2025-08-07", temperature=1)
+    llm = get_llm(mini=True)
     chain = _scoring_prompt | llm | StrOutputParser()
 
     all_scores: list[int] = []

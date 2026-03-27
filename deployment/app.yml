@@ -68,8 +68,16 @@ spec:
             timeoutSeconds: 10
             failureThreshold: 10
           env:
+            - name: LLM_PROVIDER
+              value: LLM_PROVIDER_STUB
+            - name: LLM_MODEL
+              value: LLM_MODEL_STUB
+            - name: LLM_MODEL_MINI
+              value: LLM_MODEL_MINI_STUB
             - name: OPENAI_API_KEY
               value: OPENAI_API_KEY_STUB
+            - name: ANTHROPIC_API_KEY
+              value: ANTHROPIC_API_KEY_STUB
             - name: SERPAPI_API_KEY
               value: SERPAPI_API_KEY_STUB
             - name: TAVILY_API_KEY

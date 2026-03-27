@@ -7,10 +7,10 @@ of what the previous queries returned.
 import logging
 import os
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from llm import get_llm
 from state import AgentState
 
 logger = logging.getLogger(__name__)
@@ -67,7 +67,7 @@ def refine_queries(state: AgentState) -> dict:
         iteration, len(previous),
     )
 
-    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
+    llm = get_llm()
     chain = _prompt | llm | StrOutputParser()
     result = chain.invoke({
         "claim": claim,

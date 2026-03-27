@@ -7,10 +7,10 @@ so callers receive a full trace of the verification pipeline.
 import json
 import logging
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
+from llm import get_llm
 from state import AgentState
 
 logger = logging.getLogger(__name__)
@@ -125,7 +125,7 @@ def _inject_reasoning_log(llm_output: str, reasoning_log: list[str]) -> str:
 
 def create_report(state: AgentState) -> dict:
     logger.info("[create_report] Starting — claim='%s'", state["claim"][:80])
-    llm = ChatOpenAI(model="gpt-5.2-2025-12-11", temperature=1)
+    llm = get_llm()
     chain = _prompt | llm | StrOutputParser()
     result = chain.invoke({
         "claim": state["claim"],

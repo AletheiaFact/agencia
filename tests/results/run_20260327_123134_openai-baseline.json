@@ -1,0 +1,289 @@
+{
+  "run_id": "ee721565f27d",
+  "timestamp": "2026-03-27T15:31:34.646765+00:00",
+  "tag": "openai-baseline",
+  "provider": "openai",
+  "model": "default",
+  "model_mini": "default",
+  "total_claims": 4,
+  "passed": 3,
+  "failed": 1,
+  "errors": 0,
+  "total_duration_seconds": 361.02,
+  "results": [
+    {
+      "claim_id": "online-01",
+      "claim": "The Earth is flat",
+      "search_type": "online",
+      "language": "en",
+      "expected_classifications": [
+        "False"
+      ],
+      "session_id": "e2e-test-a2e4d537",
+      "execution_id": "36c9ab8d4e3740689942f97eecb20ce6",
+      "started_at": "2026-03-27T15:25:33.633580+00:00",
+      "completed_at": "2026-03-27T15:26:40.001530+00:00",
+      "duration_seconds": 66.37,
+      "status": "complete",
+      "classification": "False",
+      "classification_match": true,
+      "steps": [
+        "[list_questions] Generated verification questions (1489 chars)",
+        "[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=The+Earth+is+flat&languageCode=en&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c",
+        "[select_sources] Classified claim as 'general', selected 3 sources: ['wikipedia', 'google_factcheck', 'tavily_search'] (method=llm)",
+        "still working...",
+        "[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 3805 chars of evidence",
+        "still working...",
+        "[create_report] Final report generated (8748 chars)"
+      ],
+      "final_message": {
+        "claim": "The Earth is flat",
+        "context": {},
+        "messages": "{\n  \"classification\": \"False\",\n  \"summary\": \"The claim “The Earth is flat” is contradicted by extensive, repeatable observations and measurement-based evidence. Multiple independent methods—horizon/ship observations, classical geometry (Eratosthenes), modern geodesy (GPS/laser ranging/VLBI), and rotational measurements—support that Earth is an oblate spheroid, not flat.\",\n  \"questions\": [\n    \"What do primary geodetic measurements from national surveying agencies (e.g., US NGS, UK Ordnance Survey) and international bodies (e.g., IERS) conclude about Earth’s shape, and can they provide raw datasets and methodology used to derive the geoid/ellipsoid model?\",\n    \"What evidence do satellite operators and space agencies (e.g., NASA, ESA, JAXA, SpaceX) provide—such as orbital telemetry, tracking data from independent ground stations, and mission documentation—that requires a spherical/oblate Earth for accurate orbit prediction and navigation?\",\n    \"What do independent navigation and positioning systems (GPS/GNSS providers and standards bodies) report about the Earth model embedded in their coordinate reference frames (e.g., WGS84/ITRF), and can third-party engineers reproduce positioning accuracy using a flat-Earth model instead?\",\n    \"What do commercial aviation and maritime navigation stakeholders (airlines, pilots’ associations, shipping companies) use for routing and charting (great-circle vs planar), and can they supply operational records demonstrating whether a flat-Earth map can match real-world travel times, headings, and fuel burn across long distances?\",\n    \"What do peer-reviewed astronomical and observational datasets (e.g., lunar eclipse geometry, star field rotation by latitude, time zones, and long-baseline curvature measurements) show, and can independent researchers replicate these observations with publicly available instruments and data?\"\n  ],\n  \"report\": \"## Finding\\nThe claim “The Earth is flat” is false. The best-supported scientific description is that Earth is an oblate spheroid (slightly flattened at the poles). This conclusion is supported by multiple independent lines of evidence that are mutually reinforcing and reproducible.\\n\\n## Key evidence assessed (weighted by source reliability)\\n\\n### 1) Direct, repeatable observations inconsistent with a flat Earth\\n**Horizon occlusion (ships disappear bottom-first):** A long-standing observation is that as ships travel away, the hull disappears before the mast—consistent with curvature and inconsistent with a flat plane where the entire object would simply shrink uniformly (absent atmospheric effects). Scientific American describes this as one of the classic observations supporting a spherical Earth, while also noting the Earth is not a perfect sphere but measurably bulged.\\n- Source (higher reliability, primary science communication): Scientific American, “Strange but True: Earth Is Not Round” https://www.scientificamerican.com/article/earth-is-not-round/\\n\\n**Public long-distance visibility tests:** Summaries of modern flat-Earth movements include accounts of attempted empirical tests (e.g., long-range observations over water) that repeatedly run into occlusion consistent with curvature. While Wikipedia is not a primary scientific authority, it compiles references and describes the nature of these tests and outcomes.\\n- Source (moderate reliability, contextual compilation): Wikipedia, “Modern flat Earth beliefs” https://en.wikipedia.org/wiki/Modern_flat_Earth_beliefs\\n\\n### 2) Measurement-based evidence (geometry and instruments)\\n**Eratosthenes’ circumference method:** Comparing sun-angle/shadow differences between two locations yields an Earth-circumference estimate that only coherently fits a curved surface. The method is historically well-established and reproducible by modern experimenters.\\n- Source (moderate reliability for historical/science context): Nautilus, “The Photos That Shaped Our Understanding of Earth’s Shape” https://nautil.us/the-photos-that-shaped-our-understanding-of-earths-shape-1258527\\n\\n**Rotation detected by instruments (15°/hour):** Accounts of flat-Earth proponents using a ring laser gyroscope and measuring ~15 degrees per hour align with Earth’s known rotation rate. The specific description is relayed via Wikipedia’s summary of the documentary *Behind the Curve*; as a secondary account, it is less authoritative than a primary dataset, but it is consistent with well-known physical measurement.\\n- Source (moderate reliability, secondary summary): Wikipedia, “Modern flat Earth beliefs” https://en.wikipedia.org/wiki/Modern_flat_Earth_beliefs\\n\\n### 3) Space-age geodesy and global navigation require a non-flat Earth model\\n**Geodesy methods (GPS networks, satellite laser ranging, VLBI):** Scientific American describes modern measurement techniques that quantify Earth’s shape and geoid. These methods depend on orbital dynamics and Earth’s gravity field; they are operationally validated because they produce accurate positioning and timing.\\n- Source (higher reliability): Scientific American, “Strange but True: Earth Is Not Round” https://www.scientificamerican.com/article/earth-is-not-round/\\n\\n### 4) Reference consensus summaries\\n**Britannica overview:** Encyclopaedia Britannica treats “flat Earth” as a historically discussed but scientifically disproven idea, summarizing how evidence supports a spherical Earth.\\n- Source (higher reliability reference work): Britannica, “flat Earth” https://www.britannica.com/topic/flat-Earth\\n\\n## Assessment of source strength and limitations\\n- Highest weight was given to Scientific American and Britannica (generally strong editorial controls and alignment with established geophysical science).\\n- Wikipedia was used cautiously as a secondary aggregator (reliability moderate). Its value here is contextual and descriptive, not as a sole authority.\\n- The provided context notes an attempted query to Google Fact Check tools failed (HTTP 403), limiting access to a high-reliability index of prior fact-checks. This does not undermine the conclusion because the claim is resolvable with widely available, independently verifiable evidence.\\n\\n## Conclusion\\nAcross classical geometry, direct observation, modern geodesy, and operational navigation systems, the evidence consistently contradicts a flat Earth model. The claim “The Earth is flat” is demonstrably incorrect.\",\n  \"verification\": \"## Methods used\\n1) **Cross-source triangulation:** Compared claims against multiple independent categories of evidence (visual observations, classical geometry, modern geodesy, reference works) to avoid reliance on any single source type.\\n\\n2) **Reliability-weighted evaluation:** Prioritized higher-reliability sources (Scientific American, Britannica) for core scientific conclusions; used Wikipedia as supporting context rather than foundational proof.\\n\\n3) **Operational plausibility check:** Evaluated whether modern systems cited (GPS/geodetic measurement methods) are consistent with a flat-Earth model; the referenced geodesy methods are explicitly built around an oblate/ellipsoidal Earth representation.\\n\\n4) **Tooling constraints noted:** The context indicates Google Fact Check Tools access failed (HTTP 403). As a substitute, verification relied on accessible reputable science/reference sources and widely reproducible observational claims.\\n\\n## Tools and materials referenced\\n- Web-derived context supplied in the prompt (Scientific American, Britannica, Wikipedia, Nautilus URLs).\\n- Analytical review of whether the cited methodologies logically require curvature (e.g., circumference estimation from angular differences; geodesy techniques dependent on global reference frames).\\n\\n## Replicability\\nSeveral lines of evidence are independently replicable without spaceflight (e.g., Eratosthenes-style shadow measurements; long-distance horizon occlusion observations), while others are validated operationally through global positioning and geodetic infrastructure.\",\n  \"reasoning_log\": [\n    \"[list_questions] Generated verification questions (1489 chars)\",\n    \"[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=The+Earth+is+flat&languageCode=en&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c\",\n    \"[select_sources] Classified claim as 'general', selected 3 sources: ['wikipedia', 'google_factcheck', 'tavily_search'] (method=llm)\",\n    \"[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 3805 chars of evidence\",\n    \"[create_report] Final report generated (8022 chars)\"\n  ]\n}",
+        "questions": "[\n  \"What do primary geodetic measurements from national surveying agencies (e.g., US NGS, UK Ordnance Survey) and international bodies (e.g., IERS) conclude about Earth’s shape, and can they provide raw datasets and methodology used to derive the geoid/ellipsoid model?\",\n  \"What evidence do satellite operators and space agencies (e.g., NASA, ESA, JAXA, SpaceX) provide—such as orbital telemetry, tracking data from independent ground stations, and mission documentation—that requires a spherical/oblate Earth for accurate orbit prediction and navigation?\",\n  \"What do independent navigation and positioning systems (GPS/GNSS providers and standards bodies) report about the Earth model embedded in their coordinate reference frames (e.g., WGS84/ITRF), and can third-party engineers reproduce positioning accuracy using a flat-Earth model instead?\",\n  \"What do commercial aviation and maritime navigation stakeholders (airlines, pilots’ associations, shipping companies) use for routing and charting (great-circle vs planar), and can they supply operational records demonstrating whether a flat-Earth map can match real-world travel times, headings, and fuel burn across long distances?\",\n  \"What do peer-reviewed astronomical and observational datasets (e.g., lunar eclipse geometry, star field rotation by latitude, time zones, and long-baseline curvature measurements) show, and can independent researchers replicate these observations with publicly available instruments and data?\"\n]",
+        "search_type": "online",
+        "language": "en",
+        "reasoning_log": [
+          "[list_questions] Generated verification questions (1489 chars)",
+          "[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=The+Earth+is+flat&languageCode=en&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c",
+          "[select_sources] Classified claim as 'general', selected 3 sources: ['wikipedia', 'google_factcheck', 'tavily_search'] (method=llm)",
+          "[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 3805 chars of evidence",
+          "[create_report] Final report generated (8748 chars)"
+        ],
+        "existing_factchecks": [],
+        "selected_sources": [
+          {
+            "plugin_name": "wikipedia",
+            "relevance": 1.0,
+            "reason": "Comprehensive encyclopedic article on the Earth's shape (oblate spheroid) with scientific evidence, history, and references debunking flat-Earth claims."
+          },
+          {
+            "plugin_name": "google_factcheck",
+            "relevance": 0.9,
+            "reason": "Searchable database of prior fact-checks that includes reputable debunks of flat-Earth misinformation."
+          },
+          {
+            "plugin_name": "tavily_search",
+            "relevance": 0.7,
+            "reason": "General web search to locate primary scientific sources, satellite imagery, educational resources, and recent articles addressing the flat Earth claim."
+          }
+        ],
+        "source_confidence": {
+          "wikipedia": 0.6,
+          "google_factcheck": 0.9,
+          "tavily_search": 0.6
+        }
+      },
+      "error": null
+    },
+    {
+      "claim_id": "online-02",
+      "claim": "O Brasil foi o primeiro país a adotar a urna eletrônica em eleições nacionais",
+      "search_type": "online",
+      "language": "pt",
+      "expected_classifications": [
+        "Trustworthy",
+        "Trustworthy, but",
+        "Arguable"
+      ],
+      "session_id": "e2e-test-a2e4d537",
+      "execution_id": "56b65e79838b4fb9a52df98333514a7f",
+      "started_at": "2026-03-27T15:26:40.001583+00:00",
+      "completed_at": "2026-03-27T15:28:16.113585+00:00",
+      "duration_seconds": 96.11,
+      "status": "complete",
+      "classification": "Unverifiable",
+      "classification_match": false,
+      "steps": [
+        "[list_questions] Generated verification questions (1613 chars)",
+        "[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=O+Brasil+foi+o+primeiro+pa%C3%ADs+a+adotar+a+urna+eletr%C3%B4nica+em+elei%C3%A7%C3%B5es+nacionais&languageCode=pt&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c",
+        "[select_sources] Classified claim as 'general', selected 4 sources: ['tse', 'wikipedia', 'google_factcheck', 'tavily_search'] (method=llm)",
+        "still working...",
+        "still working...",
+        "[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'tse', 'wikipedia'], collected 3686 chars of evidence",
+        "still working...",
+        "[create_report] Final report generated (8850 chars)"
+      ],
+      "final_message": {
+        "claim": "O Brasil foi o primeiro país a adotar a urna eletrônica em eleições nacionais",
+        "context": {},
+        "messages": "{\n  \"classification\": \"Unverifiable\",\n  \"summary\": \"Não foi possível sustentar, com fontes confiáveis, que o Brasil tenha sido o primeiro país do mundo a adotar urna eletrônica em eleições nacionais. Fontes oficiais (TSE/TRE) comprovam a introdução no Brasil em 1996 (uso parcial) e a universalização em 2000, mas não demonstram primazia global. Há registros de adoções anteriores de máquinas/sistemas de votação em outros países, porém a comparação depende da definição de “urna eletrônica” e de “adoção em eleições nacionais”, o que impede concluir a primazia brasileira com o material disponível.\",\n  \"questions\": [\n    \"Ao Tribunal Superior Eleitoral (TSE): em que ano e em qual eleição nacional o Brasil usou pela primeira vez urnas eletrônicas, e quais documentos oficiais (resoluções, relatórios técnicos, atas) comprovam essa adoção em escala nacional?\",\n    \"A especialistas em sistemas eleitorais/comparativistas (p.ex., IDEA, IFES, ACE Electoral Knowledge Network): qual é a definição operacional de “adotar urna eletrônica em eleições nacionais” (piloto/local vs. cobertura nacional; votação eletrônica direta vs. leitura ótica), e quais países se enquadram antes do Brasil sob essa definição?\",\n    \"A órgãos eleitorais de países citados como pioneiros (p.ex., Índia—Election Commission of India; EUA—EAC/secretarias estaduais; Bélgica—Service public fédéral Intérieur): quando e em que pleitos nacionais esses países implementaram votação eletrônica, qual a tecnologia utilizada e qual a abrangência (percentual do eleitorado/território)?\",\n    \"A fontes documentais independentes (relatórios da União Interparlamentar, OSCE/ODIHR, OEA, Carter Center, artigos acadêmicos e livros de referência): que evidências datadas existem sobre a adoção de votação eletrônica em eleições nacionais por outros países antes do Brasil, e como elas descrevem o método (urna/DRE, scanner/optical scan, internet voting)?\",\n    \"À assessoria jurídica/legislativa (TSE/Congresso Nacional): quais leis e normas regulamentaram a introdução da urna eletrônica no Brasil e como elas definem “urna eletrônica” e “eleições nacionais”, para evitar comparação com tecnologias diferentes (p.ex., máquinas mecânicas, apuração eletrônica, leitura ótica)?\"\n  ],\n  \"report\": \"### Alegação checada\\n**“O Brasil foi o primeiro país a adotar a urna eletrônica em eleições nacionais.”**\\n\\n### O que é possível afirmar com alta confiança (fontes oficiais brasileiras)\\nAs fontes oficiais com maior confiabilidade e relevância (TSE/TRE) não sustentam a parte central da alegação — a primazia global —, mas documentam com clareza **quando** e **como** o Brasil implementou a urna eletrônica:\\n\\n1) **Introdução (uso parcial) em 1996**\\n- O **TSE** registra que a urna eletrônica foi lançada e usada nas **Eleições Municipais de 1996**, em **57 cidades**, alcançando cerca de **um terço do eleitorado**.\\n- Fonte (alta confiabilidade): TSE – “Urna eletrônica 25 anos: lançado em 1996…”\\n  https://www.tse.jus.br/comunicacao/noticias/2021/Maio/urna-eletronica-25-anos-lancado-em-1996-equipamento-e-o-protagonista-da-maior-eleicao-informatizada-do-mundo\\n\\n2) **Universalização em 2000 (em todo o país)**\\n- Um **TRE** (TRE-PB) afirma que, em **2000**, “pela primeira vez, todo o país utilizou a urna eletrônica” (eleições municipais).\\n- Fonte (boa confiabilidade, mas inferior ao TSE como órgão central): TRE-PB (2020)\\n  https://www.tre-pb.jus.br/comunicacao/noticias/2020/Setembro/ha-20-anos-em-todas-as-secoes-eleitorais-do-pais-urna-eletronica-e-sinonimo-de-credibilidade\\n\\n3) **Base legal e cronologia oficial**\\n- O TSE também associa o processo à legislação (Lei 9.100/1995) e apresenta uma linha do tempo da evolução da urna.\\n- Fonte (alta confiabilidade): TSE – “Conheça a evolução da urna eletrônica: de 1996 a 2024”\\n  https://www.tse.jus.br/comunicacao/noticias/2025/Janeiro/conheca-a-evolucao-da-urna-eletronica-de-1996-a-2024\\n\\n**Conclusão parcial:** com base em fontes oficiais, é correto dizer que o Brasil **iniciou** o uso em 1996 (municipal, parcial) e **expandiu** até alcançar uso nacionalmente universalizado em 2000 (também municipal). Essas fontes **não afirmam** que o Brasil foi o primeiro país do mundo.\\n\\n### Por que a parte “primeiro país” não se sustenta com as evidências reunidas\\n1) **Ausência de comprovação direta em fontes de alta confiabilidade**\\n- As fontes oficiais brasileiras consultadas destacam liderança em escala (“maior eleição informatizada”), cronologia e abrangência interna, mas **não apresentam documentação comparativa internacional** que comprove primazia global.\\n\\n2) **Risco de conflito por definição (“urna eletrônica” não é termo universalmente único)**\\n- A alegação mistura pelo menos três conceitos que variam entre países:\\n  - **Máquinas de votação mecânicas/eletromecânicas** (históricas, anteriores ao digital)\\n  - **DRE/urna eletrônica** (registro eletrônico direto)\\n  - **Leitura óptica (optical scan)** e outros métodos de informatização\\n- Sem uma definição operacional, comparar “adoção” entre países pode gerar falsos “primeiros”.\\n\\n3) **Indícios de adoções anteriores em outros países (fontes de apoio, porém menos robustas)**\\n- Materiais como a **Wikipedia** (confiabilidade moderada) apontam histórico de **máquinas de votação** nos EUA desde o século XIX e experiências/adoções em outros países antes do cronograma brasileiro.\\n  - Wikipedia – “Voting machine”: https://en.wikipedia.org/wiki/Voting_machine\\n  - Wikipedia – “Electronic voting in India”: https://en.wikipedia.org/wiki/Electronic_voting_in_India\\n- Essas referências sugerem que a ideia de “primeiro país” é, no mínimo, **contestável**, mas **não bastam** para uma conclusão definitiva sem checagem em fontes primárias dos países e em relatórios comparativos (IDEA/IFES/ACE/OSCE etc.).\\n\\n### Veredito\\nDado o conjunto de evidências disponíveis, a alegação **não pode ser confirmada** com fontes confiáveis. O que está solidamente comprovado é a cronologia brasileira (1996 introdução; 2000 universalização interna). A primazia mundial em “eleições nacionais” permanece **sem demonstração documental** e é **potencialmente contrariada** por registros de uso anterior de máquinas/sistemas de votação em outros lugares, dependendo da definição.\\n\\nPor isso, a classificação adotada é **Unverifiable** (não verificável com o material apresentado e sem uma definição comparável internacionalmente).\",\n  \"verification\": \"### Metodologia\\n1) **Prioridade a fontes primárias e oficiais**: foram privilegiadas páginas do **TSE** (maior peso por ser a autoridade eleitoral nacional e fonte primária da cronologia) e, secundariamente, conteúdo de **TRE**.\\n2) **Separação da alegação em partes verificáveis**:\\n   - (a) quando o Brasil adotou urnas eletrônicas;\\n   - (b) se foi o primeiro país;\\n   - (c) o que significa “eleições nacionais” e “urna eletrônica”.\\n3) **Triangulação e comparação**:\\n   - Para (a), checagem direta em fontes TSE/TRE.\\n   - Para (b), busca de referências comparativas internacionais. No material disponível, surgem apenas referências generalistas (ex.: Wikipedia) indicando adoções anteriores de “voting machines”, o que levanta dúvida, mas não fecha a prova com padrão elevado.\\n4) **Avaliação de confiabilidade e relevância**:\\n   - **TSE**: confiabilidade muito alta e máxima relevância para a cronologia do Brasil.\\n   - **Wikipedia**: confiabilidade moderada; usada apenas como indício/ponte para cronologia internacional, não como prova conclusiva.\\n\\n### Ferramentas e limitações\\n- A verificação se baseou no **contexto web já reunido** (links TSE/TRE e páginas de referência). Não houve acesso, neste pacote, a relatórios comparativos de organismos internacionais (IDEA/IFES/ACE/OSCE) nem a documentos oficiais dos países potencialmente pioneiros (o que seria necessário para confirmar ou refutar a primazia global com rigor).\\n- Resultado: foi possível **confirmar a cronologia brasileira**, mas **não** comprovar a afirmação absoluta de “primeiro país” em termos globais.\",\n  \"reasoning_log\": [\n    \"[list_questions] Generated verification questions (1613 chars)\",\n    \"[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=O+Brasil+foi+o+primeiro+pa%C3%ADs+a+adotar+a+urna+eletr%C3%B4nica+em+elei%C3%A7%C3%B5es+nacionais&languageCode=pt&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c\",\n    \"[select_sources] Classified claim as 'general', selected 4 sources: ['tse', 'wikipedia', 'google_factcheck', 'tavily_search'] (method=llm)\",\n    \"[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'tse', 'wikipedia'], collected 3686 chars of evidence\",\n    \"[create_report] Final report generated (8042 chars)\"\n  ]\n}",
+        "questions": "[\n  \"Ao Tribunal Superior Eleitoral (TSE): em que ano e em qual eleição nacional o Brasil usou pela primeira vez urnas eletrônicas, e quais documentos oficiais (resoluções, relatórios técnicos, atas) comprovam essa adoção em escala nacional?\",\n  \"A especialistas em sistemas eleitorais/comparativistas (p.ex., IDEA, IFES, ACE Electoral Knowledge Network): qual é a definição operacional de “adotar urna eletrônica em eleições nacionais” (piloto/local vs. cobertura nacional; votação eletrônica direta vs. leitura ótica), e quais países se enquadram antes do Brasil sob essa definição?\",\n  \"A órgãos eleitorais de países citados como pioneiros (p.ex., Índia—Election Commission of India; EUA—EAC/secretarias estaduais; Bélgica—Service public fédéral Intérieur): quando e em que pleitos nacionais esses países implementaram votação eletrônica, qual a tecnologia utilizada e qual a abrangência (percentual do eleitorado/território)?\",\n  \"A fontes documentais independentes (relatórios da União Interparlamentar, OSCE/ODIHR, OEA, Carter Center, artigos acadêmicos e livros de referência): que evidências datadas existem sobre a adoção de votação eletrônica em eleições nacionais por outros países antes do Brasil, e como elas descrevem o método (urna/DRE, scanner/optical scan, internet voting)?\",\n  \"À assessoria jurídica/legislativa (TSE/Congresso Nacional): quais leis e normas regulamentaram a introdução da urna eletrônica no Brasil e como elas definem “urna eletrônica” e “eleições nacionais”, para evitar comparação com tecnologias diferentes (p.ex., máquinas mecânicas, apuração eletrônica, leitura ótica)?\"\n]",
+        "search_type": "online",
+        "language": "pt",
+        "reasoning_log": [
+          "[list_questions] Generated verification questions (1613 chars)",
+          "[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=O+Brasil+foi+o+primeiro+pa%C3%ADs+a+adotar+a+urna+eletr%C3%B4nica+em+elei%C3%A7%C3%B5es+nacionais&languageCode=pt&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c",
+          "[select_sources] Classified claim as 'general', selected 4 sources: ['tse', 'wikipedia', 'google_factcheck', 'tavily_search'] (method=llm)",
+          "[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'tse', 'wikipedia'], collected 3686 chars of evidence",
+          "[create_report] Final report generated (8850 chars)"
+        ],
+        "existing_factchecks": [],
+        "selected_sources": [
+          {
+            "plugin_name": "tse",
+            "relevance": 1.0,
+            "reason": "Órgão oficial que implementou e documenta a história da adoção da urna eletrônica no Brasil; fonte primária para verificar quando e como foi adotada em eleições nacionais."
+          },
+          {
+            "plugin_name": "wikipedia",
+            "relevance": 0.9,
+            "reason": "Artigos e dados estruturados sobre história das urnas eletrônicas e cronologia de adoção por países, úteis para comparar se o Brasil foi o primeiro em eleições nacionais."
+          },
+          {
+            "plugin_name": "google_factcheck",
+            "relevance": 0.8,
+            "reason": "Base de checagens pré-existentes que pode conter verificação direta dessa afirmação por organizações de fact-checking."
+          },
+          {
+            "plugin_name": "tavily_search",
+            "relevance": 0.6,
+            "reason": "Busca web ampla que pode localizar artigos de imprensa, estudos acadêmicos e comunicados internacionais sobre a adoção de urnas eletrônicas em outros países para comparação."
+          }
+        ],
+        "source_confidence": {
+          "tse": 0.95,
+          "wikipedia": 0.6,
+          "google_factcheck": 0.9,
+          "tavily_search": 0.6
+        }
+      },
+      "error": null
+    },
+    {
+      "claim_id": "online-03",
+      "claim": "COVID-19 vaccines contain microchips for tracking people",
+      "search_type": "online",
+      "language": "en",
+      "expected_classifications": [
+        "False"
+      ],
+      "session_id": "e2e-test-a2e4d537",
+      "execution_id": "2c2fd1b724c84f2ba025726fcdfadf66",
+      "started_at": "2026-03-27T15:28:16.113676+00:00",
+      "completed_at": "2026-03-27T15:30:08.169871+00:00",
+      "duration_seconds": 112.06,
+      "status": "complete",
+      "classification": "False",
+      "classification_match": true,
+      "steps": [
+        "[list_questions] Generated verification questions (1520 chars)",
+        "[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=COVID-19+vaccines+contain+microchips+for+tracking+people&languageCode=en&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c",
+        "[select_sources] Classified claim as 'general', selected 3 sources: ['google_factcheck', 'tavily_search', 'wikipedia'] (method=llm)",
+        "still working...",
+        "still working...",
+        "still working...",
+        "[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 4640 chars of evidence",
+        "still working...",
+        "[create_report] Final report generated (9610 chars)"
+      ],
+      "final_message": {
+        "claim": "COVID-19 vaccines contain microchips for tracking people",
+        "context": {},
+        "messages": "{\n  \"classification\": \"False\",\n  \"summary\": \"Public regulatory filings and manufacturer ingredient lists for authorized COVID-19 vaccines show no electronic components or tracking devices, and multiple independent fact-checks citing health regulators (e.g., FDA) explicitly state there are no microchips in COVID-19 vaccines. The claim also fails basic engineering feasibility for covert, injectable, population-scale tracking via standard vaccine doses.\",\n  \"questions\": [\n    \"Can Pfizer-BioNTech, Moderna, Johnson & Johnson, and AstraZeneca provide the full ingredient list (including excipients and packaging components) for their COVID-19 vaccines and state explicitly whether any electronic microchip or tracking device is included at any stage of manufacturing or delivery?\",\n    \"Do the FDA/CDC (or relevant national regulators) and independent pharmacopeia/lot-release labs have publicly available lot-release testing records or assay methods that would detect foreign objects/electronics in vaccine vials, and what do those records show for randomly sampled lots?\",\n    \"Can a qualified independent laboratory (materials science/electrical engineering) examine sealed, chain-of-custody vaccine vials and syringes via imaging (X-ray/CT) and microscopy to verify whether any microelectronic components are present, and will they publish raw data and methods?\",\n    \"What evidence (patents, procurement contracts, supply-chain invoices, manufacturing specifications, or whistleblower documentation) is presented to support the microchip claim, and can the cited documents be authenticated by the issuing entities and traced through verifiable provenance?\",\n    \"From an engineering and telecom standpoint, is it technically feasible for a chip small enough to pass through standard vaccine needles to uniquely identify and wirelessly track individuals at population scale (power source, antenna size, read range, infrastructure), and what do independent RF/biomedical device experts conclude?\"\n  ],\n  \"report\": \"## Overview of the claim\\nThe claim asserts that COVID-19 vaccines include microchips (or similar tracking devices) that can be used to track vaccinated people.\\n\\n## What high-reliability evidence shows\\n### 1) Official vaccine documentation lists ingredients and does not include electronics\\nA core way to test this claim is to consult primary documentation: regulators’ and manufacturers’ product labels, package inserts, and product information documents, which list active substances and excipients.\\n\\nIn the provided web context, the Pfizer-BioNTech (Comirnaty) labeling and FDA documents list components such as mRNA, lipids (including PEG-containing lipids), salts/buffers, sugars, and water—without any mention of microchips or electronic devices. Similarly, the EMA product information for Moderna’s Spikevax lists excipients (lipids such as SM-102, cholesterol, DSPC, PEG2000-DMG, etc.) and contains no electronics.\\n\\nThese ingredient disclosures are not optional marketing materials; they are part of formal regulatory documentation. If a microchip/device were part of the administered product, it would be inconsistent with these disclosures and would trigger extensive additional regulatory requirements for a combination product (drug + device) and corresponding documentation.\\n\\n### 2) Multiple independent fact-checks cite regulators explicitly denying microchips\\nThe web context includes several independent fact-checks (AP News, Reuters, FactCheck.org, PolitiFact, BBC Reality Check, Full Fact). Among them, AP News reports an FDA statement that “There are no microchips in any vaccines, including COVID-19 vaccines.”\\n\\nWhile fact-checks are secondary sources, they are relevant here because they consolidate and quote on-the-record statements from regulators and address recurring miscaptioned images/videos used to spread the microchip narrative.\\n\\n### 3) The rumor commonly arises from misinterpreting unrelated technologies\\nDebunking articles consistently trace the microchip story to confusion between:\\n- **Supply-chain tracking/serialization** (e.g., RFID or barcodes on packaging/vials for inventory and anti-counterfeiting): applied to packaging logistics, not injected into people.\\n- **MIT “quantum dot” dye research**: described as an experimental method of encoding information in an invisible dye pattern delivered by microneedle patches—explicitly not a microchip and not deployed in COVID-19 vaccination programs.\\n\\nThese contexts can create a narrative bridge for misinformation (“tracking tech exists somewhere in the vaccine ecosystem”) but do not substantiate the specific claim (“microchips are inside the injected vaccine”).\\n\\n## Engineering/feasibility considerations (relevance check)\\nEven without relying solely on documentation, the claim runs into major feasibility barriers for covert mass tracking:\\n- A device must be small enough to pass through vaccine needles and remain functional.\\n- It would require a workable power source and antenna/radio design compatible with human tissue and practical read ranges.\\n- Population-scale tracking would require massive reader infrastructure and identifiers tied reliably to individual identity.\\n\\nThese constraints make the claim implausible absent extraordinary evidence (authenticated device specifications, procurement/manufacturing records, and independent lab confirmation).\\n\\n## Conclusion\\nGiven (a) authoritative ingredient lists and regulatory product information that do not include any microchip/device, (b) explicit denials reported from health regulators and repeated independent debunks, and (c) lack of authenticated supporting documentation plus significant engineering barriers, the claim that COVID-19 vaccines contain microchips for tracking people is **false**.\\n\\n## Key sources reflected in the provided web context\\n- Pfizer/FDA Comirnaty labeling and FDA package insert: https://labeling.pfizer.com/ShowLabeling.aspx?id=16351&Section=PPI and https://www.fda.gov/media/151707/download\\n- CDC vaccine ingredients overview (archived page): https://archive.cdc.gov/www_cdc_gov/coronavirus/2019-ncov/vaccines/different-vaccines/overview-COVID-19-vaccines.html\\n- EMA Spikevax product information: https://www.ema.europa.eu/en/documents/product-information/spikevax-epar-product-information_en.pdf\\n- AP News fact-check citing FDA statement: https://apnews.com/article/fact-check-COVID-mRNA-vaccine-nanotech-390958734912\\n- FactCheck.org: https://www.factcheck.org/2020/12/covid-19-vaccines-dont-have-patient-tracking-devices/\\n- Reuters fact checks: https://www.reuters.com/article/world/false-claim-a-microchip-implant-will-come-with-coronavirus-vaccines-idUSKBN22R2FX/ and related entries\\n- MIT quantum-dot research context: https://news.mit.edu/2019/storing-vaccine-history-skin-1218\",\n  \"verification\": \"## Methods and tools used\\n1) **Primary-source document review (highest weight)**\\n   - Checked regulator/manufacturer documentation referenced in the web context (FDA labeling/package inserts; EMA product information) for the administered product’s stated composition.\\n   - Verification criterion: whether any component could reasonably be construed as an electronic microchip/tracking device. Result: none listed; formulation contents are consistent with standard vaccine excipients/actives.\\n\\n2) **Cross-source triangulation (secondary sources, moderate weight)**\\n   - Compared conclusions across multiple independent fact-checking organizations (AP, Reuters, FactCheck.org, PolitiFact, BBC, Full Fact) to see whether there is consistent, sourced refutation and whether they cite authoritative bodies.\\n   - Noted AP’s reporting of an FDA statement explicitly denying microchips in vaccines.\\n\\n3) **Context validation / misinformation pathway analysis**\\n   - Evaluated alternative explanations repeatedly cited as origins of the rumor (RFID/serialization for logistics; MIT quantum-dot dye research) and assessed whether they match the injected-vaccine claim. They do not.\\n\\n4) **Plausibility/feasibility screening (engineering sanity check)**\\n   - Applied basic constraints (needle bore size, power/antenna requirements, read-range/infrastructure needs) to assess whether the claim would require extraordinary supporting evidence. This step does not replace documentation but helps assess how strong evidence would need to be if the claim were true.\\n\\n## Weighting of evidence\\n- Highest weight was given to **regulatory and manufacturer product documentation** and **regulator-attributed statements** (consistent with the provided reliability guidance favoring high-reliability fact-check aggregators and official sources).\\n- Lower weight was given to general background sources; the conclusion rests on direct composition disclosures and consistent debunks citing regulators.\",\n  \"reasoning_log\": [\n    \"[list_questions] Generated verification questions (1520 chars)\",\n    \"[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=COVID-19+vaccines+contain+microchips+for+tracking+people&languageCode=en&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c\",\n    \"[select_sources] Classified claim as 'general', selected 3 sources: ['google_factcheck', 'tavily_search', 'wikipedia'] (method=llm)\",\n    \"[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 4640 chars of evidence\",\n    \"[create_report] Final report generated (8845 chars)\"\n  ]\n}",
+        "questions": "[\n  \"Can Pfizer-BioNTech, Moderna, Johnson & Johnson, and AstraZeneca provide the full ingredient list (including excipients and packaging components) for their COVID-19 vaccines and state explicitly whether any electronic microchip or tracking device is included at any stage of manufacturing or delivery?\",\n  \"Do the FDA/CDC (or relevant national regulators) and independent pharmacopeia/lot-release labs have publicly available lot-release testing records or assay methods that would detect foreign objects/electronics in vaccine vials, and what do those records show for randomly sampled lots?\",\n  \"Can a qualified independent laboratory (materials science/electrical engineering) examine sealed, chain-of-custody vaccine vials and syringes via imaging (X-ray/CT) and microscopy to verify whether any microelectronic components are present, and will they publish raw data and methods?\",\n  \"What evidence (patents, procurement contracts, supply-chain invoices, manufacturing specifications, or whistleblower documentation) is presented to support the microchip claim, and can the cited documents be authenticated by the issuing entities and traced through verifiable provenance?\",\n  \"From an engineering and telecom standpoint, is it technically feasible for a chip small enough to pass through standard vaccine needles to uniquely identify and wirelessly track individuals at population scale (power source, antenna size, read range, infrastructure), and what do independent RF/biomedical device experts conclude?\"\n]",
+        "search_type": "online",
+        "language": "en",
+        "reasoning_log": [
+          "[list_questions] Generated verification questions (1520 chars)",
+          "[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=COVID-19+vaccines+contain+microchips+for+tracking+people&languageCode=en&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c",
+          "[select_sources] Classified claim as 'general', selected 3 sources: ['google_factcheck', 'tavily_search', 'wikipedia'] (method=llm)",
+          "[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 4640 chars of evidence",
+          "[create_report] Final report generated (9610 chars)"
+        ],
+        "existing_factchecks": [],
+        "selected_sources": [
+          {
+            "plugin_name": "google_factcheck",
+            "relevance": 1.0,
+            "reason": "Searches existing fact-checks (ClaimReview) that directly address the false microchip-in-vaccine claim."
+          },
+          {
+            "plugin_name": "tavily_search",
+            "relevance": 0.8,
+            "reason": "Web search for broadly available reputable coverage and debunking articles explaining vaccine composition and why microchips are impossible in standard doses."
+          },
+          {
+            "plugin_name": "wikipedia",
+            "relevance": 0.6,
+            "reason": "Provides encyclopedic background on vaccine types, ingredients, and how vaccines are manufactured and administered, useful for contextual refutation."
+          }
+        ],
+        "source_confidence": {
+          "google_factcheck": 0.9,
+          "tavily_search": 0.6,
+          "wikipedia": 0.6
+        }
+      },
+      "error": null
+    },
+    {
+      "claim_id": "online-04",
+      "claim": "A Amazônia produz 20% do oxigênio do mundo",
+      "search_type": "online",
+      "language": "pt",
+      "expected_classifications": [
+        "Exaggerated",
+        "Misleading",
+        "Arguable"
+      ],
+      "session_id": "e2e-test-a2e4d537",
+      "execution_id": "5e7360424ca545d2aefdc83eb5303fd2",
+      "started_at": "2026-03-27T15:30:08.169956+00:00",
+      "completed_at": "2026-03-27T15:31:34.646498+00:00",
+      "duration_seconds": 86.48,
+      "status": "complete",
+      "classification": "Misleading",
+      "classification_match": true,
+      "steps": [
+        "[list_questions] Generated verification questions (1263 chars)",
+        "[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=A+Amaz%C3%B4nia+produz+20%25+do+oxig%C3%AAnio+do+mundo&languageCode=pt&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c",
+        "[select_sources] Classified claim as 'general', selected 3 sources: ['google_factcheck', 'wikipedia', 'tavily_search'] (method=llm)",
+        "still working...",
+        "still working...",
+        "[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 4036 chars of evidence",
+        "still working...",
+        "[create_report] Final report generated (8288 chars)"
+      ],
+      "final_message": {
+        "claim": "A Amazônia produz 20% do oxigênio do mundo",
+        "context": {},
+        "messages": "{\n  \"classification\": \"Misleading\",\n  \"summary\": \"A frase “A Amazônia produz 20% do oxigênio do mundo” distorce o que a ciência descreve. Ela mistura produção bruta de O₂ (fotossíntese) com contribuição líquida para o oxigênio atmosférico. Fontes de checagem e explicadores científicos indicam que, em ecossistemas maduros como a Amazônia, quase todo o O₂ produzido é consumido por respiração e decomposição, resultando em saldo líquido próximo de zero; além disso, a maior parte do O₂ gerado globalmente está associada à produção primária marinha (fitoplâncton), tornando a leitura “20% do oxigênio que respiramos” incorreta.\",\n  \"questions\": [\n    \"Quais estudos revisados por pares (autores, ano, periódico) quantificam a produção bruta e a produção líquida de oxigênio da Amazônia, e quais métodos (torres de fluxo, sensoriamento remoto, modelos) foram usados para chegar ao valor de “20%”?\",\n    \"O que dizem especialistas em ciclo do carbono/oxigênio (INPA, IPAM, universidades brasileiras e internacionais) sobre a distinção entre produção bruta de O₂ por fotossíntese e o consumo por respiração/decomposição/incêndios na Amazônia ao estimar contribuição líquida global?\",\n    \"Segundo dados observacionais e reanálises (NASA, NOAA, ECMWF) e inventários de emissões/queimadas (INPE/PRODES, DETER, GFED), qual é o balanço anual de carbono da Amazônia nas últimas décadas e o que isso implica para o balanço de O₂ (fonte ou sumidouro líquido)?\",\n    \"De onde vem, documentalmente, a origem da afirmação “A Amazônia produz 20% do oxigênio do mundo” (primeira publicação, autor, contexto) e como ela foi citada/replicada por governos, ONGs e mídia sem verificação?\",\n    \"O que indicam relatórios de síntese (IPCC, WMO, Global Carbon Project) sobre as principais fontes de oxigênio atmosférico (incluindo fitoplâncton oceânico) e qual fração atribuível a florestas tropicais é plausível sob diferentes métricas?\"\n  ],\n  \"report\": \"### 1) O que a alegação diz e por que ela é problemática\\nA declaração sugere que a Floresta Amazônica seria responsável por 20% do oxigênio “do mundo” (frequentemente entendido como o oxigênio disponível na atmosfera e que respiramos). O problema central é conceitual: **produção bruta de O₂** (fotossíntese) não equivale a **contribuição líquida** para o estoque de O₂ atmosférico. Em florestas maduras, o O₂ gerado tende a ser reconsumido por **respiração das plantas**, **respiração do solo**, **decomposição microbiana** e, em situações específicas, por **combustão** (queimadas).\\n\\n### 2) Evidência mais relevante (fontes de maior confiabilidade no contexto)\\nCom base nas fontes mais confiáveis e diretamente pertinentes listadas no contexto (checagem especializada e explicadores científicos):\\n\\n- **FactCheck.org (2019)**: conclui que a resposta para “a Amazônia produz 20% do oxigênio da Terra?” é **não**; aponta que estimativas podem variar (p.ex., algo como 6% a 9% em certos recortes de produção bruta), mas destaca que **a contribuição líquida para o O₂ atmosférico é praticamente nula**, porque o oxigênio produzido é consumido pelo próprio ecossistema.\\n  - Fonte: https://www.factcheck.org/2019/09/amazon-doesnt-produce-20-of-earths-oxygen/\\n\\n- **National Geographic (e versões em português e inglês, 2019)**: explica que o “20%” é tipicamente um **número reciclado** e frequentemente deriva de um recorte específico (p.ex., uma fração da produção em terra) que foi **reinterpretado indevidamente** como “20% do oxigênio atmosférico”. Também reforça que o **saldo líquido de O₂ da Amazônia tende a ~0** em um sistema florestal maduro.\\n  - Fontes:\\n    - https://www.nationalgeographic.com/environment/article/why-amazon-doesnt-produce-20-percent-worlds-oxygen\\n    - https://www.nationalgeographicbrasil.com/meio-ambiente/2019/08/amazonia-oxigenio-mundo-pulmao-floresta-amazonica-queimadas\\n\\nEssas fontes têm alta relevância porque respondem diretamente ao enunciado “20% do oxigênio do mundo” e fazem a distinção crítica entre **fluxo bruto** e **balanço líquido**.\\n\\n### 3) O que está correto (parcialmente) e o que está errado\\n- **O que pode ser “parcialmente verdadeiro”**: a Amazônia é extremamente produtiva e realiza fotossíntese em grande escala. Dependendo da métrica (por exemplo, produção bruta de O₂ em ambientes terrestres) e do conjunto de hipóteses, pode-se falar em uma participação significativa na **produção bruta**.\\n- **O que torna a alegação enganosa**:\\n  1) Ela normalmente é entendida como “20% do oxigênio que respiramos”, o que não é suportado por checagens e explicações científicas.\\n  2) Mesmo que se estimasse uma fração da produção bruta, isso não se traduz em aumento líquido do O₂ atmosférico, pois a floresta **consome quase tudo que produz**.\\n  3) A afirmação ignora o papel do **oceano/fitoplâncton** na produção global de O₂, enfatizado em explicadores científicos (incluindo divulgação científica no Brasil, como Superinteressante) e em sínteses amplamente aceitas.\\n\\n### 4) Veredito\\nDado o consenso nas fontes de checagem e explicação científica apresentadas no contexto, o enunciado é melhor classificado como **enganoso (Misleading)**: ele se apoia em uma ideia de “produção” sem esclarecer a métrica, induzindo o público a concluir que a Amazônia sustenta 20% do oxigênio atmosférico disponível—algo que essas fontes rejeitam.\\n\\n### 5) Limitações desta checagem (o que faltaria para ser “fechada” com literatura primária)\\nO contexto fornecido traz sobretudo **checagens e explicadores** (secundários/terciários). Para robustecer ainda mais, seria ideal anexar também **referências revisadas por pares** sobre (i) produção primária bruta e líquida na Amazônia, (ii) balanço de carbono (NEP/NEE) e sua implicação para O₂, e (iii) estimativas globais de produção de O₂ por biomas (terra vs. oceano). Mesmo assim, para avaliar a frase popular “20% do oxigênio do mundo”, as fontes diretas de fact-checking e explicação científica já são suficientes para apontar a distorção central (bruto vs. líquido).\",\n  \"verification\": \"1) **Triagem do enunciado e definição operacional**: identifiquei a ambiguidade do termo “produz” (produção bruta vs. contribuição líquida ao estoque atmosférico) e tratei isso como eixo de verificação.\\n\\n2) **Ponderação por confiabilidade/relevância**: priorizei fontes com maior confiabilidade e pertinência direta ao claim, conforme o contexto:\\n   - Checagem dedicada (FactCheck.org; alta confiabilidade e alta relevância) como evidência principal.\\n   - Explicadores científicos de veículo reconhecido (National Geographic; alta relevância) como evidência de apoio e contextualização.\\n   - Fontes de divulgação (p.ex., Superinteressante) tratadas como complementares, não como base decisiva.\\n\\n3) **Checagem de consistência lógica e científica**: avaliei se as fontes abordavam explicitamente (a) a origem do número “20%”, (b) a diferença entre produção bruta e líquida, (c) o papel do consumo interno (respiração/decomposição) e (d) o papel do oceano na produção global de O₂.\\n\\n4) **Corroboração cruzada (cross-check)**: comparei os pontos centrais entre FactCheck.org e National Geographic (inglês e português) para confirmar que convergiam no mesmo mecanismo explicativo (saldo líquido ~0; ‘20%’ é interpretação equivocada).\\n\\n5) **Conclusão baseada em evidência**: classifiquei como “Misleading” porque há um núcleo factual (grande fotossíntese) mas a formulação “20% do oxigênio do mundo” induz uma conclusão incorreta sobre o oxigênio atmosférico disponível e o balanço líquido.\",\n  \"reasoning_log\": [\n    \"[list_questions] Generated verification questions (1263 chars)\",\n    \"[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=A+Amaz%C3%B4nia+produz+20%25+do+oxig%C3%AAnio+do+mundo&languageCode=pt&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c\",\n    \"[select_sources] Classified claim as 'general', selected 3 sources: ['google_factcheck', 'wikipedia', 'tavily_search'] (method=llm)\",\n    \"[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 4036 chars of evidence\",\n    \"[create_report] Final report generated (7537 chars)\"\n  ]\n}",
+        "questions": "[\n  \"Quais estudos revisados por pares (autores, ano, periódico) quantificam a produção bruta e a produção líquida de oxigênio da Amazônia, e quais métodos (torres de fluxo, sensoriamento remoto, modelos) foram usados para chegar ao valor de “20%”?\",\n  \"O que dizem especialistas em ciclo do carbono/oxigênio (INPA, IPAM, universidades brasileiras e internacionais) sobre a distinção entre produção bruta de O₂ por fotossíntese e o consumo por respiração/decomposição/incêndios na Amazônia ao estimar contribuição líquida global?\",\n  \"Segundo dados observacionais e reanálises (NASA, NOAA, ECMWF) e inventários de emissões/queimadas (INPE/PRODES, DETER, GFED), qual é o balanço anual de carbono da Amazônia nas últimas décadas e o que isso implica para o balanço de O₂ (fonte ou sumidouro líquido)?\",\n  \"De onde vem, documentalmente, a origem da afirmação “A Amazônia produz 20% do oxigênio do mundo” (primeira publicação, autor, contexto) e como ela foi citada/replicada por governos, ONGs e mídia sem verificação?\",\n  \"O que indicam relatórios de síntese (IPCC, WMO, Global Carbon Project) sobre as principais fontes de oxigênio atmosférico (incluindo fitoplâncton oceânico) e qual fração atribuível a florestas tropicais é plausível sob diferentes métricas?\"\n]",
+        "search_type": "online",
+        "language": "pt",
+        "reasoning_log": [
+          "[list_questions] Generated verification questions (1263 chars)",
+          "[check_existing_factchecks] Plugin error: HTTP request failed: 403 Client Error: Forbidden for url: https://factchecktools.googleapis.com/v1alpha1/claims:search?query=A+Amaz%C3%B4nia+produz+20%25+do+oxig%C3%AAnio+do+mundo&languageCode=pt&pageSize=10&key=AIzaSyAJuuS6Yxj-y4Z5I3duj5o7hfKqIsRfe8c",
+          "[select_sources] Classified claim as 'general', selected 3 sources: ['google_factcheck', 'wikipedia', 'tavily_search'] (method=llm)",
+          "[search_online] Researched claim online using tools ['search_tool', 'search_existing_factchecks', 'tavily_search', 'wikipedia'], collected 4036 chars of evidence",
+          "[create_report] Final report generated (8288 chars)"
+        ],
+        "existing_factchecks": [],
+        "selected_sources": [
+          {
+            "plugin_name": "google_factcheck",
+            "relevance": 1.0,
+            "reason": "Existem checagens de fatos (ClaimReview) específicas sobre a alegação de que a Amazônia produz 20% do oxigénio mundial; fonte direta para ver correções e contexto."
+          },
+          {
+            "plugin_name": "wikipedia",
+            "relevance": 0.9,
+            "reason": "Artigos enciclopédicos sobre a Floresta Amazônica e o ciclo do oxigénio explicam produção vs. consumo de oxigénio e desmentem a cifra simplista de 20%."
+          },
+          {
+            "plugin_name": "tavily_search",
+            "relevance": 0.8,
+            "reason": "Pesquisa web para acessar estudos científicos, publicações da NASA/NOAA e reportagens que detalham o balanço de oxigénio e fornecem dados atualizados."
+          }
+        ],
+        "source_confidence": {
+          "google_factcheck": 0.9,
+          "wikipedia": 0.6,
+          "tavily_search": 0.6
+        }
+      },
+      "error": null
+    }
+  ]
+}
