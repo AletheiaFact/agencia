@@ -1,9 +1,13 @@
 name: Deploy to AWS EKS
 
+# Auto-deploy is disabled. Agencia was shut down (scaled to 0 replicas) in the
+# cluster. Merges to main must no longer recreate it.
+# To re-enable, restore the `push` trigger below and remove `workflow_dispatch`.
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
